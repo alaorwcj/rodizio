@@ -1,0 +1,42 @@
+# Arquivo .gitignore para o projeto
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Banco de dados local (descomente se quiser versionar)
+# data/db.json
+
+# Temporários
+*.tmp
+*.bak
+*.old
+
+# Docker (opcional)
+.env
+docker-compose.override.yml

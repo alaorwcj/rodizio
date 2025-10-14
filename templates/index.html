@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Rodízio de Organistas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .user-selector {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .user-selector label {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .user-selector select {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 2px solid rgba(255,255,255,0.5);
+            font-size: 1em;
+            cursor: pointer;
+            background: white;
+            min-width: 200px;
+            font-weight: 500;
+        }
+        
+        .user-selector select:focus {
+            outline: none;
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
+        }
+        
+        .user-indicator {
+            background: #fbbf24;
+            color: #78350f;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: none;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .nav-tab.active {
+            background: white;
+            border-bottom: 3px solid #667eea;
+            font-weight: bold;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        
+        .btn-warning {
+            background: #fbbf24;
+            color: #78350f;
+            font-weight: 600;
+        }
+        
+        .btn-warning:hover {
+            background: #f59e0b;
+        }
+        
+        .info-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .info-badge.green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .info-badge.blue {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .escala-atual {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .escala-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-top: 4px solid #667eea;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .escala-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .escala-item.domingo {
+            border-top-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        }
+        
+        .escala-item.terca {
+            border-top-color: #fbbf24;
+            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+        }
+        
+        .escala-item.passado {
+            opacity: 0.5;
+        }
+        
+        .escala-date-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .escala-dia-numero {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        
+        .escala-item.domingo .escala-dia-numero {
+            color: #10b981;
+        }
+        
+        .escala-item.terca .escala-dia-numero {
+            color: #fbbf24;
+        }
+        
+        .escala-dia-semana {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+        
+        .escala-mes-ano {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .escala-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .escala-badge.domingo {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .escala-badge.terca {
+            background: #fef3c7;
+            color: #78350f;
+        }
+        
+        .escala-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+            margin: 15px 0;
+        }
+        
+        .escala-servicos {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .escala-servico {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .escala-item.domingo .escala-servico {
+            background: rgba(16, 185, 129, 0.05);
+            border-left-color: #10b981;
+        }
+        
+        .escala-item.terca .escala-servico {
+            background: rgba(251, 191, 36, 0.05);
+            border-left-color: #fbbf24;
+        }
+        
+        .escala-servico-icon {
+            font-size: 1.3em;
+        }
+        
+        .escala-servico-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .escala-tipo {
+            font-size: 0.75em;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .escala-organista {
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .escala-vazio {
+            color: #999;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+        
+        .dashboard-section {
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .no-escala {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background: #667eea;
+            color: white;
+        }
+        
+        table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎹 Rodízio de Organistas - Vila Paula</h1>
+            <p>Bimestre: {{ cfg.bimestre.inicio | date_br }} até {{ cfg.bimestre.fim | date_br }}</p>
+            
+            <div class="user-selector">
+                <label>Você está logado como:</label>
+                <span class="user-indicator">
+                    {% if user.is_admin %}
+                         {{ user.nome }} (Administrador)
+                    {% else %}
+                        👤 {{ user.nome }} (Organista)
+                    {% endif %}
+                </span>
+                <button onclick="trocarSenha()" class="btn btn-warning" style="margin-left: 10px;">
+                    🔐 Trocar Senha
+                </button>
+                <button onclick="logout()" class="btn btn-danger" style="margin-left: 10px;">
+                    🚪 Sair
+                </button>
+            </div>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            {% if user.is_admin %}
+            <button class="nav-tab" onclick="showTab('organistas')">👥 Organistas</button>
+            <button class="nav-tab" onclick="showTab('admin-indisp')">🗓️ Todas Indisponibilidades</button>
+            <button class="nav-tab" onclick="showTab('config')">⚙️ Configurações</button>
+            {% else %}
+            <button class="nav-tab" onclick="showTab('indisponibilidades')">🗓️ Minhas Indisponibilidades</button>
+            {% endif %}
+            <button class="nav-tab" onclick="showTab('escala')">📋 Escala</button>
+        </div>
+        
+        <div class="content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-panel active">
+                <div class="card">
+                    <h2>🎹 Rodízio de Organistas - Vila Paula</h2>
+                    
+                    <div style="margin-top: 20px;">
+                        <span class="info-badge green">{{ cfg.bimestre.inicio | date_br }}</span>
+                        <span class="info-badge blue">até</span>
+                        <span class="info-badge green">{{ cfg.bimestre.fim | date_br }}</span>
+                    </div>
+                </div>
+                
+                {% if not user.is_admin %}
+                <!-- Meus Dias de Rodízio (apenas para organistas) -->
+                <div class="card">
+                    <div class="dashboard-section">
+                        <h2 class="dashboard-title">🎹 Meus Dias de Rodízio</h2>
+                        <div id="meusDias" class="escala-atual">
+                            <div class="no-escala">Carregando seus dias...</div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if user.is_admin %}
+                <!-- Todas as Escalas (apenas para admin) -->
+                <div class="card">
+                    <div class="dashboard-section">
+                        <h2 class="dashboard-title">📅 Próximas Escalas</h2>
+                        <div id="escalaAtual" class="escala-atual">
+                            <div class="no-escala">Carregando escala...</div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="card">
+                    <h2>Status Atual</h2>
+                    <p id="statusOrganistas">Carregando...</p>
+                    <p id="statusIndisponibilidades">Carregando...</p>
+                    <p id="statusEscala">Carregando...</p>
+                </div>
+            </div>
+            
+            <!-- Organistas Tab -->
+            <div id="organistas" class="tab-panel">
+                {% if user.is_coordenador %}
+                <div class="card">
+                    <h2>Cadastro de Organistas</h2>
+                    <div id="alertOrganista" class="alert hidden"></div>
+                    
+                    <form id="formOrganista" onsubmit="addOrganista(event)">
+                        <div class="form-group">
+                            <label>ID (único):</label>
+                            <input type="text" id="orgId" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome:</label>
+                            <input type="text" id="orgNome" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipos (Ctrl+clique para múltiplos):</label>
+                            <select id="orgTipos" multiple required>
+                                <option value="Meia-hora">Meia-hora</option>
+                                <option value="Culto">Culto</option>
+                            </select>
+                            <small style="color: #666;">Selecione ambos para "Ambos"</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Dias Permitidos (Ctrl+clique para múltiplos):</label>
+                            <select id="orgDias" multiple required>
+                                <option value="Domingo">Domingo</option>
+                                <option value="Terça">Terça</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Adicionar Organista</button>
+                    </form>
+                </div>
+                {% endif %}
+                
+                <div class="card">
+                    <h2>Organistas Cadastrados</h2>
+                    <table id="tableOrganistas">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Tipos</th>
+                                <th>Dias</th>
+                                {% if user.is_admin %}
+                                <th>Ações</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyOrganistas">
+                            <tr><td colspan="4" style="text-align: center;">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Indisponibilidades Tab -->
+            <div id="indisponibilidades" class="tab-panel">
+                <div class="card">
+                    <h2>Minhas Indisponibilidades</h2>
+                    <p>Marque as datas em que você NÃO poderá tocar no bimestre atual.</p>
+                    <div id="alertIndisp" class="alert hidden"></div>
+                    
+                    <div id="calendarioIndisp" style="margin-top: 20px;">
+                        <!-- Calendário será gerado dinamicamente -->
+                    </div>
+                    
+                    <div id="chipsDatas" style="margin-top: 20px;">
+                        <!-- Chips com datas selecionadas -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin - Todas Indisponibilidades Tab -->
+            <div id="admin-indisp" class="tab-panel">
+                <div class="card">
+                    <h2>🔐 Gerenciar Todas as Indisponibilidades</h2>
+                    <p>Como administrador, você pode visualizar e gerenciar as indisponibilidades de todas as organistas.</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <label style="font-weight: bold;">Filtrar por organista:</label>
+                        <select id="filterOrganista" onchange="loadAdminIndisp()" style="padding: 8px; margin-left: 10px; border-radius: 5px;">
+                            <option value="">Todas</option>
+                        </select>
+                        <button onclick="loadAdminIndisp()" class="btn btn-primary" style="margin-left: 10px;">🔄 Atualizar</button>
+                    </div>
+                    
+                    <div id="adminIndispList" style="margin-top: 20px;">
+                        <!-- Lista será carregada via JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Configurações Tab -->
+            <div id="config" class="tab-panel">
+                <div class="card">
+                    <h2>⚙️ Configurações do Sistema</h2>
+                    <div id="alertConfig" class="alert hidden"></div>
+                    
+                    <form id="formConfig" onsubmit="saveConfig(event)">
+                        <div class="form-group">
+                            <label>Data de Início do Bimestre:</label>
+                            <input type="date" id="configInicio" value="{{ cfg.bimestre.inicio }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Fim do Bimestre:</label>
+                            <input type="date" id="configFim" value="{{ cfg.bimestre.fim }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Prazo para marcar indisponibilidade antes da publicação (dias):</label>
+                            <input type="number" id="configFechamento" value="{{ cfg.fechamento_publicacao_dias }}" min="0" max="30" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">💾 Salvar Configurações</button>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <h2>📊 Estatísticas do Sistema</h2>
+                    <div id="statsSystem">Carregando...</div>
+                </div>
+            </div>
+            
+            <!-- Escala Tab -->
+            <div id="escala" class="tab-panel">
+                {% if user.is_admin %}
+                <div class="card">
+                    <h2>📋 Gerenciamento de Escala</h2>
+                    <div id="alertEscala" class="alert hidden"></div>
+                    
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <button onclick="loadEscalaAtual()" class="btn" style="background: #64748b; color: white;">
+                            🔄 Carregar Escala Atual
+                        </button>
+                        <button onclick="criarEscalaVazia()" class="btn btn-success">
+                            ➕ Criar Nova Escala
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h2 style="margin: 0;">📅 Escala do Bimestre</h2>
+                        <div style="display: flex; gap: 10px;">
+                            {% if user.is_admin %}
+                            <button onclick="salvarTodasAlteracoes()" class="btn" style="background: #10b981; color: white;">
+                                💾 Salvar Todas as Alterações
+                            </button>
+                            {% endif %}
+                            <button onclick="exportarPDF()" class="btn" style="background: #dc2626; color: white;">
+                                📄 Exportar PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="infoEscala" style="margin-bottom: 15px; color: #666;">
+                        <p>Carregando...</p>
+                    </div>
+                    
+                    <!-- Conteúdo da escala será inserido aqui -->
+                    <div id="escalaContainer">
+                        <div style="text-align: center; padding: 40px; color: #999;">
+                            <p>Nenhuma escala publicada ainda.</p>
+                            {% if user.is_admin %}
+                            <p style="font-size: 0.9em; margin-top: 10px;">Clique em "Criar Nova Escala" acima para começar.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>📊 Estatísticas da Escala</h2>
+                    <div id="statsEscala">
+                        <p style="color: #666;">Gere uma escala para ver as estatísticas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const currentUserId = '{{ user.id }}';
+        const isAdmin = {{ 'true' if user.is_admin else 'false' }};
+        // Compatibilidade
+        const isCoord = isAdmin;
+        let organistas = [];
+        let indisponibilidades = [];
+        
+        // Navegação entre tabs
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Carregar dados específicos de cada aba
+            if (tabName === 'indisponibilidades') {
+                loadIndisponibilidades();
+            } else if (tabName === 'admin-indisp') {
+                loadAdminIndisp();
+            } else if (tabName === 'organistas') {
+                loadOrganistas();
+            }
+        }
+        
+        // Trocar Senha
+        function trocarSenha() {
+            window.location.href = '/trocar-senha';
+        }
+        
+        // Logout
+        function logout() {
+            if (confirm('Deseja realmente sair?')) {
+                window.location.href = '/logout';
+            }
+        }
+        
+        // Carregar organistas
+        async function loadOrganistas() {
+            try {
+                const response = await fetch('/organistas');
+                organistas = await response.json();
+                
+                // Atualizar tabela
+                const tbody = document.getElementById('tbodyOrganistas');
+                tbody.innerHTML = '';
+                
+                if (!isCoord) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666;">Apenas coordenador pode gerenciar organistas.</td></tr>';
+                    return;
+                }
+                
+                organistas.forEach(org => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${org.nome}</td>
+                        <td>${org.tipos.join(', ')}</td>
+                        <td>${org.dias_permitidos.join(', ')}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteOrganista('${org.id}')">Remover</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                
+                // Atualizar dashboard
+                document.getElementById('statusOrganistas').textContent = 
+                    `✅ ${organistas.length} organista(s) cadastrado(s)`;
+                    
+                // Atualizar contador de indisponibilidades
+                loadIndispCount();
+            } catch (error) {
+                console.error('Erro ao carregar organistas:', error);
+            }
+        }
+        
+        // Carregar contagem de indisponibilidades
+        async function loadIndispCount() {
+            try {
+                const response = await fetch('/indisponibilidades');
+                const indisp = await response.json();
+                document.getElementById('statusIndisponibilidades').textContent = 
+                    `✅ ${indisp.length} indisponibilidade(s) marcada(s)`;
+            } catch (error) {
+                console.error('Erro ao carregar indisponibilidades:', error);
+            }
+        }
+        
+        // Renderizar escala atual no dashboard
+        async function renderEscalaAtual() {
+            try {
+                const response = await fetch('/escala/atual');
+                const data = await response.json();
+                console.log('Dados recebidos da API:', data);
+                const escala = data.escala || [];
+                console.log('Escala extraída:', escala);
+                
+                const container = document.getElementById('escalaAtual');
+                
+                if (!escala || escala.length === 0) {
+                    container.innerHTML = '<div class="no-escala">Nenhuma escala cadastrada ainda</div>';
+                    document.getElementById('statusEscala').textContent = '⚠️ Nenhuma escala cadastrada';
+                    return;
+                }
+                
+                // Pegar data atual para comparação
+                const hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                
+                // Filtrar e ordenar: pegar próximos 10 eventos a partir de hoje
+                const proximasEscalas = escala
+                    .filter(item => {
+                        const dataEscala = new Date(item.data);
+                        return dataEscala >= hoje;
+                    })
+                    .sort((a, b) => new Date(a.data) - new Date(b.data))
+                    .slice(0, 10);
+                
+                if (proximasEscalas.length === 0) {
+                    container.innerHTML = '<div class="no-escala">Todas as escalas já passaram</div>';
+                    document.getElementById('statusEscala').textContent = '✅ Todas as escalas já passaram';
+                    return;
+                }
+                
+                // Renderizar as próximas escalas
+                container.innerHTML = proximasEscalas.map(item => {
+                    const data = new Date(item.data);
+                    const dataEscala = new Date(item.data);
+                    const passado = dataEscala < hoje;
+                    
+                    const dia = data.getDate();
+                    const nomeMes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
+                                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'][data.getMonth()];
+                    const ano = data.getFullYear();
+                    
+                    const diaSemana = item.dia_semana === 'Sunday' ? 'Domingo' : 'Terça-feira';
+                    const tipoDia = item.dia_semana === 'Sunday' ? 'domingo' : 'terca';
+                    const emoji = diaSemana === 'Domingo' ? '🙏' : '📖';
+                    
+                    return `
+                        <div class="escala-item ${tipoDia} ${passado ? 'passado' : ''}">
+                            <div class="escala-date-box">
+                                <div class="escala-dia-numero">${dia}</div>
+                                <div class="escala-dia-semana">${emoji} ${diaSemana}</div>
+                                <div class="escala-mes-ano">${nomeMes} ${ano}</div>
+                            </div>
+                            
+                            <div class="escala-divider"></div>
+                            
+                            <div class="escala-servicos">
+                                <div class="escala-servico">
+                                    <div class="escala-servico-icon">⏰</div>
+                                    <div class="escala-servico-text">
+                                        <div class="escala-tipo">Meia-hora</div>
+                                        <div class="escala-organista ${!item.meia_hora ? 'escala-vazio' : ''}">
+                                            ${item.meia_hora || 'Não definido'}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="escala-servico">
+                                    <div class="escala-servico-icon">🎹</div>
+                                    <div class="escala-servico-text">
+                                        <div class="escala-tipo">Culto</div>
+                                        <div class="escala-organista ${!item.culto ? 'escala-vazio' : ''}">
+                                            ${item.culto || 'Não definido'}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('statusEscala').textContent = 
+                    `✅ ${escala.length} escala(s) cadastrada(s)`;
+                    
+            } catch (error) {
+                console.error('Erro ao renderizar escala atual:', error);
+                document.getElementById('escalaAtual').innerHTML = 
+                    '<div class="no-escala">Erro ao carregar escala</div>';
+            }
+        }
+        
+        // Renderizar apenas os dias do organista logado
+        async function renderMeusDias() {
+            if (isAdmin) return; // Admin não precisa desta função
+            
+            try {
+                const response = await fetch('/escala/atual');
+                const data = await response.json();
+                const escala = data.escala || [];
+                
+                const container = document.getElementById('meusDias');
+                
+                if (!escala || escala.length === 0) {
+                    container.innerHTML = '<div class="no-escala">Nenhuma escala cadastrada ainda</div>';
+                    return;
+                }
+                
+                // Pegar data atual para comparação
+                const hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                
+                // Pegar o nome do usuário atual
+                const nomeUsuario = '{{ user.nome }}';
+                
+                // Filtrar apenas os dias onde o usuário está escalado
+                const meusDias = escala
+                    .filter(item => {
+                        const dataEscala = new Date(item.data);
+                        // Mostrar apenas dias futuros ou de hoje
+                        if (dataEscala < hoje) return false;
+                        
+                        // Verificar se o usuário está escalado (meia_hora ou culto)
+                        return item.meia_hora === nomeUsuario || item.culto === nomeUsuario;
+                    })
+                    .sort((a, b) => new Date(a.data) - new Date(b.data));
+                
+                if (meusDias.length === 0) {
+                    container.innerHTML = '<div class="no-escala">Você não está escalado(a) em nenhuma data próxima</div>';
+                    return;
+                }
+                
+                // Renderizar os dias do organista
+                container.innerHTML = meusDias.map(item => {
+                    const data = new Date(item.data);
+                    const dia = data.getDate();
+                    const nomeMes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
+                                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'][data.getMonth()];
+                    const ano = data.getFullYear();
+                    
+                    const diaSemana = item.dia_semana === 'Sunday' ? 'Domingo' : 'Terça-feira';
+                    const tipoDia = item.dia_semana === 'Sunday' ? 'domingo' : 'terca';
+                    const emoji = diaSemana === 'Domingo' ? '🙏' : '📖';
+                    
+                    // Verificar em qual serviço o organista está
+                    const isMeiaHora = item.meia_hora === nomeUsuario;
+                    const isCulto = item.culto === nomeUsuario;
+                    
+                    return `
+                        <div class="escala-item ${tipoDia}">
+                            <div class="escala-date-box">
+                                <div class="escala-dia-numero">${dia}</div>
+                                <div class="escala-dia-semana">${emoji} ${diaSemana}</div>
+                                <div class="escala-mes-ano">${nomeMes} ${ano}</div>
+                            </div>
+                            
+                            <div class="escala-divider"></div>
+                            
+                            <div class="escala-servicos">
+                                ${isMeiaHora ? `
+                                <div class="escala-servico" style="background: rgba(16, 185, 129, 0.15); border-left-color: #10b981; border-left-width: 4px;">
+                                    <div class="escala-servico-icon">⏰</div>
+                                    <div class="escala-servico-text">
+                                        <div class="escala-tipo">Meia-hora</div>
+                                        <div class="escala-organista" style="color: #10b981; font-weight: bold;">✓ Você</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                ${isCulto ? `
+                                <div class="escala-servico" style="background: rgba(16, 185, 129, 0.15); border-left-color: #10b981; border-left-width: 4px;">
+                                    <div class="escala-servico-icon">🎹</div>
+                                    <div class="escala-servico-text">
+                                        <div class="escala-tipo">Culto</div>
+                                        <div class="escala-organista" style="color: #10b981; font-weight: bold;">✓ Você</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                    
+            } catch (error) {
+                console.error('Erro ao renderizar meus dias:', error);
+                document.getElementById('meusDias').innerHTML = 
+                    '<div class="no-escala">Erro ao carregar seus dias</div>';
+            }
+        }
+        
+        // Adicionar organista
+        async function addOrganista(event) {
+            event.preventDefault();
+            
+            const payload = {
+                id: document.getElementById('orgId').value,
+                nome: document.getElementById('orgNome').value,
+                tipos: Array.from(document.getElementById('orgTipos').selectedOptions).map(o => o.value),
+                dias_permitidos: Array.from(document.getElementById('orgDias').selectedOptions).map(o => o.value),
+                regras_especiais: {}
+            };
+            
+            try {
+                const response = await fetch('/organistas', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showAlert('alertOrganista', 'Organista adicionado com sucesso!', 'success');
+                    document.getElementById('formOrganista').reset();
+                    loadOrganistas();
+                } else {
+                    showAlert('alertOrganista', result.error, 'error');
+                }
+            } catch (error) {
+                showAlert('alertOrganista', 'Erro ao adicionar organista.', 'error');
+            }
+        }
+        
+        // Remover organista
+        async function deleteOrganista(id) {
+            if (!confirm('Deseja realmente remover este organista?')) return;
+            
+            try {
+                const response = await fetch(`/organistas/${id}`, {method: 'DELETE'});
+                const result = await response.json();
+                
+                if (response.ok) {
+                    loadOrganistas();
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert('Erro ao remover organista.');
+            }
+        }
+        
+        // Carregar indisponibilidades
+        async function loadIndisponibilidades() {
+            if (isCoord) {
+                document.getElementById('calendarioIndisp').innerHTML = 
+                    '<div style="background: #dbeafe; padding: 20px; border-radius: 10px; border-left: 4px solid #3b82f6;">' +
+                    '<h3 style="color: #1e40af; margin-bottom: 10px;">ℹ️ Coordenador</h3>' +
+                    '<p style="color: #1e3a8a;">Coordenadores visualizam todas as indisponibilidades na página de geração de escala. Para ver/editar indisponibilidades de uma organista específica, entre com a conta dela.</p>' +
+                    '</div>';
+                document.getElementById('chipsDatas').innerHTML = '';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/indisponibilidades');
+                indisponibilidades = await response.json();
+                
+                renderCalendar();
+            } catch (error) {
+                console.error('Erro ao carregar indisponibilidades:', error);
+            }
+        }
+        
+        // Renderizar calendário simplificado
+        function renderCalendar() {
+            // Usar datas hardcoded do bimestre (pode ser melhorado depois)
+            const inicio = new Date('2025-10-01T00:00:00');
+            const fim = new Date('2025-11-30T23:59:59');
+            
+            const calendar = document.getElementById('calendarioIndisp');
+            
+            const mesesNome = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+                              'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            
+            const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+            
+            // Agrupar datas por mês (apenas domingos e terças)
+            const datasOrganizadas = {};
+            let current = new Date(inicio);
+            
+            while (current <= fim) {
+                const dayOfWeek = current.getDay();
+                
+                // Apenas domingos (0) e terças (2)
+                if (dayOfWeek === 0 || dayOfWeek === 2) {
+                    const mesAno = `${current.getFullYear()}-${current.getMonth()}`;
+                    
+                    if (!datasOrganizadas[mesAno]) {
+                        datasOrganizadas[mesAno] = {
+                            mes: mesesNome[current.getMonth()],
+                            ano: current.getFullYear(),
+                            datas: []
+                        };
+                    }
+                    
+                    datasOrganizadas[mesAno].datas.push({
+                        data: new Date(current),
+                        dateStr: current.toISOString().split('T')[0],
+                        dia: current.getDate(),
+                        diaSemana: diasSemana[dayOfWeek]
+                    });
+                }
+                
+                current.setDate(current.getDate() + 1);
+            }
+            
+            // Renderizar por mês
+            let html = '<div style="margin-bottom: 20px;"><p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">📅 Clique nas datas abaixo para marcar/desmarcar sua indisponibilidade:</p>';
+            
+            Object.keys(datasOrganizadas).sort().forEach(mesAno => {
+                const mesData = datasOrganizadas[mesAno];
+                
+                html += `
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #e2e8f0;">
+                        <h3 style="color: #1e293b; font-size: 1.5rem; margin-bottom: 15px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
+                            ${mesData.mes} / ${mesData.ano}
+                        </h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+                `;
+                
+                mesData.datas.forEach(item => {
+                    const isSelected = indisponibilidades.some(i => i.data === item.dateStr);
+                    
+                    html += `
+                        <div onclick="toggleDate('${item.dateStr}')" 
+                            style="padding: 15px; border-radius: 8px; cursor: pointer; text-align: center;
+                            background: ${isSelected ? '#ef4444' : '#10b981'}; 
+                            color: white; 
+                            font-weight: 500; 
+                            transition: all 0.2s;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 5px;">
+                                ${item.diaSemana}
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: bold;">
+                                ${String(item.dia).padStart(2, '0')}
+                            </div>
+                            <div style="font-size: 0.75rem; margin-top: 5px; opacity: 0.9;">
+                                ${isSelected ? '✓ Indisponível' : 'Disponível'}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            
+            calendar.innerHTML = html;
+            updateChips();
+        }
+        
+        // Toggle data
+        async function toggleDate(dateStr) {
+            const exists = indisponibilidades.some(i => i.data === dateStr);
+            
+            if (exists) {
+                // Remover
+                try {
+                    const response = await fetch(`/indisponibilidades/${currentUserId}/${dateStr}`, {method: 'DELETE'});
+                    if (response.ok) {
+                        indisponibilidades = indisponibilidades.filter(i => i.data !== dateStr);
+                        renderCalendar();
+                    } else {
+                        const error = await response.json();
+                        alert(error.error || 'Erro ao remover indisponibilidade.');
+                    }
+                } catch (error) {
+                    alert('Erro ao remover indisponibilidade.');
+                }
+            } else {
+                // Adicionar
+                const payload = {
+                    data: dateStr,
+                    motivo: 'Indisponível'
+                };
+                
+                try {
+                    const response = await fetch('/indisponibilidades', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) {
+                        indisponibilidades.push({...payload, id: currentUserId});
+                        renderCalendar();
+                    } else {
+                        const error = await response.json();
+                        alert(error.error || 'Erro ao adicionar indisponibilidade.');
+                    }
+                } catch (error) {
+                    alert('Erro ao adicionar indisponibilidade.');
+                }
+            }
+        }
+        
+        // Atualizar chips
+        function updateChips() {
+            const chips = document.getElementById('chipsDatas');
+            
+            if (indisponibilidades.length === 0) {
+                chips.innerHTML = '<p style="color: #666;">Nenhuma indisponibilidade marcada.</p>';
+                return;
+            }
+            
+            let html = '<h3>Datas marcadas como indisponíveis:</h3><div style="margin-top: 10px;">';
+            indisponibilidades.forEach(i => {
+                const date = new Date(i.data + 'T00:00:00');
+                html += `<span class="info-badge" style="background: #fee2e2; color: #991b1b;">
+                    ${date.toLocaleDateString('pt-BR')}
+                </span>`;
+            });
+            html += '</div>';
+            chips.innerHTML = html;
+        }
+        
+        // Carregar todas indisponibilidades (Admin)
+        async function loadAdminIndisp() {
+            if (!isAdmin) return;
+            
+            try {
+                const response = await fetch('/admin/indisponibilidades/todas');
+                const data = await response.json();
+                
+                const container = document.getElementById('adminIndispList');
+                container.innerHTML = '';
+                
+                if (Object.keys(data).length === 0) {
+                    container.innerHTML = '<p style="color: #666; text-align: center;">Nenhuma indisponibilidade cadastrada ainda.</p>';
+                    return;
+                }
+                
+                for (const [orgId, info] of Object.entries(data)) {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.style.background = '#f9fafb';
+                    card.style.marginBottom = '15px';
+                    
+                    let html = `<h3 style="color: #667eea; margin-bottom: 10px;">👤 ${info.nome}</h3>`;
+                    
+                    if (info.indisponibilidades.length === 0) {
+                        html += '<p style="color: #666;">Nenhuma indisponibilidade marcada.</p>';
+                    } else {
+                        html += '<div style="display: flex; flex-wrap: wrap; gap: 10px;">';
+                        info.indisponibilidades.forEach(indisp => {
+                            const dataBR = indisp.data.split('-').reverse().join('/');
+                            html += `
+                                <div style="background: #fee2e2; color: #991b1b; padding: 8px 15px; border-radius: 5px; display: flex; align-items: center; gap: 10px;">
+                                    <span>${dataBR}</span>
+                                    <button onclick="deleteIndispAdmin('${orgId}', '${indisp.data}')" 
+                                            style="background: #ef4444; color: white; border: none; border-radius: 3px; padding: 3px 8px; cursor: pointer;">
+                                        ✕
+                                    </button>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                    }
+                    
+                    card.innerHTML = html;
+                    container.appendChild(card);
+                }
+            } catch (error) {
+                console.error('Erro ao carregar indisponibilidades:', error);
+            }
+        }
+        
+        // Deletar indisponibilidade (Admin)
+        async function deleteIndispAdmin(orgId, data) {
+            if (!confirm(`Remover indisponibilidade de ${data.split('-').reverse().join('/')}?`)) return;
+            
+            try {
+                const response = await fetch(`/indisponibilidades/${orgId}/${data}`, {method: 'DELETE'});
+                if (response.ok) {
+                    loadAdminIndisp();
+                } else {
+                    alert('Erro ao remover indisponibilidade.');
+                }
+            } catch (error) {
+                alert('Erro ao remover indisponibilidade.');
+            }
+        }
+        
+        // Salvar configurações (Admin)
+        async function saveConfig(event) {
+            event.preventDefault();
+            
+            const payload = {
+                bimestre: {
+                    inicio: document.getElementById('configInicio').value,
+                    fim: document.getElementById('configFim').value
+                },
+                fechamento_publicacao_dias: parseInt(document.getElementById('configFechamento').value)
+            };
+            
+            try {
+                const response = await fetch('/admin/config', {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    showAlert('alertConfig', '✅ Configurações salvas com sucesso! Atualizando...', 'success');
+                    // Aguardar 1 segundo e recarregar a página para atualizar todas as datas
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showAlert('alertConfig', 'Erro ao salvar configurações.', 'error');
+                }
+            } catch (error) {
+                showAlert('alertConfig', 'Erro ao salvar configurações.', 'error');
+            }
+        }
+        
+        // Mostrar alerta
+        function showAlert(id, message, type) {
+            const alert = document.getElementById(id);
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alert.classList.add('hidden');
+            }, 5000);
+        }
+        
+        // Inicialização
+        window.onload = function() {
+            loadOrganistas();
+            
+            // Carregar dashboard apropriado
+            if (isAdmin) {
+                renderEscalaAtual();
+            } else {
+                renderMeusDias();
+            }
+            
+            // Carregar filtro de organistas para admin
+            if (isAdmin) {
+                fetch('/organistas').then(r => r.json()).then(orgs => {
+                    const select = document.getElementById('filterOrganista');
+                    orgs.forEach(org => {
+                        const option = document.createElement('option');
+                        option.value = org.id;
+                        option.textContent = org.nome;
+                        select.appendChild(option);
+                    });
+                });
+            }
+        };
+
+        // ============================================
+        // FUNÇÕES PARA ESCALA (FASE 2)
+        // ============================================
+        
+        async function criarEscalaVazia() {
+            try {
+                // Garantir que temos a lista de organistas
+                try {
+                    const response = await fetch('/organistas');
+                    organistas = await response.json();
+                    console.log('Organistas carregadas:', organistas.length);
+                } catch (error) {
+                    console.error('Erro ao carregar organistas:', error);
+                    throw new Error('Não foi possível carregar a lista de organistas');
+                }
+                
+                // Buscar configuração do bimestre
+                const configResponse = await fetch('/admin/config');
+                const config = await configResponse.json();
+                
+                const inicio = new Date(config.bimestre.inicio + 'T00:00:00');
+                const fim = new Date(config.bimestre.fim + 'T00:00:00');
+                
+                // Criar escala vazia com todos os domingos e terças
+                const escala = [];
+                let current = new Date(inicio);
+                
+                while (current <= fim) {
+                    const dayOfWeek = current.getDay();
+                    
+                    // Domingo (0) ou Terça (2)
+                    if (dayOfWeek === 0) {
+                        escala.push({
+                            data: current.toISOString().split('T')[0],
+                            dia_semana: 'Sunday',
+                            meia_hora: null,
+                            culto: null
+                        });
+                    } else if (dayOfWeek === 2) {
+                        escala.push({
+                            data: current.toISOString().split('T')[0],
+                            dia_semana: 'Tuesday',
+                            meia_hora: null,
+                            culto: null
+                        });
+                    }
+                    
+                    current.setDate(current.getDate() + 1);
+                }
+                
+                // Publicar escala vazia
+                const response = await fetch('/escala/publicar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ escala: escala })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.erro || 'Erro ao criar escala');
+                }
+
+                showAlertEscala('✅ Escala criada! Agora preencha manualmente os organistas.', 'success');
+                await loadEscalaAtual();
+            } catch (error) {
+                showAlertEscala('Erro: ' + error.message, 'error');
+            }
+        }
+
+        async function loadEscalaAtual() {
+            try {
+                // Carregar organistas
+                try {
+                    const orgResponse = await fetch('/organistas');
+                    organistas = await orgResponse.json();
+                    console.log('Organistas carregadas para escala:', organistas.length);
+                } catch (error) {
+                    console.error('Erro ao carregar organistas:', error);
+                }
+                
+                // Carregar indisponibilidades
+                try {
+                    const indispResponse = await fetch('/indisponibilidades');
+                    indisponibilidades = await indispResponse.json();
+                    console.log('Indisponibilidades carregadas:', indisponibilidades.length);
+                } catch (error) {
+                    console.error('Erro ao carregar indisponibilidades:', error);
+                }
+                
+                const response = await fetch('/escala/atual');
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.erro || error.error || 'Erro ao carregar escala');
+                }
+
+                const data = await response.json();
+                
+                if (data.escala && data.escala.length > 0) {
+                    renderEscala(data.escala);
+                    renderEstatisticas(data.estatisticas);
+                    showAlertEscala('Escala atual carregada.', 'success');
+                } else {
+                    showAlertEscala('Nenhuma escala publicada ainda.', 'info');
+                    document.getElementById('escalaContainer').innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #999;">
+                            <p>Nenhuma escala publicada ainda.</p>
+                            ${isAdmin ? '<p style="font-size: 0.9em; margin-top: 10px;">Clique em "Criar Nova Escala" acima para começar.</p>' : ''}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                showAlertEscala('Erro: ' + error.message, 'error');
+            }
+        }
+
+        function renderEscala(escala) {
+            const container = document.getElementById('escalaContainer');
+            
+            if (!escala || escala.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #999;">
+                        <p>Nenhuma escala gerada ainda.</p>
+                        ${isAdmin ? '<p style="font-size: 0.9em; margin-top: 10px;">Clique em "Gerar Escala Automaticamente" acima.</p>' : ''}
+                    </div>
+                `;
+                return;
+            }
+
+            // Agrupar por mês
+            const escalaPorMes = {};
+            const mesesNome = {
+                1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',
+                5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto',
+                9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'
+            };
+            
+            const diasSemana = {
+                'Sunday': 'Domingo',
+                'Tuesday': 'Terça-feira',
+                'Monday': 'Segunda',
+                'Wednesday': 'Quarta',
+                'Thursday': 'Quinta',
+                'Friday': 'Sexta',
+                'Saturday': 'Sábado'
+            };
+
+            escala.forEach(item => {
+                const date = new Date(item.data + 'T00:00:00');
+                const mesAno = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                
+                if (!escalaPorMes[mesAno]) {
+                    escalaPorMes[mesAno] = {
+                        nome: `${mesesNome[date.getMonth() + 1]} de ${date.getFullYear()}`,
+                        itens: []
+                    };
+                }
+                escalaPorMes[mesAno].itens.push(item);
+            });
+
+            // Atualizar informação do bimestre
+            const infoEscala = document.getElementById('infoEscala');
+            const primeiraData = formatDateBR(escala[0].data);
+            const ultimaData = formatDateBR(escala[escala.length - 1].data);
+            infoEscala.innerHTML = `
+                <p><strong>📅 Período Bimestral:</strong> ${primeiraData} a ${ultimaData}</p>
+                <p><strong>📊 Total de alocações:</strong> ${escala.length} (${Object.keys(escalaPorMes).length} ${Object.keys(escalaPorMes).length === 1 ? 'mês' : 'meses'})</p>
+            `;
+
+            // Renderizar cada mês separadamente
+            let html = '';
+            const mesesOrdenados = Object.keys(escalaPorMes).sort();
+            
+            mesesOrdenados.forEach((mesAno, index) => {
+                const mes = escalaPorMes[mesAno];
+                
+                html += `
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 15px;">
+                            📅 ${mes.nome}
+                        </h3>
+                        
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <thead>
+                                    <tr style="background: #667eea; color: white;">
+                                        <th style="padding: 12px; text-align: left;">Data</th>
+                                        <th style="padding: 12px; text-align: left;">Dia</th>
+                                        <th style="padding: 12px; text-align: center; border-left: 2px solid rgba(255,255,255,0.3);">
+                                            🎹 Meia-hora
+                                        </th>
+                                        <th style="padding: 12px; text-align: center; border-left: 2px solid rgba(255,255,255,0.3);">
+                                            🎵 Culto
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                mes.itens.forEach(item => {
+                    html += `
+                        <tr style="border-bottom: 1px solid #e5e7eb; background: white;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                            <td style="padding: 12px; font-weight: 500;">${formatDateBR(item.data)}</td>
+                            <td style="padding: 12px;">${diasSemana[item.dia_semana] || item.dia_semana}</td>
+                    `;
+                    
+                    if (item.dia_semana === 'Sunday') {
+                        // DOMINGO: Duas fases separadas (Meia-hora e Culto)
+                        const meiaHora = item.meia_hora || '—';
+                        const culto = item.culto || '—';
+                        
+                        html += `
+                            <td style="padding: 12px; background: #f0fdf4;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <strong style="color: #10b981; font-size: 0.75em; margin-bottom: 4px;">MEIA-HORA</strong>
+                                    ${isAdmin ? 
+                                        createOrganistaSelectHTML(item.data, 'meia_hora', meiaHora) : 
+                                        `<span>${meiaHora}</span>`
+                                    }
+                                </div>
+                            </td>
+                            <td style="padding: 12px; background: #eff6ff;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <strong style="color: #3b82f6; font-size: 0.75em; margin-bottom: 4px;">CULTO</strong>
+                                    ${isAdmin ? 
+                                        createOrganistaSelectHTML(item.data, 'culto', culto) : 
+                                        `<span>${culto}</span>`
+                                    }
+                                </div>
+                            </td>
+                        `;
+                    } else {
+                        // TERÇA-FEIRA: Duas fases (podem ser pessoas diferentes)
+                        // Para compatibilidade: se tiver 'unica', usar para ambas; senão usar campos separados
+                        const meiaHora = item.meia_hora || item.unica || '—';
+                        const culto = item.culto || item.unica || '—';
+                        
+                        html += `
+                            <td style="padding: 12px; background: #fef3c7;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <strong style="color: #d97706; font-size: 0.75em; margin-bottom: 4px;">MEIA-HORA</strong>
+                                    ${isAdmin ? 
+                                        createOrganistaSelectHTML(item.data, 'meia_hora', meiaHora) : 
+                                        `<span>${meiaHora}</span>`
+                                    }
+                                </div>
+                            </td>
+                            <td style="padding: 12px; background: #fef3c7;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <strong style="color: #d97706; font-size: 0.75em; margin-bottom: 4px;">CULTO</strong>
+                                    ${isAdmin ? 
+                                        createOrganistaSelectHTML(item.data, 'culto', culto) : 
+                                        `<span>${culto}</span>`
+                                    }
+                                </div>
+                            </td>
+                        `;
+                    }
+                    
+                    html += '</tr>';
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function createOrganistaSelectHTML(data, tipo, valorAtual) {
+            const selectId = `select_${data}_${tipo}`;
+            let html = `<select id="${selectId}" class="form-control" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 14px;">`;
+            html += `<option value="">-- Selecione --</option>`;
+            
+            let opcoesDisponiveis = 0;
+            
+            organistas.forEach(org => {
+                const selected = org.nome === valorAtual ? 'selected' : '';
+                
+                // Verificar se está indisponível nesta data
+                const indisponivelNaData = indisponibilidades.some(
+                    ind => ind.id === org.id && ind.data === data
+                );
+                
+                // Verificar se tem a fase habilitada
+                let temFaseHabilitada = true;
+                if (tipo === 'meia_hora') {
+                    temFaseHabilitada = org.tipos && org.tipos.includes('Meia-hora');
+                } else if (tipo === 'culto') {
+                    temFaseHabilitada = org.tipos && org.tipos.includes('Culto');
+                } else if (tipo === 'unica') {
+                    // Para terça precisa ter ambas as fases
+                    temFaseHabilitada = org.tipos && 
+                        org.tipos.includes('Meia-hora') && 
+                        org.tipos.includes('Culto');
+                }
+                
+                // Se não está indisponível E tem fase habilitada, conta como disponível
+                if (!indisponivelNaData && temFaseHabilitada) {
+                    opcoesDisponiveis++;
+                }
+                
+                const disabled = indisponivelNaData || !temFaseHabilitada ? 'disabled' : '';
+                const style = indisponivelNaData ? 'color: #999; text-decoration: line-through;' : 
+                             !temFaseHabilitada ? 'color: #dc2626; font-style: italic;' : '';
+                const suffix = indisponivelNaData ? ' (indisponível)' : 
+                              !temFaseHabilitada ? ' (não habilitado)' : '';
+                
+                html += `<option value="${org.nome}" ${selected} ${disabled} style="${style}">${org.nome}${suffix}</option>`;
+            });
+            
+            html += '</select>';
+            
+            // Debug: log se há poucas opções
+            if (opcoesDisponiveis <= 1) {
+                console.log(`⚠️ Dropdown ${tipo} na data ${data}: apenas ${opcoesDisponiveis} opção(ões) disponível(is)`);
+            }
+            
+            return html;
+        }
+
+        async function salvarTodasAlteracoes() {
+            try {
+                showAlertEscala('Salvando todas as alterações...', 'info');
+                
+                // Buscar escala atual do backend
+                const response = await fetch('/escala/atual');
+                const data = await response.json();
+                const escalaAtual = data.escala;
+                
+                if (!escalaAtual || escalaAtual.length === 0) {
+                    showAlertEscala('⚠️ Nenhuma escala para salvar.', 'warning');
+                    return;
+                }
+                
+                let alteracoes = 0;
+                let erros = 0;
+                
+                // Para cada item da escala, ler os valores dos dropdowns e atualizar
+                for (const item of escalaAtual) {
+                    const selectMeiaHora = document.getElementById(`select_${item.data}_meia_hora`);
+                    const selectCulto = document.getElementById(`select_${item.data}_culto`);
+                    
+                    if (selectMeiaHora && selectCulto) {
+                        const meiaHoraAtual = selectMeiaHora.value || null;
+                        const cultoAtual = selectCulto.value || null;
+                        
+                        // Verificar se houve mudança
+                        const meiaHoraOriginal = item.meia_hora || item.unica || null;
+                        const cultoOriginal = item.culto || item.unica || null;
+                        
+                        if (meiaHoraAtual !== meiaHoraOriginal || cultoAtual !== cultoOriginal) {
+                            try {
+                                const saveResponse = await fetch(`/escala/editar/${item.data}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        alocacao: {
+                                            meia_hora: meiaHoraAtual,
+                                            culto: cultoAtual
+                                        }
+                                    })
+                                });
+                                
+                                if (saveResponse.ok) {
+                                    alteracoes++;
+                                } else {
+                                    erros++;
+                                }
+                            } catch (error) {
+                                console.error(`Erro ao salvar ${item.data}:`, error);
+                                erros++;
+                            }
+                        }
+                    }
+                }
+                
+                if (alteracoes > 0) {
+                    showAlertEscala(`✅ ${alteracoes} alteração(ões) salva(s) com sucesso!${erros > 0 ? ` (${erros} erro(s))` : ''}`, 'success');
+                    await loadEscalaAtual();
+                    await renderEscalaAtual(); // Atualizar dashboard
+                } else {
+                    showAlertEscala('ℹ️ Nenhuma alteração detectada.', 'info');
+                }
+            } catch (error) {
+                showAlertEscala('❌ Erro ao salvar alterações: ' + error.message, 'error');
+            }
+        }
+
+        async function salvarEdicao(dataIso) {
+            try {
+                const selectMeiaHora = document.getElementById(`select_${dataIso}_meia_hora`);
+                const selectCulto = document.getElementById(`select_${dataIso}_culto`);
+
+                const alocacao = {};
+                
+                if (selectMeiaHora && selectCulto) {
+                    // Domingo OU Terça (ambos agora usam meia_hora e culto)
+                    alocacao.meia_hora = selectMeiaHora.value || null;
+                    alocacao.culto = selectCulto.value || null;
+                }
+
+                const response = await fetch(`/escala/editar/${dataIso}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ alocacao })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.erro || 'Erro ao salvar edição');
+                }
+
+                showAlertEscala('✅ Alocação atualizada com sucesso!', 'success');
+                await loadEscalaAtual();
+            } catch (error) {
+                showAlertEscala('Erro: ' + error.message, 'error');
+            }
+        }
+
+        function renderLogs(logs) {
+            const logsDiv = document.getElementById('logsGeracao');
+            const logsContent = document.getElementById('logsContent');
+            
+            if (!logs || logs.length === 0) {
+                logsDiv.style.display = 'none';
+                return;
+            }
+
+            logsDiv.style.display = 'block';
+            logsContent.innerHTML = logs.map(log => {
+                const emoji = log.includes('✅') ? '' : 
+                             log.includes('⚠️') ? '' : 
+                             log.includes('❌') ? '' : '📝';
+                return `<div style="margin-bottom: 5px;">${emoji} ${log}</div>`;
+            }).join('');
+        }
+
+        function renderEstatisticas(stats) {
+            const statsDiv = document.getElementById('statsEscala');
+            
+            if (!stats) {
+                statsDiv.innerHTML = '<p style="color: #666;">Gere uma escala para ver as estatísticas.</p>';
+                return;
+            }
+
+            let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">';
+            
+            Object.entries(stats).forEach(([nome, contagem]) => {
+                html += `
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 0.9em; opacity: 0.9;">${nome}</div>
+                        <div style="font-size: 2em; font-weight: bold; margin-top: 5px;">${contagem.total}</div>
+                        <div style="font-size: 0.85em; opacity: 0.8; margin-top: 5px;">
+                            ${contagem.meia_hora || 0} Meia-hora • ${contagem.culto || 0} Culto • ${contagem.terca || 0} Terça
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            statsDiv.innerHTML = html;
+        }
+
+        function showAlertEscala(message, type) {
+            const alert = document.getElementById('alertEscala');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alert.classList.add('hidden');
+            }, 5000);
+        }
+
+        function formatDateBR(dateString) {
+            const date = new Date(dateString + 'T00:00:00');
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function exportarPDF() {
+            // Abre o PDF em nova aba com timestamp para evitar cache
+            const timestamp = new Date().getTime();
+            window.open('/escala/pdf?t=' + timestamp, '_blank');
+        }
+
+        // Inicializar dados ao carregar a página
+        async function initializeApp() {
+            try {
+                // Carregar organistas primeiro
+                await loadOrganistas();
+                
+                // Depois carregar escala se estiver na aba
+                if (document.getElementById('escala')) {
+                    await loadEscalaAtual();
+                }
+            } catch (error) {
+                console.error('Erro ao inicializar:', error);
+            }
+        }
+
+        // Executar inicialização quando página carregar
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+    </script>
+</body>
+</html>

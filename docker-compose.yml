@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  rodizio-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rodizio-organistas
+    ports:
+      - "8080:8080"
+    volumes:
+      # Volume para persistência do banco de dados JSON
+      - ./data:/app/data
+      # Volume para desenvolvimento (opcional - comente em produção)
+      # - ./templates:/app/templates
+      # - ./static:/app/static
+    environment:
+      - FLASK_ENV=production
+      - TZ=America/Sao_Paulo
+    restart: unless-stopped
+    networks:
+      - rodizio-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health').read()"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  rodizio-network:
+    driver: bridge
+
+volumes:
+  rodizio-data:
+    driver: local

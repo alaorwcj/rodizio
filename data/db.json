@@ -1,0 +1,1206 @@
+{
+  "admin": {
+    "nome": "Administrador",
+    "password_hash": "scrypt:32768:8:1$IlMxGehI5XW2C6Q5$cde3a7769b678b9f0dc5022f261855ba71e7974fe506425125250ca40413667de5256c2084a8700ad1096f7a8ac6e39cd642f33363b844f651edbbf5ce40fc72"
+  },
+  "organistas": [
+    {
+      "id": "yasminc",
+      "nome": "Yasmin C.",
+      "tipos": [
+        "Meia-hora"
+      ],
+      "dias_permitidos": [
+        "Domingo"
+      ],
+      "regras_especiais": {},
+      "password_hash": "scrypt:32768:8:1$LQHPQ0sO9i4R4gEo$341f6a9bf71ddcc9a2af7e0415574668b8e3a508f7913e1fcafc864e716a698bdd5ecad4f81d8840ce8b240977342bf6cd4b66f4a27de7be5f3c40b2be4fdc1f"
+    },
+    {
+      "id": "yasming",
+      "nome": "Yasmin G.",
+      "tipos": [
+        "Meia-hora"
+      ],
+      "dias_permitidos": [
+        "Domingo"
+      ],
+      "regras_especiais": {},
+      "password_hash": "scrypt:32768:8:1$ARQexKTwY8Je6a8u$25229a357358835faf3e643550875883ee9800fb69f9755e3da4d36c06aa28ad44534557d529f164a9453e3215c6e584c3826a3e836fa083a7e685baa14985f9"
+    },
+    {
+      "id": "milena",
+      "nome": "Milena",
+      "tipos": [
+        "Meia-hora",
+        "Culto"
+      ],
+      "dias_permitidos": [
+        "Domingo",
+        "Terça"
+      ],
+      "regras_especiais": {},
+      "password_hash": "scrypt:32768:8:1$OnTtwVUzOjrpVCyh$9b3f0dcdbeda061418108201cfdacff8dc11b24884d63b01c7581c4ed368fdec0af4c6402e0ab864b7097d2d3dad85490dfe67382bea72b1a5c7bf820b9ee8f2"
+    },
+    {
+      "id": "ieda",
+      "nome": "Ieda",
+      "tipos": [
+        "Meia-hora",
+        "Culto"
+      ],
+      "dias_permitidos": [
+        "Domingo",
+        "Terça"
+      ],
+      "regras_especiais": {},
+      "password_hash": "scrypt:32768:8:1$gV4dH9K4e6JDED6U$a0c5b030cb48b5a5b72d9f8e853195f23ef876509ad5f1fdb830055915d41fc31edfaac6b673de874ed1b5cc7012431a2f87dd3dfe492812941c3437f13ff7cd"
+    },
+    {
+      "id": "raquel",
+      "nome": "Raquel",
+      "tipos": [
+        "Culto"
+      ],
+      "dias_permitidos": [
+        "Domingo"
+      ],
+      "regras_especiais": {},
+      "password_hash": "scrypt:32768:8:1$Ge0pIG8Cx5O20f3W$c57889310cfc1afd4fbbb49500f0f6a125b7077fb30821a57c5bbe940bd60265d6c177e0a933220b638f2c4ed8e866c17167acc612c693e2513a32c53d7a801c"
+    },
+    {
+      "id": "janaina",
+      "nome": "Janaina",
+      "tipos": [
+        "Culto"
+      ],
+      "dias_permitidos": [
+        "Domingo"
+      ],
+      "regras_especiais": {},
+      "password_hash": "scrypt:32768:8:1$wFzc3PFcaUFoeHuT$519897bb7b33d71adf762eee92796721d3d79187a2aec1dd2d55f8402ee8b4a3874b9fc4f8ea6f75b587135e39cc3b846bbe6b9401b3e442c3e2d984724c67da"
+    },
+    {
+      "id": "teste",
+      "nome": "Teste",
+      "tipos": [
+        "Meia-hora",
+        "Culto"
+      ],
+      "dias_permitidos": [
+        "Domingo",
+        "Terça"
+      ],
+      "regras_especiais": {},
+      "password_hash": "scrypt:32768:8:1$uEKWXkvPWOabI7Oq$65b53383a8ce11c2e555e58cdf9a71aada02353cc85181654015eba0bc7ba11b5b0ccbf0c57bc0a3a899544dad43eda33348f6494beaf5a6d6396e6361e4716f"
+    }
+  ],
+  "indisponibilidades": [
+    {
+      "data": "2025-10-20",
+      "motivo": "Indisponível",
+      "id": "janaina",
+      "autor": "janaina",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-11-10",
+      "motivo": "Indisponível",
+      "id": "janaina",
+      "autor": "janaina",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-10-13",
+      "motivo": "Indisponível",
+      "id": "raquel",
+      "autor": "raquel",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-11-10",
+      "motivo": "Indisponível",
+      "id": "raquel",
+      "autor": "raquel",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-10-22",
+      "motivo": "Indisponível",
+      "id": "milena",
+      "autor": "milena",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-11-17",
+      "motivo": "Indisponível",
+      "id": "milena",
+      "autor": "milena",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-10-20",
+      "motivo": "Indisponível",
+      "id": "ieda",
+      "autor": "ieda",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-11-24",
+      "motivo": "Indisponível",
+      "id": "ieda",
+      "autor": "ieda",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-10-06",
+      "motivo": "Indisponível",
+      "id": "ieda",
+      "autor": "ieda",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-10-14",
+      "motivo": "Indisponível",
+      "id": "ieda",
+      "autor": "ieda",
+      "status": "confirmada"
+    },
+    {
+      "data": "2025-11-23",
+      "motivo": "Indisponível",
+      "id": "ieda",
+      "autor": "ieda",
+      "status": "confirmada"
+    }
+  ],
+  "escala": [
+    {
+      "data": "2025-10-05",
+      "dia_semana": "Sunday",
+      "meia_hora": "Yasmin C.",
+      "culto": "Milena"
+    },
+    {
+      "data": "2025-10-07",
+      "dia_semana": "Tuesday",
+      "unica": "Milena",
+      "meia_hora": "Milena",
+      "culto": "Ieda"
+    },
+    {
+      "data": "2025-10-12",
+      "dia_semana": "Sunday",
+      "meia_hora": "Yasmin G.",
+      "culto": "Ieda"
+    },
+    {
+      "data": "2025-10-14",
+      "dia_semana": "Tuesday",
+      "unica": "Milena"
+    },
+    {
+      "data": "2025-10-19",
+      "dia_semana": "Sunday",
+      "meia_hora": "Ieda",
+      "culto": "Ieda"
+    },
+    {
+      "data": "2025-10-21",
+      "dia_semana": "Tuesday",
+      "unica": "Ieda"
+    },
+    {
+      "data": "2025-10-26",
+      "dia_semana": "Sunday",
+      "meia_hora": "Milena",
+      "culto": "Milena"
+    },
+    {
+      "data": "2025-10-28",
+      "dia_semana": "Tuesday",
+      "unica": "Ieda"
+    },
+    {
+      "data": "2025-11-02",
+      "dia_semana": "Sunday",
+      "meia_hora": "Yasmin C.",
+      "culto": "Raquel"
+    },
+    {
+      "data": "2025-11-04",
+      "dia_semana": "Tuesday",
+      "unica": null,
+      "meia_hora": "Milena",
+      "culto": "Ieda"
+    },
+    {
+      "data": "2025-11-09",
+      "dia_semana": "Sunday",
+      "meia_hora": "Yasmin C.",
+      "culto": "Raquel"
+    },
+    {
+      "data": "2025-11-11",
+      "dia_semana": "Tuesday",
+      "unica": null,
+      "meia_hora": "Milena",
+      "culto": "Ieda"
+    },
+    {
+      "data": "2025-11-16",
+      "dia_semana": "Sunday",
+      "meia_hora": "Milena",
+      "culto": "Raquel"
+    },
+    {
+      "data": "2025-11-18",
+      "dia_semana": "Tuesday",
+      "unica": null,
+      "meia_hora": "Milena",
+      "culto": "Milena"
+    },
+    {
+      "data": "2025-11-23",
+      "dia_semana": "Sunday",
+      "meia_hora": "Ieda",
+      "culto": "Janaina"
+    },
+    {
+      "data": "2025-11-25",
+      "dia_semana": "Tuesday",
+      "unica": null,
+      "meia_hora": "Ieda",
+      "culto": "Ieda"
+    },
+    {
+      "data": "2025-11-30",
+      "dia_semana": "Sunday",
+      "meia_hora": "Yasmin G.",
+      "culto": "Janaina"
+    }
+  ],
+  "logs": [
+    {
+      "quando": "2025-10-14T16:00:00.000Z",
+      "acao": "init",
+      "por": "sistema",
+      "payload": {
+        "msg": "Sistema atualizado com autenticação - senha padrão: 123456"
+      }
+    },
+    {
+      "quando": "2025-10-14T16:20:41.339956",
+      "acao": "delete_organista",
+      "por": "admin",
+      "payload": {
+        "id": "yasmin.g"
+      }
+    },
+    {
+      "quando": "2025-10-14T16:20:59.859695",
+      "acao": "add_organista",
+      "por": "admin",
+      "payload": {
+        "id": "yasming",
+        "nome": "Yasmin G.",
+        "tipos": [
+          "Meia-hora"
+        ],
+        "dias_permitidos": [
+          "Domingo"
+        ],
+        "regras_especiais": {}
+      }
+    },
+    {
+      "quando": "2025-10-14T16:21:48.806010",
+      "acao": "add_indisponibilidade",
+      "por": "yasming",
+      "payload": {
+        "data": "2025-10-15",
+        "motivo": "Indisponível",
+        "id": "yasming",
+        "autor": "yasming",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T16:21:53.764879",
+      "acao": "add_indisponibilidade",
+      "por": "yasming",
+      "payload": {
+        "data": "2025-10-27",
+        "motivo": "Indisponível",
+        "id": "yasming",
+        "autor": "yasming",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T16:21:55.812369",
+      "acao": "del_indisponibilidade",
+      "por": "yasming",
+      "payload": {
+        "id": "yasming",
+        "data": "2025-10-15"
+      }
+    },
+    {
+      "quando": "2025-10-14T16:22:02.673949",
+      "acao": "add_indisponibilidade",
+      "por": "yasming",
+      "payload": {
+        "data": "2025-11-03",
+        "motivo": "Indisponível",
+        "id": "yasming",
+        "autor": "yasming",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T16:22:42.273891",
+      "acao": "update_config",
+      "por": "admin",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-01",
+          "fim": "2025-11-30"
+        },
+        "fechamento_publicacao_dias": 3
+      }
+    },
+    {
+      "quando": "2025-10-14T16:54:52.363182",
+      "acao": "publicar_escala",
+      "por": "admin",
+      "payload": {
+        "total_dias": 17
+      }
+    },
+    {
+      "quando": "2025-10-14T16:55:23.386107",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-30",
+        "alteracoes": {
+          "alocacao": {
+            "unica": null
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:00:14.495766",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-02",
+        "alteracoes": {
+          "alocacao": {
+            "unica": null
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:09:18.412080",
+      "acao": "publicar_escala",
+      "por": "admin",
+      "payload": {
+        "total_dias": 1
+      }
+    },
+    {
+      "quando": "2025-10-14T17:12:35.116185",
+      "acao": "publicar_escala",
+      "por": "admin",
+      "payload": {
+        "total_dias": 17
+      }
+    },
+    {
+      "quando": "2025-10-14T17:15:27.177566",
+      "acao": "publicar_escala",
+      "por": "admin",
+      "payload": {
+        "total_dias": 17
+      }
+    },
+    {
+      "quando": "2025-10-14T17:27:28.408584",
+      "acao": "delete_organista",
+      "por": "admin",
+      "payload": {
+        "id": "ieda"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:27:30.757210",
+      "acao": "delete_organista",
+      "por": "admin",
+      "payload": {
+        "id": "raquel"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:27:33.775647",
+      "acao": "delete_organista",
+      "por": "admin",
+      "payload": {
+        "id": "milena"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:27:36.398513",
+      "acao": "delete_organista",
+      "por": "admin",
+      "payload": {
+        "id": "yasming"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:27:53.082221",
+      "acao": "add_organista",
+      "por": "admin",
+      "payload": {
+        "id": "yasminc",
+        "nome": "Yasmin C.",
+        "tipos": [
+          "Meia-hora"
+        ],
+        "dias_permitidos": [
+          "Domingo"
+        ],
+        "regras_especiais": {}
+      }
+    },
+    {
+      "quando": "2025-10-14T17:28:25.552607",
+      "acao": "add_organista",
+      "por": "admin",
+      "payload": {
+        "id": "yasming",
+        "nome": "Yasmin G.",
+        "tipos": [
+          "Meia-hora"
+        ],
+        "dias_permitidos": [
+          "Domingo"
+        ],
+        "regras_especiais": {}
+      }
+    },
+    {
+      "quando": "2025-10-14T17:28:54.891795",
+      "acao": "add_organista",
+      "por": "admin",
+      "payload": {
+        "id": "milena",
+        "nome": "Milena",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça"
+        ],
+        "regras_especiais": {}
+      }
+    },
+    {
+      "quando": "2025-10-14T17:29:14.177835",
+      "acao": "add_organista",
+      "por": "admin",
+      "payload": {
+        "id": "ieda",
+        "nome": "Ieda",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça"
+        ],
+        "regras_especiais": {}
+      }
+    },
+    {
+      "quando": "2025-10-14T17:29:40.027042",
+      "acao": "add_organista",
+      "por": "admin",
+      "payload": {
+        "id": "raquel",
+        "nome": "Raquel",
+        "tipos": [
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo"
+        ],
+        "regras_especiais": {}
+      }
+    },
+    {
+      "quando": "2025-10-14T17:29:55.602315",
+      "acao": "add_organista",
+      "por": "admin",
+      "payload": {
+        "id": "janaina",
+        "nome": "Janaina",
+        "tipos": [
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo"
+        ],
+        "regras_especiais": {}
+      }
+    },
+    {
+      "quando": "2025-10-14T17:30:09.830470",
+      "acao": "del_indisponibilidade",
+      "por": "admin",
+      "payload": {
+        "id": "yasming",
+        "data": "2025-10-27"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:30:10.458869",
+      "acao": "del_indisponibilidade",
+      "por": "admin",
+      "payload": {
+        "id": "yasming",
+        "data": "2025-11-03"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:30:30.638185",
+      "acao": "add_indisponibilidade",
+      "por": "janaina",
+      "payload": {
+        "data": "2025-10-20",
+        "motivo": "Indisponível",
+        "id": "janaina",
+        "autor": "janaina",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:30:33.234390",
+      "acao": "add_indisponibilidade",
+      "por": "janaina",
+      "payload": {
+        "data": "2025-11-10",
+        "motivo": "Indisponível",
+        "id": "janaina",
+        "autor": "janaina",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:30:53.849668",
+      "acao": "add_indisponibilidade",
+      "por": "raquel",
+      "payload": {
+        "data": "2025-10-13",
+        "motivo": "Indisponível",
+        "id": "raquel",
+        "autor": "raquel",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:30:55.609666",
+      "acao": "add_indisponibilidade",
+      "por": "raquel",
+      "payload": {
+        "data": "2025-11-10",
+        "motivo": "Indisponível",
+        "id": "raquel",
+        "autor": "raquel",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:31:16.552590",
+      "acao": "add_indisponibilidade",
+      "por": "milena",
+      "payload": {
+        "data": "2025-10-22",
+        "motivo": "Indisponível",
+        "id": "milena",
+        "autor": "milena",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:31:18.741775",
+      "acao": "add_indisponibilidade",
+      "por": "milena",
+      "payload": {
+        "data": "2025-11-17",
+        "motivo": "Indisponível",
+        "id": "milena",
+        "autor": "milena",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:31:38.674746",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-20",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:31:45.055934",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-24",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:31:53.046455",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-06",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T17:32:55.339617",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-05",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Yasmin C."
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:50:56.453157",
+      "acao": "publicar_escala",
+      "por": "admin",
+      "payload": {
+        "total_dias": 17
+      }
+    },
+    {
+      "quando": "2025-10-14T17:51:50.451713",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-28",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:52:05.042339",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-07",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:52:16.038967",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-05",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Yasmin C.",
+            "culto": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:52:29.326529",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-12",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Yasmin G.",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:52:35.656179",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-14",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:52:48.225393",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-19",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ieda",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:53:03.680852",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-26",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:53:04.607176",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-26",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:53:06.649831",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-21",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:53:11.968121",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-26",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:53:14.399440",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-28",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T17:53:15.578320",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-28",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:05:09.086248",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-07",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:05:13.989055",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-07",
+        "alteracoes": {
+          "alocacao": {
+            "unica": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:08:32.842130",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-10-07",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:10:26.184855",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-02",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Yasmin C.",
+            "culto": "Raquel"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:14:40.661634",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-04",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:14:40.673063",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-09",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Yasmin C.",
+            "culto": "Raquel"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:14:40.684020",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-11",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:14:40.697342",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-16",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Raquel"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:14:40.712844",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-18",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:14:40.731076",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-23",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ieda",
+            "culto": "Janaina"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:14:40.745727",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-25",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ieda",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:14:40.757268",
+      "acao": "editar_escala",
+      "por": "admin",
+      "payload": {
+        "data": "2025-11-30",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Yasmin G.",
+            "culto": "Janaina"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T18:24:36.680155",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-14",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T18:24:46.259992",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-23",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T18:25:22.289853",
+      "acao": "add_organista",
+      "por": "admin",
+      "payload": {
+        "id": "teste",
+        "nome": "Teste",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça"
+        ],
+        "regras_especiais": {}
+      }
+    },
+    {
+      "quando": "2025-10-14T18:26:03.073554",
+      "acao": "add_indisponibilidade",
+      "por": "teste",
+      "payload": {
+        "data": "2025-11-23",
+        "motivo": "Indisponível",
+        "id": "teste",
+        "autor": "teste",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T18:26:04.019155",
+      "acao": "del_indisponibilidade",
+      "por": "teste",
+      "payload": {
+        "id": "teste",
+        "data": "2025-11-23"
+      }
+    },
+    {
+      "quando": "2025-10-14T18:26:04.918559",
+      "acao": "add_indisponibilidade",
+      "por": "teste",
+      "payload": {
+        "data": "2025-11-23",
+        "motivo": "Indisponível",
+        "id": "teste",
+        "autor": "teste",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T18:26:05.762184",
+      "acao": "del_indisponibilidade",
+      "por": "teste",
+      "payload": {
+        "id": "teste",
+        "data": "2025-11-23"
+      }
+    },
+    {
+      "quando": "2025-10-14T18:26:07.052234",
+      "acao": "add_indisponibilidade",
+      "por": "teste",
+      "payload": {
+        "data": "2025-11-23",
+        "motivo": "Indisponível",
+        "id": "teste",
+        "autor": "teste",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T18:26:10.352673",
+      "acao": "del_indisponibilidade",
+      "por": "teste",
+      "payload": {
+        "id": "teste",
+        "data": "2025-11-23"
+      }
+    },
+    {
+      "quando": "2025-10-14T18:34:39.382019",
+      "acao": "trocar_senha",
+      "por": "admin"
+    },
+    {
+      "quando": "2025-10-14T18:51:14.258627",
+      "acao": "update_config",
+      "por": "admin",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-11-30"
+        },
+        "fechamento_publicacao_dias": 3
+      }
+    },
+    {
+      "quando": "2025-10-14T18:52:41.773126",
+      "acao": "update_config",
+      "por": "admin",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-11-30"
+        },
+        "fechamento_publicacao_dias": 3
+      }
+    },
+    {
+      "quando": "2025-10-14T18:55:11.725234",
+      "acao": "update_config",
+      "por": "admin",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-11-30"
+        },
+        "fechamento_publicacao_dias": 3
+      }
+    },
+    {
+      "quando": "2025-10-14T18:55:24.705074",
+      "acao": "update_config",
+      "por": "admin",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-01",
+          "fim": "2025-11-30"
+        },
+        "fechamento_publicacao_dias": 3
+      }
+    }
+  ],
+  "config": {
+    "bimestre": {
+      "inicio": "2025-10-01",
+      "fim": "2025-11-30"
+    },
+    "fechamento_publicacao_dias": 3
+  },
+  "escala_publicada_em": "2025-10-14T17:50:56.453114",
+  "escala_publicada_por": "admin"
+}
