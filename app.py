@@ -75,11 +75,15 @@ def load_user(user_id):
 
 def load_db():
     if not os.path.exists(DATA_PATH):
-        return {"organistas":[], "indisponibilidades":[], "escala":[], "logs":[], 
+        return {"organistas":[], "indisponibilidades":[], "escala":[], "escala_rjm":[], "logs":[], 
                 "config":{"bimestre":{"inicio":"2025-10-01","fim":"2025-11-30"},
                           "fechamento_publicacao_dias":3}}
     with open(DATA_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+        db = json.load(f)
+        # Garantir que escala_rjm existe
+        if "escala_rjm" not in db:
+            db["escala_rjm"] = []
+        return db
 
 def save_db(db):
     os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
@@ -915,6 +919,177 @@ def exportar_escala_pdf():
         
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
+
+# ========== ENDPOINTS RJM ==========
+
+@app.post("/rjm/criar-vazia")
+@login_required
+def criar_escala_rjm_vazia():
+    """Cria escala RJM vazia com todos os domingos do período"""
+    if not current_user.is_admin:
+        return jsonify({"error": "Apenas administrador pode criar escala RJM."}), 403
+    
+    db = load_db()
+    config = db.get("config", {})
+    
+    inicio = datetime.fromisoformat(config["bimestre"]["inicio"])
+    fim = datetime.fromisoformat(config["bimestre"]["fim"])
+    
+    # Gerar todos os domingos do período
+    escala_rjm = []
+    current_date = inicio
+    contador_id = 1
+    
+    while current_date <= fim:
+        dia_semana = current_date.weekday()
+        
+        # Apenas domingos (weekday 6)
+        if dia_semana == 6:
+            escala_rjm.append({
+                "id": f"rjm_{contador_id}",
+                "data": current_date.isoformat().split('T')[0],
+                "dia_semana": "Sunday",
+                "organista": ""
+            })
+            contador_id += 1
+        
+        current_date += timedelta(days=1)
+    
+    db["escala_rjm"] = escala_rjm
+    db["logs"].append({
+        "quando": datetime.utcnow().isoformat(),
+        "acao": "criar_escala_rjm_vazia",
+        "quem": current_user.id,
+        "total_domingos": len(escala_rjm)
+    })
+    
+    save_db(db)
+    return jsonify({"message": f"Escala RJM criada com {len(escala_rjm)} domingos.", "total": len(escala_rjm)}), 200
+
+@app.get("/rjm/atual")
+@login_required
+def get_escala_rjm():
+    """Retorna a escala RJM atual"""
+    db = load_db()
+    return jsonify({"escala_rjm": db.get("escala_rjm", [])}), 200
+
+@app.post("/rjm/atualizar-multiplos")
+@login_required
+def atualizar_escala_rjm_multiplos():
+    """Atualiza múltiplas linhas da escala RJM de uma vez"""
+    if not current_user.is_admin:
+        return jsonify({"error": "Apenas administrador pode atualizar escala RJM."}), 403
+    
+    db = load_db()
+    payload = request.get_json()
+    alteracoes = payload.get("alteracoes", [])
+    
+    if not alteracoes:
+        return jsonify({"error": "Nenhuma alteração fornecida."}), 400
+    
+    contador_atualizados = 0
+    for alt in alteracoes:
+        item_id = alt.get("id")
+        organista = alt.get("organista", "")
+        
+        # Encontrar e atualizar o item
+        for item in db.get("escala_rjm", []):
+            if item["id"] == item_id:
+                item["organista"] = organista
+                contador_atualizados += 1
+                break
+    
+    db["logs"].append({
+        "quando": datetime.utcnow().isoformat(),
+        "acao": "atualizar_escala_rjm_multiplos",
+        "quem": current_user.id,
+        "total_alteracoes": contador_atualizados
+    })
+    
+    save_db(db)
+    return jsonify({"message": f"{contador_atualizados} itens atualizados com sucesso."}), 200
+
+@app.get("/rjm/pdf")
+@login_required
+def exportar_pdf_rjm():
+    """Exporta a escala RJM em PDF"""
+    db = load_db()
+    escala_rjm = db.get("escala_rjm", [])
+    
+    if not escala_rjm:
+        return jsonify({"error": "Nenhuma escala RJM para exportar."}), 404
+    
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
+    elements = []
+    styles = getSampleStyleSheet()
+    
+    # Título
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=18,
+        textColor=colors.HexColor('#1e40af'),
+        spaceAfter=30,
+        alignment=TA_CENTER
+    )
+    title = Paragraph("Escala RJM - Reunião de Jovens e Menores", title_style)
+    elements.append(title)
+    
+    subtitle = Paragraph("Vila Paula - Domingos 10:00", styles['Normal'])
+    elements.append(subtitle)
+    elements.append(Spacer(1, 20))
+    
+    # Agrupar por mês
+    meses = defaultdict(list)
+    for item in escala_rjm:
+        data = datetime.fromisoformat(item["data"])
+        mes_ano = data.strftime("%B %Y")
+        meses[mes_ano].append(item)
+    
+    # Criar tabela para cada mês
+    for mes_ano, itens in meses.items():
+        elements.append(Paragraph(f"<b>{mes_ano.upper()}</b>", styles['Heading2']))
+        elements.append(Spacer(1, 10))
+        
+        # Dados da tabela
+        table_data = [['Data', 'Dia', 'Organista']]
+        
+        for item in itens:
+            data = datetime.fromisoformat(item["data"])
+            data_formatada = data.strftime("%d/%m/%Y")
+            organista = item.get("organista", "-")
+            
+            table_data.append([
+                data_formatada,
+                "Domingo",
+                organista
+            ])
+        
+        # Criar tabela
+        table = Table(table_data, colWidths=[3*cm, 3*cm, 8*cm])
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f59e0b')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        
+        elements.append(table)
+        elements.append(Spacer(1, 20))
+    
+    # Gerar PDF
+    doc.build(elements)
+    buffer.seek(0)
+    
+    return buffer.getvalue(), 200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': f'attachment; filename=escala_rjm_{datetime.now().strftime("%Y%m%d")}.pdf'
+    }
 
 @app.get("/health")
 def health_check():

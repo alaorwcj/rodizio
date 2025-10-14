@@ -456,6 +456,62 @@
         .hidden {
             display: none;
         }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 15px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            color: #dc2626;
+        }
     </style>
 </head>
 <body>
@@ -492,6 +548,10 @@
             <button class="nav-tab" onclick="showTab('indisponibilidades')">🗓️ Minhas Indisponibilidades</button>
             {% endif %}
             <button class="nav-tab" onclick="showTab('escala')">📋 Escala</button>
+            <button class="nav-tab" onclick="showTab('rjm')" style="display: flex; align-items: center; gap: 6px;">
+                <img src="{{ url_for('static', filename='icons8-children-48.png') }}" alt="RJM" style="width: 18px; height: 18px;">
+                RJM
+            </button>
         </div>
         
         <div class="content">
@@ -560,8 +620,9 @@
                             <select id="orgTipos" multiple required>
                                 <option value="Meia-hora">Meia-hora</option>
                                 <option value="Culto">Culto</option>
+                                <option value="RJM">RJM (Reunião de Jovens e Menores)</option>
                             </select>
-                            <small style="color: #666;">Selecione ambos para "Ambos"</small>
+                            <small style="color: #666;">Selecione os tipos que a organista pode tocar</small>
                         </div>
                         <div class="form-group">
                             <label>Dias Permitidos (Ctrl+clique para múltiplos):</label>
@@ -569,6 +630,7 @@
                                 <option value="Domingo">Domingo</option>
                                 <option value="Terça">Terça</option>
                             </select>
+                            <small style="color: #666;">RJM é sempre aos domingos</small>
                         </div>
                         <button type="submit" class="btn btn-primary">Adicionar Organista</button>
                     </form>
@@ -721,6 +783,104 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- RJM Tab -->
+            <div id="rjm" class="tab-panel">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h2 style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                            <img src="{{ url_for('static', filename='icons8-children-48.png') }}" alt="RJM" style="width: 32px; height: 32px;">
+                            RJM - Reunião de Jovens e Menores
+                        </h2>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            {% if user.is_admin %}
+                            <button onclick="salvarTodasAlteracoesRJM()" class="btn" style="background: #10b981; color: white;">
+                                💾 Salvar Todas as Alterações
+                            </button>
+                            <button onclick="criarEscalaRJM()" class="btn btn-primary">
+                                ➕ Criar Escala RJM Vazia
+                            </button>
+                            {% endif %}
+                            <button onclick="exportarPDFRJM()" class="btn" style="background: #dc2626; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <img src="{{ url_for('static', filename='icons8-pdf.gif') }}" alt="PDF" style="width: 20px; height: 20px;">
+                                Exportar PDF
+                            </button>
+                            <button onclick="compartilharWhatsAppRJM()" class="btn" style="background: #25D366; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <img src="{{ url_for('static', filename='icons8-whatsapp.gif') }}" alt="WhatsApp" style="width: 20px; height: 20px;">
+                                Compartilhar no WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+                        <h3 style="margin: 0 0 10px 0; color: #92400e;">ℹ️ Sobre a RJM</h3>
+                        <ul style="margin: 0; padding-left: 20px; color: #78350f;">
+                            <li><strong>Horário:</strong> Domingos às 10:00</li>
+                            <li><strong>Duração:</strong> Aproximadamente 1h30 (10:00 - 11:30)</li>
+                            <li><strong>Organistas:</strong> Apenas 1 organista por domingo (não há meia-hora)</li>
+                            <li><strong>Observação:</strong> Reunião especial para crianças e adolescentes</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="infoEscalaRJM" style="margin-bottom: 15px; color: #666;">
+                        <p>Carregando...</p>
+                    </div>
+                    
+                    <div id="escalaRJMContainer">
+                        <div style="text-align: center; padding: 40px; color: #999;">
+                            <p>Nenhuma escala RJM publicada ainda.</p>
+                            {% if user.is_admin %}
+                            <p style="font-size: 0.9em; margin-top: 10px;">Clique em "Criar Escala RJM Vazia" acima para começar.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>📊 Estatísticas da Escala RJM</h2>
+                    <div id="statsEscalaRJM">
+                        <p style="color: #666;">Gere uma escala para ver as estatísticas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Editar Organista -->
+    <div id="modalEditarOrganista" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="margin: 0;">✏️ Editar Organista</h2>
+                <button class="modal-close" onclick="fecharModalEditar()">×</button>
+            </div>
+            <form id="formEditarOrganista" onsubmit="salvarEdicaoOrganista(event)">
+                <input type="hidden" id="editOrgId">
+                <div class="form-group">
+                    <label>Nome:</label>
+                    <input type="text" id="editOrgNome" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipos (Ctrl+clique para múltiplos):</label>
+                    <select id="editOrgTipos" multiple required style="min-height: 120px;">
+                        <option value="Meia-hora">Meia-hora</option>
+                        <option value="Culto">Culto</option>
+                        <option value="RJM">RJM (Reunião de Jovens e Menores)</option>
+                    </select>
+                    <small style="color: #666;">Selecione os tipos que a organista pode tocar</small>
+                </div>
+                <div class="form-group">
+                    <label>Dias Permitidos (Ctrl+clique para múltiplos):</label>
+                    <select id="editOrgDias" multiple required style="min-height: 80px;">
+                        <option value="Domingo">Domingo</option>
+                        <option value="Terça">Terça</option>
+                    </select>
+                    <small style="color: #666;">RJM é sempre aos domingos</small>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn" style="flex: 1; background: #10b981; color: white;">💾 Salvar Alterações</button>
+                    <button type="button" class="btn" style="flex: 1; background: #6b7280; color: white;" onclick="fecharModalEditar()">❌ Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
     
@@ -751,6 +911,8 @@
                 loadAdminIndisp();
             } else if (tabName === 'organistas') {
                 loadOrganistas();
+            } else if (tabName === 'rjm') {
+                loadEscalaRJM();
             }
         }
         
@@ -788,7 +950,8 @@
                         <td>${org.tipos.join(', ')}</td>
                         <td>${org.dias_permitidos.join(', ')}</td>
                         <td>
-                            <button class="btn btn-danger" onclick="deleteOrganista('${org.id}')">Remover</button>
+                            <button class="btn" style="background: #3b82f6; color: white; margin-right: 5px;" onclick="editarOrganista('${org.id}')">✏️ Editar</button>
+                            <button class="btn btn-danger" onclick="deleteOrganista('${org.id}')">🗑️ Remover</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -1056,6 +1219,86 @@
         }
         
         // Remover organista
+        // Editar organista
+        function editarOrganista(id) {
+            const organista = organistas.find(o => o.id === id);
+            if (!organista) {
+                alert('Organista não encontrado!');
+                return;
+            }
+            
+            // Preencher formulário
+            document.getElementById('editOrgId').value = organista.id;
+            document.getElementById('editOrgNome').value = organista.nome;
+            
+            // Selecionar tipos
+            const selectTipos = document.getElementById('editOrgTipos');
+            Array.from(selectTipos.options).forEach(option => {
+                option.selected = organista.tipos.includes(option.value);
+            });
+            
+            // Selecionar dias
+            const selectDias = document.getElementById('editOrgDias');
+            Array.from(selectDias.options).forEach(option => {
+                option.selected = organista.dias_permitidos.includes(option.value);
+            });
+            
+            // Abrir modal
+            document.getElementById('modalEditarOrganista').classList.add('active');
+        }
+        
+        function fecharModalEditar() {
+            document.getElementById('modalEditarOrganista').classList.remove('active');
+            document.getElementById('formEditarOrganista').reset();
+        }
+        
+        async function salvarEdicaoOrganista(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('editOrgId').value;
+            const nome = document.getElementById('editOrgNome').value;
+            
+            const selectTipos = document.getElementById('editOrgTipos');
+            const tipos = Array.from(selectTipos.selectedOptions).map(opt => opt.value);
+            
+            const selectDias = document.getElementById('editOrgDias');
+            const dias_permitidos = Array.from(selectDias.selectedOptions).map(opt => opt.value);
+            
+            if (tipos.length === 0) {
+                alert('⚠️ Selecione pelo menos um tipo!');
+                return;
+            }
+            
+            if (dias_permitidos.length === 0) {
+                alert('⚠️ Selecione pelo menos um dia permitido!');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/organistas/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        nome,
+                        tipos,
+                        dias_permitidos
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('✅ Organista atualizada com sucesso!');
+                    fecharModalEditar();
+                    await loadOrganistas();
+                } else {
+                    const error = await response.json();
+                    alert(`❌ Erro: ${error.error || 'Falha ao atualizar'}`);
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar organista:', error);
+                alert('❌ Erro ao atualizar organista.');
+            }
+        }
+        
         async function deleteOrganista(id) {
             if (!confirm('Deseja realmente remover este organista?')) return;
             
@@ -2054,6 +2297,244 @@
                 }
             } catch (error) {
                 console.error('Erro ao inicializar:', error);
+            }
+        }
+
+        // ========== FUNÇÕES RJM ==========
+        
+        async function criarEscalaRJM() {
+            if (!confirm('Criar nova escala RJM vazia? Isso irá substituir a escala existente.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/rjm/criar-vazia', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}
+                });
+                
+                if (response.ok) {
+                    alert('✅ Escala RJM vazia criada com sucesso!');
+                    await loadEscalaRJM();
+                } else {
+                    const error = await response.json();
+                    alert(`❌ Erro: ${error.error || 'Falha ao criar escala'}`);
+                }
+            } catch (error) {
+                console.error('Erro ao criar escala RJM:', error);
+                alert('❌ Erro ao criar escala RJM.');
+            }
+        }
+        
+        async function loadEscalaRJM() {
+            try {
+                const response = await fetch('/rjm/atual');
+                const data = await response.json();
+                const escalaRJM = data.escala_rjm || [];
+                
+                if (!escalaRJM || escalaRJM.length === 0) {
+                    document.getElementById('escalaRJMContainer').innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #999;">
+                            <p>Nenhuma escala RJM publicada ainda.</p>
+                            ${isAdmin ? '<p style="font-size: 0.9em; margin-top: 10px;">Clique em "Criar Escala RJM Vazia" acima para começar.</p>' : ''}
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Renderizar tabela RJM
+                let html = '<table class="escala-table"><thead><tr>';
+                html += '<th style="width: 120px;">Data</th>';
+                html += '<th style="width: 100px;">Dia</th>';
+                html += '<th>Organista (10:00 - 11:30)</th>';
+                html += '</tr></thead><tbody>';
+                
+                escalaRJM.forEach(item => {
+                    const data = new Date(item.data);
+                    const dataFormatada = data.toLocaleDateString('pt-BR');
+                    const diaSemana = 'Domingo';
+                    
+                    html += '<tr>';
+                    html += `<td><strong>${dataFormatada}</strong></td>`;
+                    html += `<td><span class="badge badge-green">${diaSemana}</span></td>`;
+                    
+                    if (isAdmin) {
+                        html += '<td>';
+                        html += `<select class="organista-select" data-escala-id="${item.id}" data-tipo="organista" onchange="marcarAlteradoRJM(this)">`;
+                        html += '<option value="">Selecione...</option>';
+                        
+                        organistas.forEach(org => {
+                            const indisponivelNaData = indisponibilidades.some(ind => 
+                                ind.id === org.id && ind.data === item.data
+                            );
+                            
+                            const temPermissaoRJM = org.tipos && org.tipos.includes('RJM');
+                            const selected = item.organista === org.nome ? 'selected' : '';
+                            
+                            if (indisponivelNaData) {
+                                html += `<option value="${org.nome}" ${selected} style="text-decoration: line-through; color: red;">~~${org.nome}~~</option>`;
+                            } else if (!temPermissaoRJM) {
+                                html += `<option value="${org.nome}" ${selected} style="font-style: italic; color: red;">${org.nome} (sem permissão RJM)</option>`;
+                            } else {
+                                html += `<option value="${org.nome}" ${selected}>${org.nome}</option>`;
+                            }
+                        });
+                        
+                        html += '</select></td>';
+                    } else {
+                        html += `<td>${item.organista || '-'}</td>`;
+                    }
+                    
+                    html += '</tr>';
+                });
+                
+                html += '</tbody></table>';
+                document.getElementById('escalaRJMContainer').innerHTML = html;
+                
+                // Atualizar info
+                if (escalaRJM.length > 0) {
+                    const primeiraData = formatDateBR(escalaRJM[0].data);
+                    const ultimaData = formatDateBR(escalaRJM[escalaRJM.length - 1].data);
+                    document.getElementById('infoEscalaRJM').innerHTML = `
+                        <p><strong>📅 Período:</strong> ${primeiraData} a ${ultimaData}</p>
+                        <p><strong>📊 Total de domingos RJM:</strong> ${escalaRJM.length}</p>
+                    `;
+                }
+                
+                // Estatísticas
+                renderStatsRJM(escalaRJM);
+                
+            } catch (error) {
+                console.error('Erro ao carregar escala RJM:', error);
+                document.getElementById('escalaRJMContainer').innerHTML = 
+                    '<div style="color: red; padding: 20px;">Erro ao carregar escala RJM</div>';
+            }
+        }
+        
+        function marcarAlteradoRJM(select) {
+            select.style.border = '2px solid #f59e0b';
+            select.style.background = '#fffbeb';
+        }
+        
+        async function salvarTodasAlteracoesRJM() {
+            const selects = document.querySelectorAll('#escalaRJMContainer select');
+            const alteracoes = [];
+            
+            selects.forEach(select => {
+                alteracoes.push({
+                    id: select.dataset.escalaId,
+                    organista: select.value
+                });
+            });
+            
+            if (alteracoes.length === 0) {
+                alert('Nenhuma alteração para salvar.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/rjm/atualizar-multiplos', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({alteracoes})
+                });
+                
+                if (response.ok) {
+                    alert('✅ Todas as alterações foram salvas com sucesso!');
+                    await loadEscalaRJM();
+                } else {
+                    const error = await response.json();
+                    alert(`❌ Erro: ${error.error || 'Falha ao salvar'}`);
+                }
+            } catch (error) {
+                console.error('Erro ao salvar alterações RJM:', error);
+                alert('❌ Erro ao salvar alterações.');
+            }
+        }
+        
+        function renderStatsRJM(escalaRJM) {
+            const statsDiv = document.getElementById('statsEscalaRJM');
+            
+            if (!escalaRJM || escalaRJM.length === 0) {
+                statsDiv.innerHTML = '<p style="color: #666;">Gere uma escala para ver as estatísticas.</p>';
+                return;
+            }
+            
+            const contador = {};
+            escalaRJM.forEach(item => {
+                if (item.organista) {
+                    contador[item.organista] = (contador[item.organista] || 0) + 1;
+                }
+            });
+            
+            let html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">';
+            Object.entries(contador).sort((a, b) => b[1] - a[1]).forEach(([nome, total]) => {
+                html += `
+                    <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981;">
+                        <div style="font-size: 0.9em; color: #666; margin-bottom: 5px;">👤 ${nome}</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: #10b981;">${total}</div>
+                        <div style="font-size: 0.8em; color: #666;">domingos RJM</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            statsDiv.innerHTML = html;
+        }
+        
+        function exportarPDFRJM() {
+            const timestamp = new Date().getTime();
+            window.open('/rjm/pdf?t=' + timestamp, '_blank');
+        }
+        
+        async function compartilharWhatsAppRJM() {
+            try {
+                const response = await fetch('/rjm/atual');
+                const data = await response.json();
+                const escalaRJM = data.escala_rjm || [];
+                
+                if (!escalaRJM || escalaRJM.length === 0) {
+                    alert('⚠️ Nenhuma escala RJM cadastrada para compartilhar.');
+                    return;
+                }
+                
+                let mensagem = `*ESCALA RJM - VILA PAULA*\n`;
+                mensagem += `Reunião de Jovens e Menores\n`;
+                mensagem += `Horário: Domingos 10:00 - 11:30\n\n`;
+                
+                // Agrupar por mês
+                const meses = {};
+                escalaRJM.forEach(item => {
+                    const data = new Date(item.data);
+                    const mesAno = data.toLocaleDateString('pt-BR', {month: 'long', year: 'numeric'});
+                    if (!meses[mesAno]) {
+                        meses[mesAno] = [];
+                    }
+                    meses[mesAno].push(item);
+                });
+                
+                Object.keys(meses).forEach(mesAno => {
+                    mensagem += `*${mesAno.charAt(0).toUpperCase() + mesAno.slice(1)}*\n`;
+                    mensagem += `──────────────\n`;
+                    
+                    meses[mesAno].forEach(item => {
+                        const data = new Date(item.data);
+                        const dia = data.getDate().toString().padStart(2, '0');
+                        const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+                        
+                        mensagem += `${dia}/${mes} - Domingo\n`;
+                        mensagem += `   Organista: ${item.organista || 'A definir'}\n\n`;
+                    });
+                    
+                    mensagem += `\n`;
+                });
+                
+                const mensagemCodificada = encodeURIComponent(mensagem);
+                const urlWhatsApp = `https://wa.me/?text=${mensagemCodificada}`;
+                window.open(urlWhatsApp, '_blank');
+                
+            } catch (error) {
+                console.error('Erro ao compartilhar no WhatsApp:', error);
+                alert('❌ Erro ao gerar mensagem para o WhatsApp.');
             }
         }
 

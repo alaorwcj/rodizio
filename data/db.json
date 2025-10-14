@@ -8,7 +8,8 @@
       "id": "yasminc",
       "nome": "Yasmin C.",
       "tipos": [
-        "Meia-hora"
+        "Meia-hora",
+        "RJM"
       ],
       "dias_permitidos": [
         "Domingo"
@@ -33,7 +34,8 @@
       "nome": "Milena",
       "tipos": [
         "Meia-hora",
-        "Culto"
+        "Culto",
+        "RJM"
       ],
       "dias_permitidos": [
         "Domingo",
@@ -1368,6 +1370,50 @@
       "payload": {
         "total_dias": 34
       }
+    },
+    {
+      "quando": "2025-10-14T22:20:11.806663",
+      "acao": "criar_escala_rjm_vazia",
+      "quem": "admin",
+      "total_domingos": 17
+    },
+    {
+      "quando": "2025-10-14T22:42:51.371183",
+      "acao": "update_organista",
+      "por": "admin",
+      "payload": {
+        "id": "yasminc",
+        "changes": {
+          "nome": "Yasmin C.",
+          "tipos": [
+            "Meia-hora",
+            "RJM"
+          ],
+          "dias_permitidos": [
+            "Domingo"
+          ]
+        }
+      }
+    },
+    {
+      "quando": "2025-10-14T22:43:14.516004",
+      "acao": "update_organista",
+      "por": "admin",
+      "payload": {
+        "id": "milena",
+        "changes": {
+          "nome": "Milena",
+          "tipos": [
+            "Meia-hora",
+            "Culto",
+            "RJM"
+          ],
+          "dias_permitidos": [
+            "Domingo",
+            "Terça"
+          ]
+        }
+      }
     }
   ],
   "config": {
@@ -1378,5 +1424,109 @@
     "fechamento_publicacao_dias": 3
   },
   "escala_publicada_em": "2025-10-14T22:09:39.287694",
-  "escala_publicada_por": "admin"
+  "escala_publicada_por": "admin",
+  "escala_rjm": [
+    {
+      "id": "rjm_1",
+      "data": "2025-10-05",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_2",
+      "data": "2025-10-12",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_3",
+      "data": "2025-10-19",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_4",
+      "data": "2025-10-26",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_5",
+      "data": "2025-11-02",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_6",
+      "data": "2025-11-09",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_7",
+      "data": "2025-11-16",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_8",
+      "data": "2025-11-23",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_9",
+      "data": "2025-11-30",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_10",
+      "data": "2025-12-07",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_11",
+      "data": "2025-12-14",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_12",
+      "data": "2025-12-21",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_13",
+      "data": "2025-12-28",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_14",
+      "data": "2026-01-04",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_15",
+      "data": "2026-01-11",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_16",
+      "data": "2026-01-18",
+      "dia_semana": "Sunday",
+      "organista": ""
+    },
+    {
+      "id": "rjm_17",
+      "data": "2026-01-25",
+      "dia_semana": "Sunday",
+      "organista": ""
+    }
+  ]
 }
