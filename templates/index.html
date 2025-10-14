@@ -616,6 +616,16 @@
                             <input type="text" id="orgNome" required>
                         </div>
                         <div class="form-group">
+                            <label>Email:</label>
+                            <input type="email" id="orgEmail" placeholder="exemplo@email.com">
+                            <small style="color: #666;">Opcional</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone:</label>
+                            <input type="tel" id="orgTelefone" placeholder="(11) 98765-4321">
+                            <small style="color: #666;">Opcional</small>
+                        </div>
+                        <div class="form-group">
                             <label>Tipos (Ctrl+clique para múltiplos):</label>
                             <select id="orgTipos" multiple required>
                                 <option value="Meia-hora">Meia-hora</option>
@@ -643,6 +653,8 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
+                                <th>Email</th>
+                                <th>Telefone</th>
                                 <th>Tipos</th>
                                 <th>Dias</th>
                                 {% if user.is_admin %}
@@ -651,7 +663,7 @@
                             </tr>
                         </thead>
                         <tbody id="tbodyOrganistas">
-                            <tr><td colspan="4" style="text-align: center;">Carregando...</td></tr>
+                            <tr><td colspan="6" style="text-align: center;">Carregando...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -859,6 +871,16 @@
                     <input type="text" id="editOrgNome" required>
                 </div>
                 <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="editOrgEmail" placeholder="exemplo@email.com">
+                    <small style="color: #666;">Opcional</small>
+                </div>
+                <div class="form-group">
+                    <label>Telefone:</label>
+                    <input type="tel" id="editOrgTelefone" placeholder="(11) 98765-4321">
+                    <small style="color: #666;">Opcional</small>
+                </div>
+                <div class="form-group">
                     <label>Tipos (Ctrl+clique para múltiplos):</label>
                     <select id="editOrgTipos" multiple required style="min-height: 120px;">
                         <option value="Meia-hora">Meia-hora</option>
@@ -938,14 +960,19 @@
                 tbody.innerHTML = '';
                 
                 if (!isCoord) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666;">Apenas coordenador pode gerenciar organistas.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #666;">Apenas coordenador pode gerenciar organistas.</td></tr>';
                     return;
                 }
                 
                 organistas.forEach(org => {
                     const tr = document.createElement('tr');
+                    const emailDisplay = org.email ? org.email : '<span style="color: #999;">-</span>';
+                    const telefoneDisplay = org.telefone ? org.telefone : '<span style="color: #999;">-</span>';
+                    
                     tr.innerHTML = `
                         <td>${org.nome}</td>
+                        <td>${emailDisplay}</td>
+                        <td>${telefoneDisplay}</td>
                         <td>${org.tipos.join(', ')}</td>
                         <td>${org.dias_permitidos.join(', ')}</td>
                         <td>
@@ -1191,6 +1218,8 @@
             const payload = {
                 id: document.getElementById('orgId').value,
                 nome: document.getElementById('orgNome').value,
+                email: document.getElementById('orgEmail').value || '',
+                telefone: document.getElementById('orgTelefone').value || '',
                 tipos: Array.from(document.getElementById('orgTipos').selectedOptions).map(o => o.value),
                 dias_permitidos: Array.from(document.getElementById('orgDias').selectedOptions).map(o => o.value),
                 regras_especiais: {}
@@ -1229,6 +1258,8 @@
             // Preencher formulário
             document.getElementById('editOrgId').value = organista.id;
             document.getElementById('editOrgNome').value = organista.nome;
+            document.getElementById('editOrgEmail').value = organista.email || '';
+            document.getElementById('editOrgTelefone').value = organista.telefone || '';
             
             // Selecionar tipos
             const selectTipos = document.getElementById('editOrgTipos');
@@ -1273,12 +1304,17 @@
                 return;
             }
             
+            const email = document.getElementById('editOrgEmail').value || '';
+            const telefone = document.getElementById('editOrgTelefone').value || '';
+            
             try {
                 const response = await fetch(`/organistas/${id}`, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
                         nome,
+                        email,
+                        telefone,
                         tipos,
                         dias_permitidos
                     })
