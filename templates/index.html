@@ -542,12 +542,12 @@
             <button class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
             {% if user.is_admin %}
             <button class="nav-tab" onclick="showTab('organistas')">👥 Organistas</button>
-            <button class="nav-tab" onclick="showTab('admin-indisp')">🗓️ Todas Indisponibilidades</button>
+            <button class="nav-tab" onclick="showTab('admin-indisp')">🗓️ Restrições de Dias</button>
             <button class="nav-tab" onclick="showTab('config')">⚙️ Configurações</button>
             {% else %}
-            <button class="nav-tab" onclick="showTab('indisponibilidades')">🗓️ Minhas Indisponibilidades</button>
+            <button class="nav-tab" onclick="showTab('indisponibilidades')">🗓️ Restrições de Dias</button>
             {% endif %}
-            <button class="nav-tab" onclick="showTab('escala')">📋 Escala</button>
+            <button class="nav-tab" onclick="showTab('escala')">📋 Culto Oficial</button>
             <button class="nav-tab" onclick="showTab('rjm')" style="display: flex; align-items: center; gap: 6px;">
                 <img src="{{ url_for('static', filename='icons8-children-48.png') }}" alt="RJM" style="width: 18px; height: 18px;">
                 RJM
@@ -660,7 +660,7 @@
             <!-- Indisponibilidades Tab -->
             <div id="indisponibilidades" class="tab-panel">
                 <div class="card">
-                    <h2>Minhas Indisponibilidades</h2>
+                    <h2>🗓️ Restrições de Dias</h2>
                     <p>Marque as datas em que você NÃO poderá tocar no período atual.</p>
                     <div id="alertIndisp" class="alert hidden"></div>
                     
@@ -677,8 +677,8 @@
             <!-- Admin - Todas Indisponibilidades Tab -->
             <div id="admin-indisp" class="tab-panel">
                 <div class="card">
-                    <h2>🔐 Gerenciar Todas as Indisponibilidades</h2>
-                    <p>Como administrador, você pode visualizar e gerenciar as indisponibilidades de todas as organistas.</p>
+                    <h2>🔐 Gerenciar Restrições de Dias</h2>
+                    <p>Como administrador, você pode visualizar e gerenciar as restrições de dias de todas as organistas.</p>
                     
                     <div style="margin: 20px 0;">
                         <label style="font-weight: bold;">Filtrar por organista:</label>
@@ -743,7 +743,7 @@
                 
                 <div class="card">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h2 style="margin: 0;">📅 Escala Anual</h2>
+                        <h2 style="margin: 0;">� Culto Oficial</h2>
                         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                             {% if user.is_admin %}
                             <button onclick="salvarTodasAlteracoes()" class="btn" style="background: #10b981; color: white;">
@@ -777,7 +777,7 @@
                 </div>
                 
                 <div class="card">
-                    <h2>📊 Estatísticas da Escala</h2>
+                    <h2>📊 Estatísticas do Culto Oficial</h2>
                     <div id="statsEscala">
                         <p style="color: #666;">Gere uma escala para ver as estatísticas.</p>
                     </div>
@@ -818,7 +818,6 @@
                             <li><strong>Horário:</strong> Domingos às 10:00</li>
                             <li><strong>Duração:</strong> Aproximadamente 1h30 (10:00 - 11:30)</li>
                             <li><strong>Organistas:</strong> Apenas 1 organista por domingo (não há meia-hora)</li>
-                            <li><strong>Observação:</strong> Reunião especial para crianças e adolescentes</li>
                         </ul>
                     </div>
                     
@@ -1381,10 +1380,18 @@
                 current.setDate(current.getDate() + 1);
             }
             
-            // Renderizar por mês
+            // Renderizar por mês em ordem cronológica
             let html = '<div style="margin-bottom: 20px;"><p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">📅 Clique nas datas abaixo para marcar/desmarcar sua indisponibilidade:</p>';
             
-            Object.keys(datasOrganizadas).sort().forEach(mesAno => {
+            // Ordenar os meses cronologicamente
+            const mesesOrdenados = Object.keys(datasOrganizadas).sort((a, b) => {
+                const [anoA, mesA] = a.split('-').map(Number);
+                const [anoB, mesB] = b.split('-').map(Number);
+                if (anoA !== anoB) return anoA - anoB;
+                return mesA - mesB;
+            });
+            
+            mesesOrdenados.forEach(mesAno => {
                 const mesData = datasOrganizadas[mesAno];
                 
                 html += `
