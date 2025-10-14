@@ -86,11 +86,11 @@ Senha: admin123
 3. Senha: `admin123`
 4. **IMPORTANTE**: Clique em "🔐 Trocar Senha" e altere imediatamente
 
-### 2. Configurar Bimestre
+### 2. Configurar Período
 1. Clique em "⚙️ Configurações"
 2. Defina:
-   - Data de início do bimestre
-   - Data de fim do bimestre
+   - Data de início do período (ex: 01/01/2025 para anual)
+   - Data de fim do período (ex: 31/12/2025 para anual)
    - Prazo para indisponibilidades (padrão: 3 dias)
 3. Clique em "💾 Salvar Configurações"
 4. Sistema recarrega automaticamente
@@ -123,8 +123,8 @@ Senha: admin123
 1. Clique em "📅 Escala"
 2. Clique em "Criar Escala Vazia"
 3. Sistema gera:
-   - Todos os domingos do bimestre
-   - Todas as terças do bimestre
+   - Todos os domingos do período configurado
+   - Todas as terças do período configurado
    - 2 posições por dia (Meia-hora + Culto)
 
 #### Preencher Manualmente
@@ -188,9 +188,9 @@ Senha: admin123
 
 ## 🎯 Fluxo Típico de Uso
 
-### Início do Bimestre (Admin)
+### Início do Período (Admin)
 1. Login como `admin`
-2. Verificar/atualizar datas do bimestre em "⚙️ Configurações"
+2. Verificar/atualizar datas do período em "⚙️ Configurações"
 3. Verificar lista de organistas em "👥 Organistas"
 4. Comunicar às organistas para marcarem indisponibilidades
 

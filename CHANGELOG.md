@@ -1,5 +1,30 @@
 # 📝 Changelog - Sistema de Rodízio de Organistas
 
+## Versão 1.1 - Escala Anual
+**Data**: 14 de Outubro de 2025
+
+### 🎯 Mudanças Principais
+- ✅ **Período Flexível**: Sistema agora suporta qualquer período (não apenas bimestral)
+- ✅ Possibilidade de configurar escala anual completa (01/01 a 31/12)
+- ✅ Interface atualizada: "Bimestre" → "Período" em todos os textos
+- ✅ Documentação atualizada para refletir a nova flexibilidade
+- ✅ **Funcionalidade de Agenda**: Organistas podem adicionar eventos à agenda externa
+  - Suporte para Google Calendar, Outlook, Apple Calendar
+  - Formato iCalendar (.ics) universal
+  - Horários corretos: Domingos 18h, Terças 19h
+  - Lembrete automático 1 hora antes
+
+### 📅 Eventos da Agenda
+- **Domingos**: Meia-hora (18:00-18:30) + Culto (18:30-20:00)
+- **Terças**: Meia-hora (19:00-19:30) + Culto (19:30-21:00)
+- Botão "📅 Adicionar à Agenda" nos cards de "Meus Dias de Rodízio"
+
+### 🎨 Melhorias Visuais
+- Ícones animados (GIF) para botões PDF e WhatsApp
+- Botão de agenda com hover effect
+
+---
+
 ## Versão 1.0 - Release Inicial
 **Data**: 14 de Outubro de 2025
 

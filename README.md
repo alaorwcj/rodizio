@@ -23,7 +23,7 @@ Sistema web para gestão manual da escala bimestral de organistas, com controle 
   - Validação automática de datas
 
 - **Escala Manual**:
-  - Criação de escala vazia para o bimestre
+  - Criação de escala vazia para o período configurado
   - Seleção manual via dropdowns
   - Validação de fase (Meia-hora/Culto)
   - Bloqueio de organistas indisponíveis
@@ -43,7 +43,7 @@ Sistema web para gestão manual da escala bimestral de organistas, com controle 
   - Pronto para impressão
 
 - **Configurações**:
-  - Ajuste de datas do bimestre
+  - Ajuste de datas do período (anual, semestral, etc.)
   - Atualização automática ao salvar
   - Prazo para marcação de indisponibilidades
 
@@ -111,9 +111,9 @@ Abra seu navegador em: **http://localhost:8080**
 
 ### Para Administradores
 
-1. **Configurar Bimestre**:
+1. **Configurar Período**:
    - Acesse "⚙️ Configurações"
-   - Defina data de início e fim do bimestre
+   - Defina data de início e fim do período (anual, semestral, etc.)
    - Sistema atualiza automaticamente
 
 2. **Cadastrar Organistas**:
@@ -126,7 +126,7 @@ Abra seu navegador em: **http://localhost:8080**
 3. **Criar Escala**:
    - Acesse "📅 Escala"
    - Clique em "Criar Escala Vazia"
-   - Sistema gera todos os domingos e terças do bimestre
+   - Sistema gera todos os domingos e terças do período configurado
    - Use os dropdowns para selecionar organistas manualmente
    - Clique em "💾 Salvar Todas as Alterações"
 

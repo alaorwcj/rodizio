@@ -164,106 +164,206 @@
     {
       "data": "2025-10-05",
       "dia_semana": "Sunday",
-      "meia_hora": "Yasmin C.",
-      "culto": "Milena"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-10-07",
       "dia_semana": "Tuesday",
-      "unica": "Milena",
-      "meia_hora": "Milena",
-      "culto": "Ieda"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-10-12",
       "dia_semana": "Sunday",
-      "meia_hora": "Yasmin G.",
-      "culto": "Ieda"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-10-14",
       "dia_semana": "Tuesday",
-      "unica": "Milena"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-10-19",
       "dia_semana": "Sunday",
-      "meia_hora": "Ieda",
-      "culto": "Ieda"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-10-21",
       "dia_semana": "Tuesday",
-      "unica": "Ieda"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-10-26",
       "dia_semana": "Sunday",
-      "meia_hora": "Milena",
-      "culto": "Milena"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-10-28",
       "dia_semana": "Tuesday",
-      "unica": "Ieda"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-02",
       "dia_semana": "Sunday",
-      "meia_hora": "Yasmin C.",
-      "culto": "Raquel"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-04",
       "dia_semana": "Tuesday",
-      "unica": null,
-      "meia_hora": "Milena",
-      "culto": "Ieda"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-09",
       "dia_semana": "Sunday",
-      "meia_hora": "Yasmin C.",
-      "culto": "Raquel"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-11",
       "dia_semana": "Tuesday",
-      "unica": null,
-      "meia_hora": "Milena",
-      "culto": "Ieda"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-16",
       "dia_semana": "Sunday",
-      "meia_hora": "Milena",
-      "culto": "Raquel"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-18",
       "dia_semana": "Tuesday",
-      "unica": null,
-      "meia_hora": "Milena",
-      "culto": "Milena"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-23",
       "dia_semana": "Sunday",
-      "meia_hora": "Ieda",
-      "culto": "Janaina"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-25",
       "dia_semana": "Tuesday",
-      "unica": null,
-      "meia_hora": "Ieda",
-      "culto": "Ieda"
+      "meia_hora": null,
+      "culto": null
     },
     {
       "data": "2025-11-30",
       "dia_semana": "Sunday",
-      "meia_hora": "Yasmin G.",
-      "culto": "Janaina"
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-02",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-07",
+      "dia_semana": "Sunday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-09",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-14",
+      "dia_semana": "Sunday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-16",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-21",
+      "dia_semana": "Sunday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-23",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-28",
+      "dia_semana": "Sunday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-30",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2026-01-04",
+      "dia_semana": "Sunday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2026-01-06",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2026-01-11",
+      "dia_semana": "Sunday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2026-01-13",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2026-01-18",
+      "dia_semana": "Sunday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2026-01-20",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2026-01-25",
+      "dia_semana": "Sunday",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2026-01-27",
+      "dia_semana": "Tuesday",
+      "meia_hora": null,
+      "culto": null
     }
   ],
   "logs": [
@@ -1228,15 +1328,55 @@
         "id": "ieda",
         "data": "2025-11-09"
       }
+    },
+    {
+      "quando": "2025-10-14T22:08:01.627338",
+      "acao": "update_config",
+      "por": "admin",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-01",
+          "fim": "2025-12-31"
+        },
+        "fechamento_publicacao_dias": 3
+      }
+    },
+    {
+      "quando": "2025-10-14T22:08:23.773880",
+      "acao": "publicar_escala",
+      "por": "admin",
+      "payload": {
+        "total_dias": 26
+      }
+    },
+    {
+      "quando": "2025-10-14T22:09:18.594935",
+      "acao": "update_config",
+      "por": "admin",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-01",
+          "fim": "2026-01-30"
+        },
+        "fechamento_publicacao_dias": 3
+      }
+    },
+    {
+      "quando": "2025-10-14T22:09:39.287738",
+      "acao": "publicar_escala",
+      "por": "admin",
+      "payload": {
+        "total_dias": 34
+      }
     }
   ],
   "config": {
     "bimestre": {
       "inicio": "2025-10-01",
-      "fim": "2025-11-30"
+      "fim": "2026-01-30"
     },
     "fechamento_publicacao_dias": 3
   },
-  "escala_publicada_em": "2025-10-14T17:50:56.453114",
+  "escala_publicada_em": "2025-10-14T22:09:39.287694",
   "escala_publicada_por": "admin"
 }

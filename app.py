@@ -311,12 +311,12 @@ def add_indisp():
         return jsonify({"error": "ID da organista é obrigatório para administrador."}), 400
     
     # payload esperado: {"data":"2025-10-05","motivo":"..."}
-    # valida bimestre
+    # valida período configurado
     d = payload["data"]
     ini = db["config"]["bimestre"]["inicio"]
     fim = db["config"]["bimestre"]["fim"]
     if not (ini <= d <= fim):
-        return jsonify({"error":"Data fora do bimestre configurado."}), 400
+        return jsonify({"error":"Data fora do período configurado."}), 400
     
     payload["autor"] = current_user.id
     
@@ -434,7 +434,7 @@ def gerar_escala_automatica(db):
     contador_culto = defaultdict(int)
     contador_terca = defaultdict(int)
     
-    # Gerar todas as datas do bimestre (Domingos e Terças)
+    # Gerar todas as datas do período (Domingos e Terças)
     current_date = inicio
     while current_date <= fim:
         dia_semana = current_date.weekday()
