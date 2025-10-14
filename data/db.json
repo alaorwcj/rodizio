@@ -79,20 +79,6 @@
       ],
       "regras_especiais": {},
       "password_hash": "scrypt:32768:8:1$wFzc3PFcaUFoeHuT$519897bb7b33d71adf762eee92796721d3d79187a2aec1dd2d55f8402ee8b4a3874b9fc4f8ea6f75b587135e39cc3b846bbe6b9401b3e442c3e2d984724c67da"
-    },
-    {
-      "id": "teste",
-      "nome": "Teste",
-      "tipos": [
-        "Meia-hora",
-        "Culto"
-      ],
-      "dias_permitidos": [
-        "Domingo",
-        "Terça"
-      ],
-      "regras_especiais": {},
-      "password_hash": "scrypt:32768:8:1$uEKWXkvPWOabI7Oq$65b53383a8ce11c2e555e58cdf9a71aada02353cc85181654015eba0bc7ba11b5b0ccbf0c57bc0a3a899544dad43eda33348f6494beaf5a6d6396e6361e4716f"
     }
   ],
   "indisponibilidades": [
@@ -1191,6 +1177,56 @@
           "fim": "2025-11-30"
         },
         "fechamento_publicacao_dias": 3
+      }
+    },
+    {
+      "quando": "2025-10-14T19:44:27.261856",
+      "acao": "delete_organista",
+      "por": "admin",
+      "payload": {
+        "id": "teste"
+      }
+    },
+    {
+      "quando": "2025-10-14T20:15:52.236734",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-09",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T20:15:53.220938",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-09"
+      }
+    },
+    {
+      "quando": "2025-10-14T20:15:53.943138",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-09",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-14T20:15:54.621348",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-09"
       }
     }
   ],

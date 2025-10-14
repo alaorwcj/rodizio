@@ -668,7 +668,7 @@
                 <div class="card">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h2 style="margin: 0;">📅 Escala do Bimestre</h2>
-                        <div style="display: flex; gap: 10px;">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                             {% if user.is_admin %}
                             <button onclick="salvarTodasAlteracoes()" class="btn" style="background: #10b981; color: white;">
                                 💾 Salvar Todas as Alterações
@@ -676,6 +676,9 @@
                             {% endif %}
                             <button onclick="exportarPDF()" class="btn" style="background: #dc2626; color: white;">
                                 📄 Exportar PDF
+                            </button>
+                            <button onclick="compartilharWhatsApp()" class="btn" style="background: #25D366; color: white;">
+                                📱 Compartilhar no WhatsApp
                             </button>
                         </div>
                     </div>
@@ -1856,6 +1859,68 @@
             // Abre o PDF em nova aba com timestamp para evitar cache
             const timestamp = new Date().getTime();
             window.open('/escala/pdf?t=' + timestamp, '_blank');
+        }
+
+        // Compartilhar escala no WhatsApp
+        async function compartilharWhatsApp() {
+            try {
+                const response = await fetch('/escala/atual');
+                const data = await response.json();
+                const escala = data.escala || [];
+                
+                if (!escala || escala.length === 0) {
+                    alert('⚠️ Nenhuma escala cadastrada para compartilhar.');
+                    return;
+                }
+                
+                // Construir mensagem
+                let mensagem = `*ESCALA DE ORGANISTAS - VILA PAULA*\n`;
+                mensagem += `Bimestre: {{ cfg.bimestre.inicio | date_br }} até {{ cfg.bimestre.fim | date_br }}\n\n`;
+                
+                // Agrupar por mês
+                const meses = {};
+                escala.forEach(item => {
+                    const data = new Date(item.data);
+                    const mes = data.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
+                    const mesCapitalizado = mes.charAt(0).toUpperCase() + mes.slice(1);
+                    
+                    if (!meses[mesCapitalizado]) {
+                        meses[mesCapitalizado] = [];
+                    }
+                    meses[mesCapitalizado].push(item);
+                });
+                
+                // Formatar mensagem por mês
+                Object.keys(meses).sort().forEach(mes => {
+                    mensagem += `*${mes}*\n`;
+                    mensagem += `${'─'.repeat(30)}\n`;
+                    
+                    meses[mes].forEach(item => {
+                        const data = new Date(item.data);
+                        const dia = data.getDate().toString().padStart(2, '0');
+                        const diaSemana = item.dia_semana === 'Sunday' ? 'Domingo' : 'Terça';
+                        
+                        mensagem += `\n*${dia} - ${diaSemana}*\n`;
+                        mensagem += `Meia-hora: ${item.meia_hora || 'Não definido'}\n`;
+                        mensagem += `Culto: ${item.culto || 'Não definido'}\n`;
+                    });
+                    
+                    mensagem += `\n`;
+                });
+                
+                mensagem += `\n_Gerado pelo Sistema de Rodízio_`;
+                
+                // Codificar mensagem para URL
+                const mensagemCodificada = encodeURIComponent(mensagem);
+                
+                // Abrir WhatsApp
+                const urlWhatsApp = `https://wa.me/?text=${mensagemCodificada}`;
+                window.open(urlWhatsApp, '_blank');
+                
+            } catch (error) {
+                console.error('Erro ao compartilhar no WhatsApp:', error);
+                alert('❌ Erro ao gerar mensagem para o WhatsApp.');
+            }
         }
 
         // Inicializar dados ao carregar a página
