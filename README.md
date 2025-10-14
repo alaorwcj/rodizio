@@ -1,15 +1,51 @@
-# 🎹 Sistema de Rodízio de Organistas
+# 🎹 Sistema de Rodízio de Organistas - Vila Paula
 
-Sistema web para automatização da escala bimestral de organistas, com gestão de indisponibilidades, regras personalizadas e geração automática de escalas.
+Sistema web para gestão manual da escala bimestral de organistas, com controle de indisponibilidades, autenticação de usuários e visualização personalizada por perfil.
 
 ## 🚀 Características
 
-- **Gestão de Organistas**: CRUD completo com tipos (Meia-hora, Culto, Ambos) e regras especiais
-- **Indisponibilidades**: Organistas podem marcar datas indisponíveis no bimestre
-- **Geração Automática**: Algoritmo inteligente que respeita regras, indisponibilidades e justiça na distribuição
-- **Edição Manual**: Ajustes drag & drop na escala antes de publicar
-- **Exportação**: PDF e Excel prontos para impressão/compartilhamento
-- **Auditoria**: Log completo de todas as alterações
+### ✅ Funcionalidades Implementadas
+
+- **Sistema de Autenticação**: 
+  - Login com usuário e senha
+  - Perfis de Administrador e Organista
+  - Troca de senha para todos os usuários
+  - Senhas criptografadas com Werkzeug
+
+- **Gestão de Organistas** (Admin):
+  - CRUD completo com tipos (Meia-hora, Culto, Ambos)
+  - Dias permitidos (Domingo, Terça)
+  - Regras especiais personalizadas
+
+- **Gestão de Indisponibilidades**:
+  - Organistas marcam datas indisponíveis
+  - Calendário simplificado por mês
+  - Validação automática de datas
+
+- **Escala Manual**:
+  - Criação de escala vazia para o bimestre
+  - Seleção manual via dropdowns
+  - Validação de fase (Meia-hora/Culto)
+  - Bloqueio de organistas indisponíveis
+  - Botão único "Salvar Todas as Alterações"
+  - Sistema de 2 fases para Domingos E Terças
+
+- **Dashboard Personalizado**:
+  - **Admin**: Visualiza todas as próximas 10 escalas
+  - **Organista**: Visualiza apenas "Meus Dias de Rodízio"
+  - Cards coloridos e responsivos
+  - Filtro automático por data (apenas futuros)
+
+- **Exportação PDF**:
+  - Geração limpa e profissional
+  - Separação por mês
+  - Layout organizado em tabela
+  - Pronto para impressão
+
+- **Configurações**:
+  - Ajuste de datas do bimestre
+  - Atualização automática ao salvar
+  - Prazo para marcação de indisponibilidades
 
 ## 📋 Pré-requisitos
 
@@ -65,6 +101,55 @@ docker rm rodizio-app
 ### 4. Acessar a aplicação
 
 Abra seu navegador em: **http://localhost:8080**
+
+**Credenciais padrão:**
+- Administrador: `admin` / `admin123`
+
+⚠️ **IMPORTANTE**: Troque a senha no primeiro acesso!
+
+## 🎯 Como Usar o Sistema
+
+### Para Administradores
+
+1. **Configurar Bimestre**:
+   - Acesse "⚙️ Configurações"
+   - Defina data de início e fim do bimestre
+   - Sistema atualiza automaticamente
+
+2. **Cadastrar Organistas**:
+   - Acesse "👥 Organistas"
+   - Adicione organistas com:
+     - Nome
+     - Tipos permitidos (Meia-hora, Culto ou Ambos)
+     - Dias permitidos (Domingo, Terça ou Ambos)
+
+3. **Criar Escala**:
+   - Acesse "📅 Escala"
+   - Clique em "Criar Escala Vazia"
+   - Sistema gera todos os domingos e terças do bimestre
+   - Use os dropdowns para selecionar organistas manualmente
+   - Clique em "💾 Salvar Todas as Alterações"
+
+4. **Exportar PDF**:
+   - Na aba "📅 Escala"
+   - Clique em "📄 Exportar PDF"
+   - PDF pronto para impressão
+
+### Para Organistas
+
+1. **Primeiro Acesso**:
+   - Login com credenciais fornecidas
+   - Troque a senha em "🔐 Trocar Senha"
+
+2. **Marcar Indisponibilidades**:
+   - Acesse "📅 Todas Indisponibilidades"
+   - Selecione as datas que não pode tocar
+   - Sistema bloqueia automaticamente na escala
+
+3. **Ver Seus Dias**:
+   - Dashboard mostra "🎹 Meus Dias de Rodízio"
+   - Visualização destacada dos seus serviços
+   - Apenas datas futuras
 
 ## 📁 Estrutura do Projeto
 
@@ -207,14 +292,25 @@ Verifique se o volume está montado:
 docker-compose exec rodizio-app ls -la /app/data
 ```
 
-## 📝 Roadmap
+## 📝 Status do Projeto
 
-- [ ] **Fase 1**: ✅ Base + Indisponibilidades (CRUD)
-- [ ] **Fase 2**: Geração automática de escala
-- [ ] **Fase 3**: Exportação PDF/Excel
-- [ ] **Fase 4**: Migração para SQLite
-- [ ] **Fase 5**: Autenticação JWT
-- [ ] **Fase 6**: Interface React/Vue
+### ✅ Implementado
+
+- [x] **Fase 1**: Autenticação e CRUD de Organistas
+- [x] **Fase 1.1**: Gestão de Indisponibilidades
+- [x] **Fase 1.2**: Sistema Manual de Escala (Dropdowns)
+- [x] **Fase 1.3**: Dashboard Personalizado por Perfil
+- [x] **Fase 1.4**: Exportação para PDF
+- [x] **Fase 1.5**: Troca de Senha
+- [x] **Fase 1.6**: Validações de Fase (Meia-hora/Culto)
+
+### 🔜 Próximos Passos
+
+- [ ] **Fase 2**: Exportação para Excel
+- [ ] **Fase 3**: Migração para SQLite
+- [ ] **Fase 4**: Sistema de notificações por email
+- [ ] **Fase 5**: Aplicativo mobile (PWA)
+- [ ] **Fase 6**: Relatórios e estatísticas avançadas
 
 ## 🤝 Contribuindo
 
