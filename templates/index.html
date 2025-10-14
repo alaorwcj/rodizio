@@ -361,6 +361,20 @@
             font-size: 0.95em;
         }
         
+        .btn-adicionar-agenda {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-adicionar-agenda:hover {
+            background: #2563eb !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-adicionar-agenda:active {
+            transform: translateY(0);
+        }
+        
         .dashboard-section {
             margin-bottom: 30px;
         }
@@ -674,11 +688,13 @@
                                 💾 Salvar Todas as Alterações
                             </button>
                             {% endif %}
-                            <button onclick="exportarPDF()" class="btn" style="background: #dc2626; color: white;">
-                                📄 Exportar PDF
+                            <button onclick="exportarPDF()" class="btn" style="background: #dc2626; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <img src="{{ url_for('static', filename='icons8-pdf.gif') }}" alt="PDF" style="width: 20px; height: 20px;">
+                                Exportar PDF
                             </button>
-                            <button onclick="compartilharWhatsApp()" class="btn" style="background: #25D366; color: white;">
-                                📱 Compartilhar no WhatsApp
+                            <button onclick="compartilharWhatsApp()" class="btn" style="background: #25D366; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <img src="{{ url_for('static', filename='icons8-whatsapp.gif') }}" alt="WhatsApp" style="width: 20px; height: 20px;">
+                                Compartilhar no WhatsApp
                             </button>
                         </div>
                     </div>
@@ -952,6 +968,12 @@
                     const isMeiaHora = item.meia_hora === nomeUsuario;
                     const isCulto = item.culto === nomeUsuario;
                     
+                    // Preparar lista de serviços para passar para a função
+                    const servicos = [];
+                    if (isMeiaHora) servicos.push('meia_hora');
+                    if (isCulto) servicos.push('culto');
+                    const servicosStr = JSON.stringify(servicos).replace(/"/g, '&quot;');
+                    
                     return `
                         <div class="escala-item ${tipoDia}">
                             <div class="escala-date-box">
@@ -982,6 +1004,12 @@
                                     </div>
                                 </div>
                                 ` : ''}
+                                
+                                <button onclick="adicionarAgenda('${item.data}', '${item.dia_semana}', ${servicosStr})" 
+                                        class="btn-adicionar-agenda"
+                                        style="margin-top: 10px; width: 100%; padding: 8px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9em; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    📅 Adicionar à Agenda
+                                </button>
                             </div>
                         </div>
                     `;
@@ -1853,6 +1881,97 @@
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
+        }
+
+        // Adicionar evento à agenda (iCalendar)
+        function adicionarAgenda(data, diaSemana, servicos) {
+            try {
+                // Parse da data
+                const dataEvento = new Date(data);
+                
+                // Definir horários baseado no dia da semana e serviço
+                let eventos = [];
+                const nomeDia = diaSemana === 'Sunday' ? 'Domingo' : 'Terça-feira';
+                
+                servicos.forEach(servico => {
+                    let horaInicio, horaFim, titulo;
+                    
+                    if (servico === 'meia_hora') {
+                        if (diaSemana === 'Sunday') {
+                            horaInicio = '18:00';
+                            horaFim = '18:30';
+                        } else {
+                            horaInicio = '19:00';
+                            horaFim = '19:30';
+                        }
+                        titulo = `Meia-hora - ${nomeDia}`;
+                    } else if (servico === 'culto') {
+                        if (diaSemana === 'Sunday') {
+                            horaInicio = '18:30';
+                            horaFim = '20:00';
+                        } else {
+                            horaInicio = '19:30';
+                            horaFim = '21:00';
+                        }
+                        titulo = `Culto - ${nomeDia}`;
+                    }
+                    
+                    eventos.push({ titulo, horaInicio, horaFim });
+                });
+                
+                // Gerar arquivo iCalendar
+                let icsContent = 'BEGIN:VCALENDAR\r\n';
+                icsContent += 'VERSION:2.0\r\n';
+                icsContent += 'PRODID:-//Rodízio de Organistas - Vila Paula//PT\r\n';
+                icsContent += 'CALSCALE:GREGORIAN\r\n';
+                icsContent += 'METHOD:PUBLISH\r\n';
+                
+                eventos.forEach(evento => {
+                    // Formatar data e hora para iCalendar (formato: YYYYMMDDTHHmmss)
+                    const ano = dataEvento.getFullYear();
+                    const mes = String(dataEvento.getMonth() + 1).padStart(2, '0');
+                    const dia = String(dataEvento.getDate()).padStart(2, '0');
+                    const [horaI, minI] = evento.horaInicio.split(':');
+                    const [horaF, minF] = evento.horaFim.split(':');
+                    
+                    const dtStart = `${ano}${mes}${dia}T${horaI}${minI}00`;
+                    const dtEnd = `${ano}${mes}${dia}T${horaF}${minF}00`;
+                    const dtStamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+                    const uid = `${dtStart}-${Math.random().toString(36).substr(2, 9)}@rodizio-organistas`;
+                    
+                    icsContent += 'BEGIN:VEVENT\r\n';
+                    icsContent += `UID:${uid}\r\n`;
+                    icsContent += `DTSTAMP:${dtStamp}\r\n`;
+                    icsContent += `DTSTART:${dtStart}\r\n`;
+                    icsContent += `DTEND:${dtEnd}\r\n`;
+                    icsContent += `SUMMARY:${evento.titulo} - Rodízio de Organistas\r\n`;
+                    icsContent += `DESCRIPTION:Rodízio de Organistas - Vila Paula\\n${evento.titulo}\r\n`;
+                    icsContent += `LOCATION:Igreja Vila Paula\r\n`;
+                    icsContent += `STATUS:CONFIRMED\r\n`;
+                    icsContent += 'BEGIN:VALARM\r\n';
+                    icsContent += 'TRIGGER:-PT1H\r\n';
+                    icsContent += 'ACTION:DISPLAY\r\n';
+                    icsContent += `DESCRIPTION:Lembrete: ${evento.titulo} em 1 hora\r\n`;
+                    icsContent += 'END:VALARM\r\n';
+                    icsContent += 'END:VEVENT\r\n';
+                });
+                
+                icsContent += 'END:VCALENDAR\r\n';
+                
+                // Criar blob e fazer download
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `rodizio-organista-${dataEvento.getDate()}-${dataEvento.getMonth()+1}-${dataEvento.getFullYear()}.ics`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                
+            } catch (error) {
+                console.error('Erro ao criar evento:', error);
+                alert('❌ Erro ao criar evento para a agenda.');
+            }
         }
 
         function exportarPDF() {
