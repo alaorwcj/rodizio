@@ -3127,6 +3127,17 @@
       "contexto_id": "",
       "ativo": true,
       "data_criacao": "2025-10-14T23:18:42.382662"
+    },
+    "lucas": {
+      "id": "lucas",
+      "nome": "Lucas",
+      "password_hash": "scrypt:32768:8:1$NazbxqDbJnbuygEb$dca5f50784c6a809a250c4bbecc75434776ac7949dfd990c92151f70235c9229b1620343acf15297e9569912aba2afb1dcd38307d810166b56b84d739fe178c1",
+      "tipo": "admin_regional",
+      "email": "",
+      "telefone": "123456",
+      "contexto_id": "gru",
+      "ativo": true,
+      "data_criacao": "2025-10-15T17:23:44.136143"
     }
   },
   "logs": [

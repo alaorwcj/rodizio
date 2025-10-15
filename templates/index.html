@@ -1135,7 +1135,52 @@
             .header h1 {
                 font-size: 1.3em !important;
                 margin: 0 0 10px 0 !important;
-                padding: 0 !important;
+                padding: 0 50px !important; /* Espaço para botão hamburguer */
+            }
+            
+            .header p {
+                font-size: 0.9em !important;
+                margin: 5px 0 !important;
+            }
+            
+            /* Seletor de contexto responsivo */
+            #contexto-selector {
+                flex-direction: column !important;
+                gap: 8px !important;
+                padding: 10px !important;
+            }
+            
+            #contexto-selector select {
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: 100% !important;
+            }
+            
+            #contexto-selector span {
+                display: none !important; /* Esconder as setas › */
+            }
+            
+            /* User selector responsivo */
+            .user-selector {
+                flex-direction: column !important;
+                gap: 8px !important;
+                padding: 10px !important;
+                text-align: center !important;
+            }
+            
+            .user-selector label {
+                font-size: 0.9em !important;
+            }
+            
+            .user-selector .user-indicator {
+                font-size: 0.85em !important;
+                padding: 5px 10px !important;
+            }
+            
+            .user-selector .btn {
+                width: 100% !important;
+                margin: 0 !important;
+                font-size: 0.85em !important;
             }
             
             /* Container 100% largura no mobile */
@@ -1421,8 +1466,8 @@
             <div class="nav-mobile-submenu-item" onclick="showTabMobile('hierarquia')">
                 Hierarquia
             </div>
-            <div class="nav-mobile-submenu-item" onclick="showTabMobile('gerenciamento')">
-                Gerenciamento
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('usuarios')">
+                Usuários
             </div>
         </div>
         {% endif %}
