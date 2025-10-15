@@ -3138,6 +3138,17 @@
       "contexto_id": "gru",
       "ativo": true,
       "data_criacao": "2025-10-15T17:23:44.136143"
+    },
+    "rafael": {
+      "id": "rafael",
+      "nome": "Rafael",
+      "password_hash": "scrypt:32768:8:1$QUf0jnGic1ityk2s$83efd168244d520640b2788abf5f25b878fef8a129eb09a9863d38dc0f2954ca32e8f6532b6861ce7d7ca746c8345095c658b1c6b6264967ef24353a03a35773",
+      "tipo": "admin_regional",
+      "email": "",
+      "telefone": "",
+      "contexto_id": "gru",
+      "ativo": true,
+      "data_criacao": "2025-10-15T17:45:11.504074"
     }
   },
   "logs": [
