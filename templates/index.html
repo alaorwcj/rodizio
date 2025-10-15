@@ -157,6 +157,188 @@
             background: #6d28d9;
         }
         
+        /* ========== MENU HAMBURGUER MOBILE ========== */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 10001;
+            background: rgba(46, 80, 144, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.5em;
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-toggle:hover {
+            background: rgba(46, 80, 144, 1);
+            transform: scale(1.05);
+        }
+        
+        .menu-toggle:active {
+            transform: scale(0.95);
+        }
+        
+        body.dark-mode .menu-toggle {
+            background: rgba(30, 58, 138, 0.9);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Overlay do menu mobile */
+        .nav-mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            backdrop-filter: blur(2px);
+        }
+        
+        .nav-mobile-overlay.active {
+            display: block;
+        }
+        
+        /* Drawer do menu mobile */
+        .nav-mobile-drawer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.dark-mode .nav-mobile-drawer {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        
+        .nav-mobile-drawer.active {
+            left: 0;
+        }
+        
+        .nav-mobile-header {
+            background: linear-gradient(120deg, #2E5090 0%, #4A6FA5 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-mobile-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .nav-mobile-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-mobile-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        body.dark-mode .nav-mobile-item {
+            border-bottom-color: #334155;
+        }
+        
+        .nav-mobile-item:hover {
+            background: #f3f4f6;
+            padding-left: 25px;
+        }
+        
+        body.dark-mode .nav-mobile-item:hover {
+            background: #334155;
+        }
+        
+        .nav-mobile-item.active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: bold;
+            border-left: 4px solid #2563eb;
+        }
+        
+        body.dark-mode .nav-mobile-item.active {
+            background: #1e3a8a;
+            color: #93c5fd;
+        }
+        
+        .nav-mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #f9fafb;
+        }
+        
+        body.dark-mode .nav-mobile-submenu {
+            background: #0f172a;
+        }
+        
+        .nav-mobile-submenu.open {
+            max-height: 500px;
+        }
+        
+        .nav-mobile-submenu-item {
+            padding: 12px 20px 12px 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        
+        .nav-mobile-submenu-item:hover {
+            background: #e5e7eb;
+            padding-left: 45px;
+        }
+        
+        body.dark-mode .nav-mobile-submenu-item:hover {
+            background: #1e293b;
+        }
+        
+        .nav-mobile-arrow {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-mobile-arrow.open {
+            transform: rotate(180deg);
+        }
+        
         /* Botão Dark Mode */
         .dark-mode-toggle {
             position: fixed;
@@ -915,6 +1097,21 @@
                 box-sizing: border-box !important;
             }
             
+            /* Mostrar menu hamburguer no mobile */
+            .menu-toggle {
+                display: flex !important;
+            }
+            
+            /* Mostrar drawer no mobile */
+            .nav-mobile-drawer {
+                display: block !important;
+            }
+            
+            /* Esconder menu desktop no mobile */
+            .nav-tabs {
+                display: none !important;
+            }
+            
             /* Botão Dark Mode menor no mobile */
             .dark-mode-toggle {
                 top: 10px;
@@ -929,16 +1126,16 @@
             }
             
             /* Header mais compacto e responsivo */
-            header {
-                padding: 12px 10px !important;
+            .header {
+                padding: 60px 10px 15px 10px !important;
                 width: 100% !important;
                 box-sizing: border-box !important;
             }
             
-            header h1 {
-                font-size: 1.4em !important;
-                margin: 0 !important;
-                padding-right: 60px !important; /* Espaço para botão dark mode */
+            .header h1 {
+                font-size: 1.3em !important;
+                margin: 0 0 10px 0 !important;
+                padding: 0 !important;
             }
             
             /* Container 100% largura no mobile */
@@ -948,48 +1145,6 @@
                 width: 100% !important;
                 max-width: 100% !important;
                 border-radius: 0 !important;
-            }
-            
-            /* Menu de abas responsivo em grid */
-            nav {
-                display: grid !important;
-                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)) !important;
-                gap: 5px !important;
-                padding: 10px 5px !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
-                overflow-x: visible !important;
-                white-space: normal !important;
-            }
-            
-            nav a,
-            nav button {
-                display: block !important;
-                padding: 10px 5px !important;
-                font-size: 0.75em !important;
-                min-width: 0 !important;
-                width: 100% !important;
-                text-align: center !important;
-                white-space: normal !important;
-                line-height: 1.2 !important;
-                word-wrap: break-word !important;
-            }
-            
-            /* Dropdown do menu */
-            .nav-dropdown {
-                position: relative !important;
-            }
-            
-            .nav-dropdown-content {
-                position: static !important;
-                width: 100% !important;
-                box-shadow: none !important;
-                margin-top: 5px !important;
-            }
-            
-            .nav-dropdown-content a {
-                padding: 8px 10px !important;
-                font-size: 0.75em !important;
             }
             
             /* Conteúdo das tabs */
@@ -1200,6 +1355,85 @@
     </style>
 </head>
 <body>
+    <!-- Botão Menu Hamburguer Mobile -->
+    <button class="menu-toggle" onclick="toggleMobileMenu()" title="Menu">
+        ☰
+    </button>
+    
+    <!-- Overlay do Menu Mobile -->
+    <div class="nav-mobile-overlay" onclick="closeMobileMenu()"></div>
+    
+    <!-- Drawer do Menu Mobile -->
+    <div class="nav-mobile-drawer" id="mobileMenu">
+        <div class="nav-mobile-header">
+            <span>🎹 Menu</span>
+            <button class="nav-mobile-close" onclick="closeMobileMenu()">×</button>
+        </div>
+        
+        <div class="nav-mobile-item" onclick="showTabMobile('dashboard')">
+            📊 Dashboard
+        </div>
+        
+        <div class="nav-mobile-item" onclick="toggleMobileSubmenu('rodizios-submenu')">
+            🎵 Rodízios
+            <span class="nav-mobile-arrow" id="rodizios-arrow">▼</span>
+        </div>
+        <div class="nav-mobile-submenu" id="rodizios-submenu">
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('escala')">
+                Culto Oficial
+            </div>
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('rjm')">
+                RJM
+            </div>
+        </div>
+        
+        {% if user.is_admin %}
+        <div class="nav-mobile-item" onclick="toggleMobileSubmenu('encarregado-submenu')">
+            👤 Encarregado Local
+            <span class="nav-mobile-arrow" id="encarregado-arrow">▼</span>
+        </div>
+        <div class="nav-mobile-submenu" id="encarregado-submenu">
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('organistas')">
+                Organistas
+            </div>
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('config')">
+                Configurações
+            </div>
+        </div>
+        
+        <div class="nav-mobile-item" onclick="toggleMobileSubmenu('agenda-submenu')">
+            📅 Agenda Organista
+            <span class="nav-mobile-arrow" id="agenda-arrow">▼</span>
+        </div>
+        <div class="nav-mobile-submenu" id="agenda-submenu">
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('admin-indisp')">
+                Restrições de Dias
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if user.tipo == 'master' %}
+        <div class="nav-mobile-item" onclick="toggleMobileSubmenu('admin-submenu')">
+            ⚙️ Administrativo
+            <span class="nav-mobile-arrow" id="admin-arrow">▼</span>
+        </div>
+        <div class="nav-mobile-submenu" id="admin-submenu">
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('hierarquia')">
+                Hierarquia
+            </div>
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('gerenciamento')">
+                Gerenciamento
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if not user.is_admin %}
+        <div class="nav-mobile-item" onclick="showTabMobile('indisp')">
+            📅 Minha Agenda
+        </div>
+        {% endif %}
+    </div>
+    
     <!-- Botão Dark Mode -->
     <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar modo escuro">
         <span id="dark-mode-icon">🌙</span>
@@ -2295,6 +2529,61 @@
                 document.getElementById('dark-mode-text').textContent = 'Claro';
             }
         });
+        
+        // ==================== Menu Mobile ====================
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileMenu');
+            const overlay = document.querySelector('.nav-mobile-overlay');
+            
+            drawer.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Prevenir scroll do body quando menu está aberto
+            if (drawer.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function closeMobileMenu() {
+            const drawer = document.getElementById('mobileMenu');
+            const overlay = document.querySelector('.nav-mobile-overlay');
+            
+            drawer.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function toggleMobileSubmenu(submenuId) {
+            const submenu = document.getElementById(submenuId);
+            const arrowId = submenuId.replace('-submenu', '-arrow');
+            const arrow = document.getElementById(arrowId);
+            
+            submenu.classList.toggle('open');
+            if (arrow) {
+                arrow.classList.toggle('open');
+            }
+        }
+        
+        function showTabMobile(tabName) {
+            // Chama a função showTab existente
+            showTab(tabName);
+            
+            // Fecha o menu mobile
+            closeMobileMenu();
+            
+            // Atualiza item ativo no menu mobile
+            document.querySelectorAll('.nav-mobile-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Marca o item ativo
+            if (event && event.target) {
+                const target = event.target.closest('.nav-mobile-item, .nav-mobile-submenu-item');
+                if (target) target.classList.add('active');
+            }
+        }
         
         // ==================== Variáveis Globais ====================
         const currentUserId = '{{ user.id }}';
