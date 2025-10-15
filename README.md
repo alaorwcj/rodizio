@@ -10,18 +10,21 @@ Sistema web completo para gerenciamento de escalas de organistas em igrejas, com
 *Visualização completa das próximas 20 escalas com cards coloridos por dia da semana*
 
 ### Gerenciamento de Escala - Modo Manual
-![Gerenciamento de Escala](images/gerenciamento-escala.png)
+<img width="1131" height="889" alt="image" src="https://github.com/user-attachments/assets/8316e9c3-7b31-4773-9f2a-1036488648ec" />
+
 *Interface para edição manual de escalas com seleção de organistas por data*
 
 ### Dashboard - Organista
-![Dashboard Organista](images/dashboard-organista.png)
+<img width="1085" height="744" alt="image" src="https://github.com/user-attachments/assets/dbb8b52c-3ff6-489f-b85f-c9d715323e84" />
+
 *Visualização personalizada mostrando apenas os dias de rodízio do organista logado*
 
 ### Agenda de Disponibilidade
-![Agenda de Disponibilidade](images/agenda-disponibilidade.png)
+<img width="1085" height="744" alt="image" src="https://github.com/user-attachments/assets/1a1a941f-7402-42b8-abb7-fa7dd75e4e73" />
+
 *Calendário interativo para organistas marcarem indisponibilidade*
 
-> **📝 Nota**: Para adicionar os screenshots reais, salve as imagens na pasta `images/` com os nomes indicados acima. Veja [instruções detalhadas](images/README.md).
+
 
 ## � Índice
 
@@ -389,4 +392,5 @@ Desenvolvido por **Alaor Rodrigues**
 ---
 
 **Sistema de Rodízio de Organistas** - Facilitando a gestão musical nas igrejas 🎹✨
+
 
