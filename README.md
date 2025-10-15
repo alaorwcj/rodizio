@@ -20,7 +20,8 @@ Sistema web completo para gerenciamento de escalas de organistas em igrejas, com
 *Visualização personalizada mostrando apenas os dias de rodízio do organista logado*
 
 ### Agenda de Disponibilidade
-<img width="1085" height="744" alt="image" src="https://github.com/user-attachments/assets/1a1a941f-7402-42b8-abb7-fa7dd75e4e73" />
+<img width="1094" height="729" alt="image" src="https://github.com/user-attachments/assets/2a513205-e8a0-4fc8-8a63-42d9098f6cbd" />
+
 
 *Calendário interativo para organistas marcarem indisponibilidade*
 
@@ -392,5 +393,6 @@ Desenvolvido por **Alaor Rodrigues**
 ---
 
 **Sistema de Rodízio de Organistas** - Facilitando a gestão musical nas igrejas 🎹✨
+
 
 
