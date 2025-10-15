@@ -2,8 +2,29 @@
 
 Sistema web completo para gerenciamento de escalas de organistas em igrejas, com suporte a múltiplos níveis hierárquicos (Regional → Sub-Regional → Comum).
 
-## 📋 Índice
+## � Screenshots
 
+### Dashboard - Administrador
+![Dashboard Administrador](images/dashboard-admin.png)
+*Visualização completa das próximas 20 escalas com cards coloridos por dia da semana*
+
+### Gerenciamento de Escala - Modo Manual
+![Gerenciamento de Escala](images/gerenciamento-escala.png)
+*Interface para edição manual de escalas com seleção de organistas por data*
+
+### Dashboard - Organista
+![Dashboard Organista](images/dashboard-organista.png)
+*Visualização personalizada mostrando apenas os dias de rodízio do organista logado*
+
+### Agenda de Disponibilidade
+![Agenda de Disponibilidade](images/agenda-disponibilidade.png)
+*Calendário interativo para organistas marcarem indisponibilidade*
+
+> **📝 Nota**: Para adicionar os screenshots reais, salve as imagens na pasta `images/` com os nomes indicados acima. Veja [instruções detalhadas](images/README.md).
+
+## � Índice
+
+- [Screenshots](#-screenshots)
 - [Características](#características)
 - [Requisitos](#requisitos)
 - [Instalação](#instalação)

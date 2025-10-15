@@ -184,50 +184,50 @@
                 {
                   "data": "2025-10-05",
                   "dia_semana": "Sunday",
-                  "meia_hora": null,
-                  "culto": null
+                  "meia_hora": "Yasmin C.",
+                  "culto": "Milena"
                 },
                 {
                   "data": "2025-10-07",
                   "dia_semana": "Tuesday",
-                  "meia_hora": null,
-                  "culto": null
+                  "meia_hora": "Yasmin G.",
+                  "culto": "Ieda"
                 },
                 {
                   "data": "2025-10-12",
                   "dia_semana": "Sunday",
-                  "meia_hora": null,
-                  "culto": null
+                  "meia_hora": "Milena",
+                  "culto": "Raquel"
                 },
                 {
                   "data": "2025-10-14",
                   "dia_semana": "Tuesday",
-                  "meia_hora": null,
-                  "culto": null
+                  "meia_hora": "Milena",
+                  "culto": "Milena"
                 },
                 {
                   "data": "2025-10-19",
                   "dia_semana": "Sunday",
-                  "meia_hora": null,
-                  "culto": null
+                  "meia_hora": "Yasmin G.",
+                  "culto": "Janaina"
                 },
                 {
                   "data": "2025-10-21",
                   "dia_semana": "Tuesday",
-                  "meia_hora": null,
-                  "culto": null
+                  "meia_hora": "Milena",
+                  "culto": "Raquel"
                 },
                 {
                   "data": "2025-10-26",
                   "dia_semana": "Sunday",
-                  "meia_hora": null,
-                  "culto": null
+                  "meia_hora": "Ieda",
+                  "culto": "Ieda"
                 },
                 {
                   "data": "2025-10-28",
                   "dia_semana": "Tuesday",
-                  "meia_hora": null,
-                  "culto": null
+                  "meia_hora": "Ieda",
+                  "culto": "Raquel"
                 },
                 {
                   "data": "2025-11-02",
@@ -5173,6 +5173,126 @@
       "comum_id": "vila_paula",
       "payload": {
         "total_dias": 130
+      }
+    },
+    {
+      "quando": "2025-10-15T13:01:23.613212",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "vila_paula",
+      "payload": {
+        "data": "2025-10-05",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Yasmin C.",
+            "culto": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T13:01:23.632376",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "vila_paula",
+      "payload": {
+        "data": "2025-10-07",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Yasmin G.",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T13:01:23.651738",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "vila_paula",
+      "payload": {
+        "data": "2025-10-12",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Raquel"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T13:01:23.671137",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "vila_paula",
+      "payload": {
+        "data": "2025-10-14",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Milena"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T13:01:23.690044",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "vila_paula",
+      "payload": {
+        "data": "2025-10-19",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Yasmin G.",
+            "culto": "Janaina"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T13:01:23.709203",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "vila_paula",
+      "payload": {
+        "data": "2025-10-21",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Milena",
+            "culto": "Raquel"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T13:01:23.727763",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "vila_paula",
+      "payload": {
+        "data": "2025-10-26",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ieda",
+            "culto": "Ieda"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T13:01:23.745945",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "vila_paula",
+      "payload": {
+        "data": "2025-10-28",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ieda",
+            "culto": "Raquel"
+          }
+        }
       }
     }
   ],
