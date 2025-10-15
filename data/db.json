@@ -1,373 +1,2859 @@
 {
-  "admin": {
-    "nome": "Administrador",
-    "password_hash": "scrypt:32768:8:1$IlMxGehI5XW2C6Q5$cde3a7769b678b9f0dc5022f261855ba71e7974fe506425125250ca40413667de5256c2084a8700ad1096f7a8ac6e39cd642f33363b844f651edbbf5ce40fc72"
+  "sistema": {
+    "nome": "Rodízio de Organistas CCB",
+    "versao": "2.0",
+    "data_migracao": "2025-10-14T20:38:33.063807"
   },
-  "organistas": [
-    {
-      "id": "yasminc",
-      "nome": "Yasmin C.",
-      "tipos": [
-        "Meia-hora",
-        "RJM"
-      ],
-      "dias_permitidos": [
-        "Domingo"
-      ],
-      "regras_especiais": {},
-      "password_hash": "scrypt:32768:8:1$LQHPQ0sO9i4R4gEo$341f6a9bf71ddcc9a2af7e0415574668b8e3a508f7913e1fcafc864e716a698bdd5ecad4f81d8840ce8b240977342bf6cd4b66f4a27de7be5f3c40b2be4fdc1f"
-    },
-    {
-      "id": "yasming",
-      "nome": "Yasmin G.",
-      "tipos": [
-        "Meia-hora"
-      ],
-      "dias_permitidos": [
-        "Domingo"
-      ],
-      "regras_especiais": {},
-      "password_hash": "scrypt:32768:8:1$ARQexKTwY8Je6a8u$25229a357358835faf3e643550875883ee9800fb69f9755e3da4d36c06aa28ad44534557d529f164a9453e3215c6e584c3826a3e836fa083a7e685baa14985f9"
-    },
-    {
-      "id": "milena",
-      "nome": "Milena",
-      "tipos": [
-        "Meia-hora",
-        "Culto",
-        "RJM"
-      ],
-      "dias_permitidos": [
-        "Domingo",
-        "Terça"
-      ],
-      "regras_especiais": {},
-      "password_hash": "scrypt:32768:8:1$OnTtwVUzOjrpVCyh$9b3f0dcdbeda061418108201cfdacff8dc11b24884d63b01c7581c4ed368fdec0af4c6402e0ab864b7097d2d3dad85490dfe67382bea72b1a5c7bf820b9ee8f2"
-    },
-    {
-      "id": "ieda",
-      "nome": "Ieda",
-      "tipos": [
-        "Meia-hora",
-        "Culto"
-      ],
-      "dias_permitidos": [
-        "Domingo",
-        "Terça"
-      ],
-      "regras_especiais": {},
-      "password_hash": "scrypt:32768:8:1$gV4dH9K4e6JDED6U$a0c5b030cb48b5a5b72d9f8e853195f23ef876509ad5f1fdb830055915d41fc31edfaac6b673de874ed1b5cc7012431a2f87dd3dfe492812941c3437f13ff7cd"
-    },
-    {
-      "id": "raquel",
-      "nome": "Raquel",
-      "tipos": [
-        "Culto"
-      ],
-      "dias_permitidos": [
-        "Domingo"
-      ],
-      "regras_especiais": {},
-      "password_hash": "scrypt:32768:8:1$Ge0pIG8Cx5O20f3W$c57889310cfc1afd4fbbb49500f0f6a125b7077fb30821a57c5bbe940bd60265d6c177e0a933220b638f2c4ed8e866c17167acc612c693e2513a32c53d7a801c"
-    },
-    {
-      "id": "janaina",
-      "nome": "Janaina",
-      "tipos": [
-        "Culto"
-      ],
-      "dias_permitidos": [
-        "Domingo"
-      ],
-      "regras_especiais": {},
-      "password_hash": "scrypt:32768:8:1$wFzc3PFcaUFoeHuT$519897bb7b33d71adf762eee92796721d3d79187a2aec1dd2d55f8402ee8b4a3874b9fc4f8ea6f75b587135e39cc3b846bbe6b9401b3e442c3e2d984724c67da"
+  "regionais": {
+    "gru": {
+      "id": "gru",
+      "nome": "Regional GRU",
+      "ativo": true,
+      "sub_regionais": {
+        "santa_isabel": {
+          "id": "santa_isabel",
+          "nome": "Sub-Regional Santa Isabel",
+          "ativo": true,
+          "comuns": {
+            "vila_paula": {
+              "id": "vila_paula",
+              "nome": "Comum Vila Paula",
+              "endereco": "",
+              "cidade": "Santa Isabel",
+              "ativo": true,
+              "organistas": [
+                {
+                  "id": "yasminc",
+                  "nome": "Yasmin C.",
+                  "tipos": [
+                    "Meia-hora",
+                    "RJM"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo"
+                  ],
+                  "regras_especiais": {},
+                  "password_hash": "scrypt:32768:8:1$LQHPQ0sO9i4R4gEo$341f6a9bf71ddcc9a2af7e0415574668b8e3a508f7913e1fcafc864e716a698bdd5ecad4f81d8840ce8b240977342bf6cd4b66f4a27de7be5f3c40b2be4fdc1f"
+                },
+                {
+                  "id": "yasming",
+                  "nome": "Yasmin G.",
+                  "tipos": [
+                    "Meia-hora"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo"
+                  ],
+                  "regras_especiais": {},
+                  "password_hash": "scrypt:32768:8:1$ARQexKTwY8Je6a8u$25229a357358835faf3e643550875883ee9800fb69f9755e3da4d36c06aa28ad44534557d529f164a9453e3215c6e584c3826a3e836fa083a7e685baa14985f9"
+                },
+                {
+                  "id": "milena",
+                  "nome": "Milena",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto",
+                    "RJM"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça"
+                  ],
+                  "regras_especiais": {},
+                  "password_hash": "scrypt:32768:8:1$OnTtwVUzOjrpVCyh$9b3f0dcdbeda061418108201cfdacff8dc11b24884d63b01c7581c4ed368fdec0af4c6402e0ab864b7097d2d3dad85490dfe67382bea72b1a5c7bf820b9ee8f2"
+                },
+                {
+                  "id": "ieda",
+                  "nome": "Ieda",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça"
+                  ],
+                  "regras_especiais": {},
+                  "password_hash": "scrypt:32768:8:1$gV4dH9K4e6JDED6U$a0c5b030cb48b5a5b72d9f8e853195f23ef876509ad5f1fdb830055915d41fc31edfaac6b673de874ed1b5cc7012431a2f87dd3dfe492812941c3437f13ff7cd"
+                },
+                {
+                  "id": "raquel",
+                  "nome": "Raquel",
+                  "tipos": [
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo"
+                  ],
+                  "regras_especiais": {},
+                  "password_hash": "scrypt:32768:8:1$Ge0pIG8Cx5O20f3W$c57889310cfc1afd4fbbb49500f0f6a125b7077fb30821a57c5bbe940bd60265d6c177e0a933220b638f2c4ed8e866c17167acc612c693e2513a32c53d7a801c"
+                },
+                {
+                  "id": "janaina",
+                  "nome": "Janaina",
+                  "tipos": [
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo"
+                  ],
+                  "regras_especiais": {},
+                  "password_hash": "scrypt:32768:8:1$wFzc3PFcaUFoeHuT$519897bb7b33d71adf762eee92796721d3d79187a2aec1dd2d55f8402ee8b4a3874b9fc4f8ea6f75b587135e39cc3b846bbe6b9401b3e442c3e2d984724c67da"
+                }
+              ],
+              "indisponibilidades": [
+                {
+                  "data": "2025-10-20",
+                  "motivo": "Indisponível",
+                  "id": "janaina",
+                  "autor": "janaina",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-11-10",
+                  "motivo": "Indisponível",
+                  "id": "janaina",
+                  "autor": "janaina",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-10-13",
+                  "motivo": "Indisponível",
+                  "id": "raquel",
+                  "autor": "raquel",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-11-10",
+                  "motivo": "Indisponível",
+                  "id": "raquel",
+                  "autor": "raquel",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-10-22",
+                  "motivo": "Indisponível",
+                  "id": "milena",
+                  "autor": "milena",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-11-17",
+                  "motivo": "Indisponível",
+                  "id": "milena",
+                  "autor": "milena",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-10-20",
+                  "motivo": "Indisponível",
+                  "id": "ieda",
+                  "autor": "ieda",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-11-24",
+                  "motivo": "Indisponível",
+                  "id": "ieda",
+                  "autor": "ieda",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-10-06",
+                  "motivo": "Indisponível",
+                  "id": "ieda",
+                  "autor": "ieda",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-10-14",
+                  "motivo": "Indisponível",
+                  "id": "ieda",
+                  "autor": "ieda",
+                  "status": "confirmada"
+                },
+                {
+                  "data": "2025-11-23",
+                  "motivo": "Indisponível",
+                  "id": "ieda",
+                  "autor": "ieda",
+                  "status": "confirmada"
+                }
+              ],
+              "escala": [
+                {
+                  "data": "2025-10-05",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-07",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-12",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-14",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-19",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-21",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-28",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-04",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-11",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-18",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-25",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-02",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-09",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-14",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-16",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-21",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-23",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-28",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-30",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-04",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-06",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-11",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-13",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-18",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-20",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-25",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-27",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                }
+              ],
+              "escala_rjm": [
+                {
+                  "id": "rjm_1",
+                  "data": "2025-10-05",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_2",
+                  "data": "2025-10-12",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_3",
+                  "data": "2025-10-19",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_4",
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_5",
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_6",
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_7",
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_8",
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_9",
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_10",
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_11",
+                  "data": "2025-12-14",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_12",
+                  "data": "2025-12-21",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_13",
+                  "data": "2025-12-28",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_14",
+                  "data": "2026-01-04",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_15",
+                  "data": "2026-01-11",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_16",
+                  "data": "2026-01-18",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_17",
+                  "data": "2026-01-25",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                }
+              ],
+              "config": {
+                "bimestre": {
+                  "inicio": "2025-10-01",
+                  "fim": "2026-01-30"
+                },
+                "fechamento_publicacao_dias": 7
+              },
+              "escala_publicada_em": "2025-10-15T04:36:45.829482",
+              "escala_publicada_por": "alaor"
+            },
+            "pedrabranca": {
+              "nome": "Pedra Branca",
+              "organistas": [
+                {
+                  "id": "graciela",
+                  "nome": "Graciela",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Terça",
+                    "Sexta"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "pedra_branca",
+                  "password_hash": "scrypt:32768:8:1$wQVlszU1cyN1zeZe$aa02a79a9a73c7321e03c23e92f27acc956bac27ce6c779096d5404362f0373e4c2fbe91ebd85963986359146bd0e639039f0ca51ef352101e0b642349fa50eb"
+                },
+                {
+                  "id": "victoria",
+                  "nome": "Victoria",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Terça",
+                    "Sexta"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "pedra_branca",
+                  "password_hash": "scrypt:32768:8:1$NFKK2QNTizwtcpXd$f556b4fe8314bfbfdca83918961dceb5bb4961e9e32d2464bf7502dab2b19b469da6b9600293e195ab51d1fcab76d69c6f798896064a08e8aea16c95cb25518f"
+                }
+              ],
+              "indisponibilidades": [],
+              "escala": [
+                {
+                  "data": "2025-10-14",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-17",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-19",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-21",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-24",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-28",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-31",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-04",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-07",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-11",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-14",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-18",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-21",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-25",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-28",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-02",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-05",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-09",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-12",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-14",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-16",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-19",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-21",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-23",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-26",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-28",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-30",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-02",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-04",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-06",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-09",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-11",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-13",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-16",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-18",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-20",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-23",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-25",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-27",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-01-30",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-01",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-03",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-06",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-08",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-10",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-13",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-15",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-17",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-20",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-22",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-24",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-02-27",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-01",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-03",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-06",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-08",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-10",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-13",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-15",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-17",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-20",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-22",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-24",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-27",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-29",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-03-31",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-03",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-05",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-07",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-10",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-12",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-14",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-17",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-19",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-21",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-24",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-26",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-04-28",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-01",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-03",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-05",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-08",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-10",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-12",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-15",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-17",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-19",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-22",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-24",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-26",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-29",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-05-31",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-02",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-05",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-07",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-09",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-12",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-14",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-16",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-19",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-21",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-23",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-26",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-28",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-06-30",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-03",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-05",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-07",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-10",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-12",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-14",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-17",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-19",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-21",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-24",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-26",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-28",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-07-31",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-02",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-04",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-07",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-09",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-11",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-14",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-16",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-18",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-21",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-23",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-25",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-28",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-08-30",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-01",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-04",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-06",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-08",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-11",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-13",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-15",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-18",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-20",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-22",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-25",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-27",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-09-29",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-02",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-04",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-06",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-09",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-11",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-13",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-16",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-18",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-20",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-23",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-25",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-27",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-10-30",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-01",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-03",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-06",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-08",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-10",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-13",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-15",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-17",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-20",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-22",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-24",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-27",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-11-29",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-01",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-04",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-06",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-08",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-11",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-13",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-15",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-18",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-20",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-22",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-25",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-27",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2026-12-29",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": null,
+                  "culto": null
+                }
+              ],
+              "escala_rjm": [
+                {
+                  "id": "rjm_1",
+                  "data": "2025-10-19",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_2",
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_3",
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_4",
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_5",
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_6",
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_7",
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_8",
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_9",
+                  "data": "2025-12-14",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_10",
+                  "data": "2025-12-21",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_11",
+                  "data": "2025-12-28",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_12",
+                  "data": "2026-01-04",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_13",
+                  "data": "2026-01-11",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_14",
+                  "data": "2026-01-18",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_15",
+                  "data": "2026-01-25",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_16",
+                  "data": "2026-02-01",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_17",
+                  "data": "2026-02-08",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_18",
+                  "data": "2026-02-15",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_19",
+                  "data": "2026-02-22",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_20",
+                  "data": "2026-03-01",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_21",
+                  "data": "2026-03-08",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_22",
+                  "data": "2026-03-15",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_23",
+                  "data": "2026-03-22",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_24",
+                  "data": "2026-03-29",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_25",
+                  "data": "2026-04-05",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_26",
+                  "data": "2026-04-12",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_27",
+                  "data": "2026-04-19",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_28",
+                  "data": "2026-04-26",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_29",
+                  "data": "2026-05-03",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_30",
+                  "data": "2026-05-10",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_31",
+                  "data": "2026-05-17",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_32",
+                  "data": "2026-05-24",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_33",
+                  "data": "2026-05-31",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_34",
+                  "data": "2026-06-07",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_35",
+                  "data": "2026-06-14",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_36",
+                  "data": "2026-06-21",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_37",
+                  "data": "2026-06-28",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_38",
+                  "data": "2026-07-05",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_39",
+                  "data": "2026-07-12",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_40",
+                  "data": "2026-07-19",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_41",
+                  "data": "2026-07-26",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_42",
+                  "data": "2026-08-02",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_43",
+                  "data": "2026-08-09",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_44",
+                  "data": "2026-08-16",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_45",
+                  "data": "2026-08-23",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_46",
+                  "data": "2026-08-30",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_47",
+                  "data": "2026-09-06",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_48",
+                  "data": "2026-09-13",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_49",
+                  "data": "2026-09-20",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_50",
+                  "data": "2026-09-27",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_51",
+                  "data": "2026-10-04",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_52",
+                  "data": "2026-10-11",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_53",
+                  "data": "2026-10-18",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_54",
+                  "data": "2026-10-25",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_55",
+                  "data": "2026-11-01",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_56",
+                  "data": "2026-11-08",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_57",
+                  "data": "2026-11-15",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_58",
+                  "data": "2026-11-22",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_59",
+                  "data": "2026-11-29",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_60",
+                  "data": "2026-12-06",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_61",
+                  "data": "2026-12-13",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_62",
+                  "data": "2026-12-20",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_63",
+                  "data": "2026-12-27",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                }
+              ],
+              "config": {
+                "periodo": {
+                  "inicio": "2025-10-14",
+                  "fim": "2026-12-31"
+                },
+                "dias_culto": [
+                  "Domingo",
+                  "Terça",
+                  "Sexta"
+                ],
+                "horarios": {
+                  "Domingo": [
+                    "10:00"
+                  ],
+                  "Terça": [
+                    "19:30"
+                  ],
+                  "Sexta": [
+                    "19:30"
+                  ]
+                },
+                "fechamento_publicacao_dias": 7
+              },
+              "escala_publicada_em": "2025-10-15T04:08:06.060843",
+              "escala_publicada_por": "alaor",
+              "id": "pedra_branca"
+            },
+            "central": {
+              "nome": "Central",
+              "organistas": [
+                {
+                  "id": "celiane",
+                  "nome": "Celiane",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Culto",
+                    "RJM"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Segunda",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "central",
+                  "password_hash": "scrypt:32768:8:1$RwRXDsANmucWfyiZ$dc926ba4d38eb818f1c094a111f971c8309b5474e03f032351235643ff79fa5f3d1963b6ba398f5ba1329427080b5764995b80b6ae9a5b0d9ceb12dccff1605f"
+                }
+              ],
+              "indisponibilidades": [],
+              "escala": [
+                {
+                  "data": "2025-10-16",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": "Celiane"
+                },
+                {
+                  "data": "2025-10-18",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": "Celiane"
+                },
+                {
+                  "data": "2025-10-19",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": "Celiane"
+                },
+                {
+                  "data": "2025-10-20",
+                  "dia_semana": "Monday",
+                  "meia_hora": null,
+                  "culto": "Celiane"
+                },
+                {
+                  "data": "2025-10-23",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": "Celiane"
+                },
+                {
+                  "data": "2025-10-25",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": "Celiane"
+                },
+                {
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": "Celiane"
+                },
+                {
+                  "data": "2025-10-27",
+                  "dia_semana": "Monday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-30",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-01",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-03",
+                  "dia_semana": "Monday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-06",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-08",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-10",
+                  "dia_semana": "Monday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-13",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-15",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-17",
+                  "dia_semana": "Monday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-20",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-22",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-24",
+                  "dia_semana": "Monday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-27",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-29",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-01",
+                  "dia_semana": "Monday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-04",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-06",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-08",
+                  "dia_semana": "Monday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-11",
+                  "dia_semana": "Thursday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-13",
+                  "dia_semana": "Saturday",
+                  "meia_hora": null,
+                  "culto": null
+                }
+              ],
+              "escala_rjm": [
+                {
+                  "id": "rjm_1",
+                  "data": "2025-10-19",
+                  "dia_semana": "Sunday",
+                  "organista": "Celiane"
+                },
+                {
+                  "id": "rjm_2",
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_3",
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_4",
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_5",
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_6",
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_7",
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_8",
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                }
+              ],
+              "config": {
+                "periodo": {
+                  "inicio": "2025-10-14",
+                  "fim": "2025-12-13"
+                },
+                "dias_culto": [
+                  "Domingo",
+                  "Segunda",
+                  "Quinta",
+                  "Sábado"
+                ],
+                "horarios": {
+                  "Domingo": [
+                    "18:30"
+                  ],
+                  "Segunda": [
+                    "19:30"
+                  ],
+                  "Quinta": [
+                    "14:00"
+                  ],
+                  "Sábado": [
+                    "19:30"
+                  ]
+                },
+                "fechamento_publicacao_dias": 7,
+                "bimestre": {
+                  "inicio": "2025-10-14",
+                  "fim": "2025-12-31"
+                }
+              },
+              "escala_publicada_em": "2025-10-15T02:03:40.232510",
+              "escala_publicada_por": "enc_central",
+              "id": "central"
+            },
+            "pedra_branca": {
+              "nome": "Pedra Branca",
+              "organistas": [
+                {
+                  "id": "graciela",
+                  "nome": "Graciela",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Terça",
+                    "Sexta"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "pedra_branca",
+                  "password_hash": "scrypt:32768:8:1$wQVlszU1cyN1zeZe$aa02a79a9a73c7321e03c23e92f27acc956bac27ce6c779096d5404362f0373e4c2fbe91ebd85963986359146bd0e639039f0ca51ef352101e0b642349fa50eb"
+                },
+                {
+                  "id": "victoria",
+                  "nome": "Victoria",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Terça",
+                    "Sexta"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "pedra_branca",
+                  "password_hash": "scrypt:32768:8:1$NFKK2QNTizwtcpXd$f556b4fe8314bfbfdca83918961dceb5bb4961e9e32d2464bf7502dab2b19b469da6b9600293e195ab51d1fcab76d69c6f798896064a08e8aea16c95cb25518f"
+                }
+              ],
+              "indisponibilidades": [],
+              "escala": [],
+              "escala_rjm": [],
+              "config": {
+                "periodo": {
+                  "inicio": "2025-10-15",
+                  "fim": "2025-12-14"
+                },
+                "dias_culto": [
+                  "Terça",
+                  "Sexta"
+                ],
+                "horarios": {
+                  "Terça": [
+                    "19:30"
+                  ],
+                  "Sexta": [
+                    "19:30"
+                  ]
+                },
+                "fechamento_publicacao_dias": 7
+              }
+            },
+            "montenegro": {
+              "nome": "Monte Negreo",
+              "organistas": [
+                {
+                  "id": "teste123",
+                  "nome": "Teste",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto",
+                    "RJM"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Quarta",
+                    "Sexta"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "montenegro",
+                  "password_hash": "scrypt:32768:8:1$gxMWzZxlWIVskjil$b8996c3bd03ccb9760c6f473305086012ce7b95123c34dcb15a7f9d05d22306ab841e1c3fbcf050162c1398b44cca9913fd7e53b351b33ef17e1870d1a8e8868"
+                }
+              ],
+              "indisponibilidades": [],
+              "escala": [
+                {
+                  "data": "2025-10-15",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": "Teste",
+                  "culto": "Teste"
+                },
+                {
+                  "data": "2025-10-17",
+                  "dia_semana": "Friday",
+                  "meia_hora": "Teste",
+                  "culto": "Teste"
+                },
+                {
+                  "data": "2025-10-19",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-22",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-24",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-29",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-10-31",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-05",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-07",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-12",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-14",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-19",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-21",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-26",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-28",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-03",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-05",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-10",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-12",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-14",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-17",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-19",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-21",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-24",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-26",
+                  "dia_semana": "Friday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-28",
+                  "dia_semana": "Sunday",
+                  "meia_hora": null,
+                  "culto": null
+                },
+                {
+                  "data": "2025-12-31",
+                  "dia_semana": "Wednesday",
+                  "meia_hora": null,
+                  "culto": null
+                }
+              ],
+              "escala_rjm": [
+                {
+                  "id": "rjm_1",
+                  "data": "2025-10-19",
+                  "dia_semana": "Sunday",
+                  "organista": "Teste"
+                },
+                {
+                  "id": "rjm_2",
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "organista": "Teste"
+                },
+                {
+                  "id": "rjm_3",
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "organista": "Teste"
+                },
+                {
+                  "id": "rjm_4",
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_5",
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_6",
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_7",
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_8",
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_9",
+                  "data": "2025-12-14",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_10",
+                  "data": "2025-12-21",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                },
+                {
+                  "id": "rjm_11",
+                  "data": "2025-12-28",
+                  "dia_semana": "Sunday",
+                  "organista": ""
+                }
+              ],
+              "config": {
+                "periodo": {
+                  "inicio": "2025-10-15",
+                  "fim": "2025-12-31"
+                },
+                "dias_culto": [
+                  "Domingo",
+                  "Quarta",
+                  "Sexta"
+                ],
+                "horarios": {
+                  "Domingo": [
+                    "10:00",
+                    "18:30"
+                  ],
+                  "Quarta": [
+                    "19:30"
+                  ],
+                  "Sexta": [
+                    "19:30"
+                  ]
+                },
+                "fechamento_publicacao_dias": 7
+              },
+              "escala_publicada_em": "2025-10-15T03:50:51.611725",
+              "escala_publicada_por": "enc_montenegro"
+            }
+          }
+        }
+      }
     }
-  ],
-  "indisponibilidades": [
-    {
-      "data": "2025-10-20",
-      "motivo": "Indisponível",
-      "id": "janaina",
-      "autor": "janaina",
-      "status": "confirmada"
+  },
+  "usuarios": {
+    "admin_master": {
+      "id": "admin_master",
+      "nome": "Administrador",
+      "tipo": "master",
+      "nivel": "sistema",
+      "password_hash": "scrypt:32768:8:1$IlMxGehI5XW2C6Q5$cde3a7769b678b9f0dc5022f261855ba71e7974fe506425125250ca40413667de5256c2084a8700ad1096f7a8ac6e39cd642f33363b844f651edbbf5ce40fc72",
+      "ativo": true,
+      "permissoes": [
+        "gerenciar_regionais",
+        "gerenciar_sub_regionais",
+        "gerenciar_comuns",
+        "visualizar_todos_relatorios"
+      ]
     },
-    {
-      "data": "2025-11-10",
-      "motivo": "Indisponível",
-      "id": "janaina",
-      "autor": "janaina",
-      "status": "confirmada"
+    "enc_pedrabranca": {
+      "id": "enc_pedrabranca",
+      "nome": "Douglas",
+      "password_hash": "scrypt:32768:8:1$iGVUQCY50z3hu6Tq$21925fcc962e7b1d5a0e8f86af5a2685e824cfe750a7e7982002af0c079825a0aaa4593fdb57079cef17af6dd0e2be0bd5867fb61384496dcf67fe0128881e0d",
+      "tipo": "encarregado_comum",
+      "email": "",
+      "telefone": "",
+      "contexto_id": "pedra_branca",
+      "ativo": true,
+      "data_criacao": "2025-10-14T22:20:34.506504"
     },
-    {
-      "data": "2025-10-13",
-      "motivo": "Indisponível",
-      "id": "raquel",
-      "autor": "raquel",
-      "status": "confirmada"
+    "enc_central": {
+      "id": "enc_central",
+      "nome": "Felipe",
+      "password_hash": "scrypt:32768:8:1$PQYyaKVvZbkj9o9R$7901405b586d54e4c1162312fb59ed0180472e41a95ac7a9c4af2a5922a434b8655cd3ef9c7da4723c082d51cf77800c098896bca38d5ae3b61536232faea28f",
+      "tipo": "encarregado_comum",
+      "email": "",
+      "telefone": "",
+      "contexto_id": "central",
+      "ativo": true,
+      "data_criacao": "2025-10-14T22:41:40.884343"
     },
-    {
-      "data": "2025-11-10",
-      "motivo": "Indisponível",
-      "id": "raquel",
-      "autor": "raquel",
-      "status": "confirmada"
+    "alaor": {
+      "id": "alaor",
+      "nome": "Alaor Rodrigues",
+      "password_hash": "scrypt:32768:8:1$eyrDJAWUaIJhS2q8$3a9c798b827b53fe4a774dc6feee17eb9e354d226cf9c47101f94a2dc7dcb53daf9a1a8fd75e49c4cf2662f6e0f6c4f3603ef1eacae4440f8645ee87319878f9",
+      "tipo": "master",
+      "email": "alaor_si@hotmail.com",
+      "telefone": "11960608419",
+      "contexto_id": "",
+      "ativo": true,
+      "data_criacao": "2025-10-14T23:18:42.382662"
     },
-    {
-      "data": "2025-10-22",
-      "motivo": "Indisponível",
-      "id": "milena",
-      "autor": "milena",
-      "status": "confirmada"
-    },
-    {
-      "data": "2025-11-17",
-      "motivo": "Indisponível",
-      "id": "milena",
-      "autor": "milena",
-      "status": "confirmada"
-    },
-    {
-      "data": "2025-10-20",
-      "motivo": "Indisponível",
-      "id": "ieda",
-      "autor": "ieda",
-      "status": "confirmada"
-    },
-    {
-      "data": "2025-11-24",
-      "motivo": "Indisponível",
-      "id": "ieda",
-      "autor": "ieda",
-      "status": "confirmada"
-    },
-    {
-      "data": "2025-10-06",
-      "motivo": "Indisponível",
-      "id": "ieda",
-      "autor": "ieda",
-      "status": "confirmada"
-    },
-    {
-      "data": "2025-10-14",
-      "motivo": "Indisponível",
-      "id": "ieda",
-      "autor": "ieda",
-      "status": "confirmada"
-    },
-    {
-      "data": "2025-11-23",
-      "motivo": "Indisponível",
-      "id": "ieda",
-      "autor": "ieda",
-      "status": "confirmada"
+    "enc_montenegro": {
+      "id": "enc_montenegro",
+      "nome": "Edmar",
+      "password_hash": "scrypt:32768:8:1$0ouN4Wmh9DhwZfjD$9b6615cba44a3217663abd30308afdadcb0631a7b1ca76ebcf32bdc81081adbc169e8952a13ae2872a2665c50164be9d3e5fb3ada8e6afe37d40f6919b44d6e1",
+      "tipo": "encarregado_comum",
+      "email": "",
+      "telefone": "",
+      "contexto_id": "montenegro",
+      "ativo": true,
+      "data_criacao": "2025-10-15T00:49:46.029013"
     }
-  ],
-  "escala": [
-    {
-      "data": "2025-10-05",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-10-07",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-10-12",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-10-14",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-10-19",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-10-21",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-10-26",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-10-28",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-02",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-04",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-09",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-11",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-16",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-18",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-23",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-25",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-11-30",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-02",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-07",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-09",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-14",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-16",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-21",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-23",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-28",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2025-12-30",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2026-01-04",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2026-01-06",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2026-01-11",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2026-01-13",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2026-01-18",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2026-01-20",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2026-01-25",
-      "dia_semana": "Sunday",
-      "meia_hora": null,
-      "culto": null
-    },
-    {
-      "data": "2026-01-27",
-      "dia_semana": "Tuesday",
-      "meia_hora": null,
-      "culto": null
-    }
-  ],
+  },
   "logs": [
     {
       "quando": "2025-10-14T16:00:00.000Z",
@@ -1414,119 +3900,888 @@
           ]
         }
       }
+    },
+    {
+      "quando": "2025-10-14T23:20:05.307641",
+      "acao": "update_config",
+      "por": "admin",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-01",
+          "fim": "2026-01-30"
+        },
+        "fechamento_publicacao_dias": 7
+      }
+    },
+    {
+      "quando": "2025-10-14T20:38:33.063829",
+      "acao": "migracao_para_regional",
+      "por": "sistema",
+      "detalhes": {
+        "versao_anterior": "1.0",
+        "versao_nova": "2.0",
+        "organistas_migradas": 6,
+        "escala_migrada": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T01:49:20.809040",
+      "acao": "add_organista",
+      "por": "enc_central",
+      "comum_id": "central",
+      "payload": {
+        "id": "celiane",
+        "nome": "Celiane",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Culto",
+          "RJM"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Segunda",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "central"
+      }
+    },
+    {
+      "quando": "2025-10-15T01:50:39.368493",
+      "acao": "update_config",
+      "por": "enc_central",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-12-31"
+        },
+        "fechamento_publicacao_dias": 7
+      }
+    },
+    {
+      "quando": "2025-10-15T01:55:25.493987",
+      "acao": "update_config",
+      "por": "enc_central",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-12-31"
+        },
+        "fechamento_publicacao_dias": 7
+      }
+    },
+    {
+      "quando": "2025-10-15T01:55:33.040552",
+      "acao": "update_config",
+      "por": "enc_central",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-12-31"
+        },
+        "fechamento_publicacao_dias": 7
+      }
+    },
+    {
+      "quando": "2025-10-15T01:56:30.900256",
+      "acao": "update_config",
+      "por": "enc_central",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-12-31"
+        },
+        "fechamento_publicacao_dias": 7
+      }
+    },
+    {
+      "quando": "2025-10-15T01:58:19.905956",
+      "acao": "update_config",
+      "por": "enc_central",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-12-13"
+        },
+        "fechamento_publicacao_dias": 7
+      }
+    },
+    {
+      "quando": "2025-10-15T02:00:49.886295",
+      "acao": "update_config",
+      "por": "enc_central",
+      "payload": {
+        "bimestre": {
+          "inicio": "2025-10-14",
+          "fim": "2025-12-31"
+        },
+        "fechamento_publicacao_dias": 7
+      }
+    },
+    {
+      "quando": "2025-10-15T02:00:58.168528",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:01:33.302889",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:01:34.098893",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:01:35.002863",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:01:37.402968",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:01:44.530950",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:01:46.886835",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:01:53.282939",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:03:40.232523",
+      "acao": "publicar_escala",
+      "por": "enc_central",
+      "comum_id": "central",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T02:03:54.946588",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-16",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:03:54.969106",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-18",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:03:54.987058",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-19",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:07:09.660777",
+      "acao": "criar_escala_rjm_vazia",
+      "quem": "enc_central",
+      "total_domingos": 8
+    },
+    {
+      "quando": "2025-10-15T02:07:17.738419",
+      "acao": "atualizar_escala_rjm_multiplos",
+      "quem": "enc_central",
+      "comum_id": "central",
+      "total_alteracoes": 8
+    },
+    {
+      "quando": "2025-10-15T02:13:02.794630",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-16",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:13:02.808131",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-18",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:13:02.820816",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-19",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:15:05.706490",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-16",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:15:05.721795",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-19",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:15:05.735952",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "payload": {
+        "data": "2025-10-20",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:16:42.190946",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "comum_id": "central",
+      "payload": {
+        "data": "2025-10-16",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:16:42.204279",
+      "acao": "editar_escala",
+      "por": "enc_central",
+      "comum_id": "central",
+      "payload": {
+        "data": "2025-10-18",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:46:38.166285",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "central",
+      "payload": {
+        "data": "2025-10-19",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:46:38.180939",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "central",
+      "payload": {
+        "data": "2025-10-20",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:46:38.195546",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "central",
+      "payload": {
+        "data": "2025-10-23",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:46:38.209020",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "central",
+      "payload": {
+        "data": "2025-10-25",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:46:38.222717",
+      "acao": "editar_escala",
+      "por": "admin_master",
+      "comum_id": "central",
+      "payload": {
+        "data": "2025-10-26",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": null,
+            "culto": "Celiane"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T02:54:20.263170",
+      "acao": "publicar_escala",
+      "por": "admin_master",
+      "comum_id": "pedrabranca",
+      "payload": {
+        "total_dias": 18
+      }
+    },
+    {
+      "quando": "2025-10-15T03:17:12.243312",
+      "acao": "add_organista",
+      "por": "enc_pedrabranca",
+      "comum_id": "pedra_branca",
+      "payload": {
+        "id": "graciela",
+        "nome": "Graciela",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Terça",
+          "Sexta"
+        ],
+        "regras_especiais": {},
+        "comum_id": "pedra_branca"
+      }
+    },
+    {
+      "quando": "2025-10-15T03:17:28.153891",
+      "acao": "add_organista",
+      "por": "enc_pedrabranca",
+      "comum_id": "pedra_branca",
+      "payload": {
+        "id": "victoria",
+        "nome": "Victoria",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Terça",
+          "Sexta"
+        ],
+        "regras_especiais": {},
+        "comum_id": "pedra_branca"
+      }
+    },
+    {
+      "quando": "2025-10-15T03:18:07.469353",
+      "acao": "editar_escala",
+      "por": "enc_pedrabranca",
+      "comum_id": "pedrabranca",
+      "payload": {
+        "data": "2025-10-14",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Graciela",
+            "culto": "Victoria"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T03:18:07.484434",
+      "acao": "editar_escala",
+      "por": "enc_pedrabranca",
+      "comum_id": "pedrabranca",
+      "payload": {
+        "data": "2025-10-17",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Victoria",
+            "culto": "Graciela"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T03:18:07.498715",
+      "acao": "editar_escala",
+      "por": "enc_pedrabranca",
+      "comum_id": "pedrabranca",
+      "payload": {
+        "data": "2025-10-21",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Graciela",
+            "culto": "Graciela"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T03:18:07.512963",
+      "acao": "editar_escala",
+      "por": "enc_pedrabranca",
+      "comum_id": "pedrabranca",
+      "payload": {
+        "data": "2025-10-24",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Victoria",
+            "culto": "Victoria"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T03:50:28.473476",
+      "acao": "add_organista",
+      "por": "enc_montenegro",
+      "comum_id": "montenegro",
+      "payload": {
+        "id": "teste123",
+        "nome": "Teste",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto",
+          "RJM"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Quarta",
+          "Sexta"
+        ],
+        "regras_especiais": {},
+        "comum_id": "montenegro"
+      }
+    },
+    {
+      "quando": "2025-10-15T03:50:46.045498",
+      "acao": "update_config",
+      "por": "enc_montenegro",
+      "payload": {
+        "fechamento_publicacao_dias": 7,
+        "periodo": {
+          "inicio": "2025-10-15",
+          "fim": "2025-12-31"
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T03:50:51.611741",
+      "acao": "publicar_escala",
+      "por": "enc_montenegro",
+      "comum_id": "montenegro",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T03:51:01.146217",
+      "acao": "editar_escala",
+      "por": "enc_montenegro",
+      "comum_id": "montenegro",
+      "payload": {
+        "data": "2025-10-15",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Teste",
+            "culto": "Teste"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T03:51:01.160412",
+      "acao": "editar_escala",
+      "por": "enc_montenegro",
+      "comum_id": "montenegro",
+      "payload": {
+        "data": "2025-10-17",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Teste",
+            "culto": "Teste"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T03:51:06.671489",
+      "acao": "criar_escala_rjm_vazia",
+      "quem": "enc_montenegro",
+      "total_domingos": 11
+    },
+    {
+      "quando": "2025-10-15T03:51:19.410849",
+      "acao": "atualizar_escala_rjm_multiplos",
+      "quem": "enc_montenegro",
+      "comum_id": "montenegro",
+      "total_alteracoes": 11
+    },
+    {
+      "quando": "2025-10-15T04:07:46.465753",
+      "acao": "update_config",
+      "por": "alaor",
+      "payload": {
+        "fechamento_publicacao_dias": 7,
+        "periodo": {
+          "inicio": "2025-10-14",
+          "fim": "2026-12-31"
+        }
+      }
+    },
+    {
+      "quando": "2025-10-15T04:08:06.060859",
+      "acao": "publicar_escala",
+      "por": "alaor",
+      "comum_id": "pedrabranca",
+      "payload": {
+        "total_dias": 190
+      }
+    },
+    {
+      "quando": "2025-10-15T04:36:45.829500",
+      "acao": "publicar_escala",
+      "por": "alaor",
+      "comum_id": "vila_paula",
+      "payload": {
+        "total_dias": 34
+      }
+    },
+    {
+      "quando": "2025-10-15T04:42:38.767674",
+      "acao": "criar_escala_rjm_vazia",
+      "quem": "alaor",
+      "total_domingos": 63
     }
   ],
-  "config": {
-    "bimestre": {
-      "inicio": "2025-10-01",
-      "fim": "2026-01-30"
-    },
-    "fechamento_publicacao_dias": 3
-  },
-  "escala_publicada_em": "2025-10-14T22:09:39.287694",
-  "escala_publicada_por": "admin",
-  "escala_rjm": [
+  "escala_rjm": [],
+  "escala": [
     {
-      "id": "rjm_1",
-      "data": "2025-10-05",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "data": "2025-10-16",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": "Celiane"
     },
     {
-      "id": "rjm_2",
-      "data": "2025-10-12",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "data": "2025-10-18",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": "Celiane"
     },
     {
-      "id": "rjm_3",
       "data": "2025-10-19",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "dia_semana": "Domingo",
+      "meia_hora": null,
+      "culto": "Celiane"
     },
     {
-      "id": "rjm_4",
+      "data": "2025-10-20",
+      "dia_semana": "Segunda",
+      "meia_hora": null,
+      "culto": "Celiane"
+    },
+    {
+      "data": "2025-10-23",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-10-25",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
       "data": "2025-10-26",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "dia_semana": "Domingo",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_5",
+      "data": "2025-10-27",
+      "dia_semana": "Segunda",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-10-30",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-01",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
       "data": "2025-11-02",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "dia_semana": "Domingo",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_6",
+      "data": "2025-11-03",
+      "dia_semana": "Segunda",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-06",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-08",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
       "data": "2025-11-09",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "dia_semana": "Domingo",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_7",
+      "data": "2025-11-10",
+      "dia_semana": "Segunda",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-13",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-15",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
       "data": "2025-11-16",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "dia_semana": "Domingo",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_8",
+      "data": "2025-11-17",
+      "dia_semana": "Segunda",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-20",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-22",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
       "data": "2025-11-23",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "dia_semana": "Domingo",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_9",
+      "data": "2025-11-24",
+      "dia_semana": "Segunda",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-27",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-11-29",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
       "data": "2025-11-30",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "dia_semana": "Domingo",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_10",
+      "data": "2025-12-01",
+      "dia_semana": "Segunda",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-04",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
+      "data": "2025-12-06",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": null
+    },
+    {
       "data": "2025-12-07",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "dia_semana": "Domingo",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_11",
-      "data": "2025-12-14",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "data": "2025-12-08",
+      "dia_semana": "Segunda",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_12",
-      "data": "2025-12-21",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "data": "2025-12-11",
+      "dia_semana": "Quinta",
+      "meia_hora": null,
+      "culto": null
     },
     {
-      "id": "rjm_13",
-      "data": "2025-12-28",
-      "dia_semana": "Sunday",
-      "organista": ""
-    },
-    {
-      "id": "rjm_14",
-      "data": "2026-01-04",
-      "dia_semana": "Sunday",
-      "organista": ""
-    },
-    {
-      "id": "rjm_15",
-      "data": "2026-01-11",
-      "dia_semana": "Sunday",
-      "organista": ""
-    },
-    {
-      "id": "rjm_16",
-      "data": "2026-01-18",
-      "dia_semana": "Sunday",
-      "organista": ""
-    },
-    {
-      "id": "rjm_17",
-      "data": "2026-01-25",
-      "dia_semana": "Sunday",
-      "organista": ""
+      "data": "2025-12-13",
+      "dia_semana": "Sábado",
+      "meia_hora": null,
+      "culto": null
     }
-  ]
+  ],
+  "escala_publicada_em": "2025-10-15T02:01:53.282899",
+  "escala_publicada_por": "enc_central"
 }

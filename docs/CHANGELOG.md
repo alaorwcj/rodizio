@@ -1,5 +1,93 @@
 # 📝 Changelog - Sistema de Rodízio de Organistas
 
+## Versão 2.3.0 - Melhorias em Cadastro
+**Data**: 14 de Outubro de 2025
+
+### 🎯 **MELHORIAS - Fluxo de Cadastro Otimizado**
+
+#### **Configuração no Cadastro do Comum**
+- **Criar comum já configurado** - Dias e horários definidos NA MESMA TELA
+  - ✅ Modal expandido com checkboxes de dias
+  - ✅ Campos de horário inline (formato: `09:00, 18:00`)
+  - ✅ Validação automática de formato HH:MM
+  - ✅ Seleção de fechamento de publicação (3-15 dias)
+  - ✅ Comum nasce completamente configurado
+  - ✅ Elimina necessidade de configurar depois
+
+#### **Seletor de Contexto para Organistas (Master)**
+- **Master escolhe qual comum** ao cadastrar organista
+  - ✅ Novo campo "📍 Comum" no formulário (visível só para Master)
+  - ✅ Lista todos os comuns disponíveis (Regional › Sub › Comum)
+  - ✅ Dias Permitidos carregam automaticamente do comum selecionado
+  - ✅ Encarregados continuam cadastrando apenas no próprio comum
+  - ✅ Fluxo mais rápido (sem trocar contexto)
+
+#### **Melhorias Técnicas**
+- **Backend:**
+  - `criar_comum()` aceita objeto `config` no payload
+  - Mescla configuração fornecida com padrão
+  - Validação robusta de estrutura
+
+- **Frontend:**
+  - `toggleModalHorarios()` - Mostra/oculta campos de horário
+  - `carregarComunsParaOrganista()` - Popula dropdown de comuns
+  - `carregarDiasDoComum()` - Carrega dias do comum selecionado
+  - `criarComum()` - Valida e envia config completa
+
+#### **Benefícios**
+- ⚡ **Menos cliques** - Criar + configurar em 1 etapa
+- 🎯 **Impossível esquecer** - Config obrigatória na criação
+- 🚀 **Master mais produtivo** - Cadastra em qualquer comum direto
+- 📊 **Consistência** - Dias sempre sincronizados com o comum
+
+**Documentação:** Ver `FEATURE_CADASTRO_V2.md`
+
+---
+
+## Versão 2.2.0 - Gestão de Horários
+**Data**: 14 de Outubro de 2025
+
+### 🎉 **NOVA FUNCIONALIDADE - Administração de Horários**
+- **Interface completa para configurar dias e horários de culto por comum**
+  - ✅ Cada dia da semana pode ter múltiplos horários
+  - ✅ Adicionar/remover horários dinamicamente via interface
+  - ✅ Validação automática (horários obrigatórios para dias marcados)
+  - ✅ Ordenação automática dos horários
+  - ✅ Visual intuitivo com cards expansíveis por dia
+  - ✅ Suporta configurações individuais por comum
+  - ✅ Configuração de fechamento de publicação (3-15 dias antes)
+  
+- **Funcionalidades:**
+  - 📅 Checkbox para ativar/desativar cada dia da semana
+  - ⏰ Campos de horário com formato HH:MM
+  - ➕ Botão para adicionar múltiplos horários no mesmo dia
+  - ✕ Botão para remover horários específicos
+  - 💾 Salvamento com validação completa
+  - 🔄 Carregamento automático de configurações existentes
+  
+- **Estrutura de dados:**
+  - `dias_culto`: Array de dias ativos
+  - `horarios`: Objeto com arrays de horários por dia
+  - `fechamento_publicacao_dias`: Dias antes para fechar publicação
+  - `periodo`: Data início e fim da escala
+
+- **Documentação:** Ver `CONFIGURACAO_HORARIOS.md`
+
+---
+
+## Versão 2.1.1 - Hotfix Autenticação
+**Data**: 14 de Outubro de 2025
+
+### 🐛 **BUGFIX CRÍTICO**
+- **Autenticação de Usuários**: Corrigido bug que impedia login de usuários criados via interface
+  - **Causa**: Campo `senha_hash` na criação vs `password_hash` no login
+  - **Solução**: Padronizado `password_hash` em todo código + script de migração
+  - **Impacto**: Todos os usuários criados desde v2.1 precisavam de migração
+  - **Arquivo**: `fix_password_field.py` - migração automática com backup
+  - **Documentação**: Ver `BUGFIX_AUTENTICACAO.md` para detalhes completos
+
+---
+
 ## Versão 1.1 - Escala Anual
 **Data**: 14 de Outubro de 2025
 

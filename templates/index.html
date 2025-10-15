@@ -13,9 +13,177 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #A78BFA 0%, #6D28D9 100%);
             min-height: 100vh;
             padding: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+        }
+        
+        body.dark-mode .container {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .card {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .card h2 {
+            color: #c4b5fd;
+        }
+        
+        body.dark-mode .nav-tabs {
+            background: #1e293b;
+            border-bottom-color: #475569;
+        }
+        
+        body.dark-mode .nav-tab,
+        body.dark-mode .nav-dropdown-toggle {
+            background: #1e293b;
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .nav-tab:hover,
+        body.dark-mode .nav-dropdown-toggle:hover {
+            background: #334155;
+        }
+        
+        body.dark-mode .nav-tab.active,
+        body.dark-mode .nav-dropdown-toggle.active {
+            background: #334155;
+            color: #c4b5fd;
+        }
+        
+        body.dark-mode .nav-dropdown-menu {
+            background: #1e293b;
+        }
+        
+        body.dark-mode .nav-dropdown-item {
+            background: #1e293b;
+            color: #cbd5e1;
+            border-bottom-color: #334155;
+        }
+        
+        body.dark-mode .nav-dropdown-item:hover {
+            background: #334155;
+        }
+        
+        body.dark-mode .nav-dropdown-item.active {
+            background: #475569;
+        }
+        
+        body.dark-mode .content {
+            background: #1e293b;
+        }
+        
+        body.dark-mode table {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode table th {
+            background: #7c3aed;
+        }
+        
+        body.dark-mode table tr:hover {
+            background: #475569;
+        }
+        
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background: #334155;
+            color: #e2e8f0;
+            border-color: #475569;
+        }
+        
+        body.dark-mode .escala-item {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .escala-dia-numero {
+            color: #c4b5fd;
+        }
+        
+        body.dark-mode .escala-dia-semana,
+        body.dark-mode .escala-organista {
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .no-escala {
+            color: #94a3b8;
+        }
+        
+        body.dark-mode .dashboard-title {
+            color: #c4b5fd;
+        }
+        
+        body.dark-mode .header {
+            background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%);
+        }
+        
+        body.dark-mode .user-selector {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode .user-selector select {
+            background: #334155;
+            color: #e2e8f0;
+            border-color: #475569;
+        }
+        
+        body.dark-mode .user-indicator {
+            background: #7c3aed;
+            color: #e0e7ff;
+        }
+        
+        body.dark-mode .btn-warning {
+            background: #7c3aed;
+        }
+        
+        body.dark-mode .btn-warning:hover {
+            background: #6d28d9;
+        }
+        
+        /* Botão Dark Mode */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2em;
+            z-index: 10000;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dark-mode-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        body.dark-mode .dark-mode-toggle {
+            background: rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        body.dark-mode .dark-mode-toggle:hover {
+            background: rgba(0, 0, 0, 0.4);
         }
         
         .container {
@@ -28,7 +196,7 @@
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #A78BFA 0%, #6D28D9 100%);
             color: white;
             padding: 30px;
             text-align: center;
@@ -79,8 +247,8 @@
         }
         
         .user-indicator {
-            background: #fbbf24;
-            color: #78350f;
+            background: #D8B4FE;
+            color: #312E81;
             padding: 5px 15px;
             border-radius: 20px;
             font-weight: bold;
@@ -91,6 +259,7 @@
             display: flex;
             background: #f5f5f5;
             border-bottom: 2px solid #ddd;
+            position: relative;
         }
         
         .nav-tab {
@@ -102,6 +271,7 @@
             border: none;
             font-size: 1.1em;
             transition: all 0.3s;
+            position: relative;
         }
         
         .nav-tab:hover {
@@ -110,8 +280,108 @@
         
         .nav-tab.active {
             background: white;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid #6366F1;
             font-weight: bold;
+            color: #6366F1;
+        }
+        
+        /* Menu Dropdown */
+        .nav-dropdown {
+            position: relative;
+            flex: 1;
+        }
+        
+        .nav-dropdown-toggle {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: none;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .nav-dropdown-toggle:hover {
+            background: #e0e0e0;
+        }
+        
+        .nav-dropdown-toggle.active {
+            background: white;
+            border-bottom: 3px solid #6366F1;
+            font-weight: bold;
+            color: #6366F1;
+        }
+        
+        .nav-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+        }
+        
+        .nav-dropdown-menu.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .nav-dropdown-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            text-align: left;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .nav-dropdown-item:hover {
+            background: #f8f9fa;
+            padding-left: 25px;
+        }
+        
+        .nav-dropdown-item.active {
+            background: #eff6ff;
+            border-left: 3px solid #6366F1;
+            font-weight: 600;
+            color: #6366F1;
+        }
+        
+        .dropdown-arrow {
+            font-size: 0.7em;
+            transition: transform 0.3s;
+        }
+        
+        .nav-dropdown-toggle.open .dropdown-arrow {
+            transform: rotate(180deg);
         }
         
         .content {
@@ -127,7 +397,7 @@
         }
         
         .card {
-            background: #f9f9f9;
+            background: #EDE9FE;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
@@ -135,7 +405,7 @@
         }
         
         .card h2 {
-            color: #667eea;
+            color: #312E81;
             margin-bottom: 15px;
         }
         
@@ -150,12 +420,12 @@
         }
         
         .btn-primary {
-            background: #667eea;
+            background: #8B5CF6;
             color: white;
         }
         
         .btn-primary:hover {
-            background: #5568d3;
+            background: #6D28D9;
         }
         
         .btn-success {
@@ -177,13 +447,13 @@
         }
         
         .btn-warning {
-            background: #fbbf24;
-            color: #78350f;
+            background: #8B5CF6;
+            color: white;
             font-weight: 600;
         }
         
         .btn-warning:hover {
-            background: #f59e0b;
+            background: #6D28D9;
         }
         
         .info-badge {
@@ -206,17 +476,17 @@
         
         .escala-atual {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 8px;
             margin-top: 20px;
         }
         
         .escala-item {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            border-top: 4px solid #667eea;
+            border-radius: 6px;
+            padding: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 2px solid #6366F1;
             transition: all 0.3s;
             display: flex;
             flex-direction: column;
@@ -225,18 +495,50 @@
         }
         
         .escala-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
         }
         
+        /* Domingo - Vermelho */
         .escala-item.domingo {
-            border-top-color: #10b981;
-            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            border-top-color: #dc2626;
+            background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
         }
         
+        /* Segunda - Azul */
+        .escala-item.segunda {
+            border-top-color: #2563eb;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+        }
+        
+        /* Terça - Verde */
         .escala-item.terca {
-            border-top-color: #fbbf24;
-            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+            border-top-color: #059669;
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+        }
+        
+        /* Quarta - Laranja */
+        .escala-item.quarta {
+            border-top-color: #ea580c;
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+        }
+        
+        /* Quinta - Roxo */
+        .escala-item.quinta {
+            border-top-color: #7c3aed;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%);
+        }
+        
+        /* Sexta - Turquesa */
+        .escala-item.sexta {
+            border-top-color: #0891b2;
+            background: linear-gradient(135deg, #ecfeff 0%, #ffffff 100%);
+        }
+        
+        /* Sábado - Dourado/Marrom */
+        .escala-item.sabado {
+            border-top-color: #ca8a04;
+            background: linear-gradient(135deg, #fefce8 0%, #ffffff 100%);
         }
         
         .escala-item.passado {
@@ -247,34 +549,54 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 4px;
         }
         
         .escala-dia-numero {
-            font-size: 3em;
+            font-size: 1.4em;
             font-weight: bold;
-            color: #667eea;
+            color: #6366F1;
             line-height: 1;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
         
         .escala-item.domingo .escala-dia-numero {
-            color: #10b981;
+            color: #dc2626;
+        }
+        
+        .escala-item.segunda .escala-dia-numero {
+            color: #2563eb;
         }
         
         .escala-item.terca .escala-dia-numero {
-            color: #fbbf24;
+            color: #059669;
+        }
+        
+        .escala-item.quarta .escala-dia-numero {
+            color: #ea580c;
+        }
+        
+        .escala-item.quinta .escala-dia-numero {
+            color: #7c3aed;
+        }
+        
+        .escala-item.sexta .escala-dia-numero {
+            color: #0891b2;
+        }
+        
+        .escala-item.sabado .escala-dia-numero {
+            color: #ca8a04;
         }
         
         .escala-dia-semana {
-            font-size: 1.1em;
+            font-size: 0.7em;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 3px;
+            color: #312E81;
+            margin-bottom: 1px;
         }
         
         .escala-mes-ano {
-            font-size: 0.9em;
+            font-size: 0.6em;
             color: #666;
         }
         
@@ -307,18 +629,18 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 4px;
         }
         
         .escala-servico {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 10px;
-            background: rgba(102, 126, 234, 0.05);
-            border-radius: 8px;
-            border-left: 3px solid #667eea;
+            gap: 4px;
+            padding: 4px 6px;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 4px;
+            border-left: 2px solid #6366F1;
         }
         
         .escala-item.domingo .escala-servico {
@@ -332,7 +654,7 @@
         }
         
         .escala-servico-icon {
-            font-size: 1.3em;
+            font-size: 0.9em;
         }
         
         .escala-servico-text {
@@ -342,23 +664,23 @@
         }
         
         .escala-tipo {
-            font-size: 0.75em;
+            font-size: 0.55em;
             font-weight: 600;
             color: #666;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
         
         .escala-organista {
-            font-size: 1em;
+            font-size: 0.7em;
             font-weight: 600;
-            color: #333;
+            color: #312E81;
         }
         
         .escala-vazio {
             color: #999;
             font-style: italic;
-            font-size: 0.95em;
+            font-size: 0.65em;
         }
         
         .btn-adicionar-agenda {
@@ -381,7 +703,7 @@
         
         .dashboard-title {
             font-size: 1.5em;
-            color: #667eea;
+            color: #312E81;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -408,7 +730,7 @@
         }
         
         table th {
-            background: #667eea;
+            background: #8B5CF6;
             color: white;
         }
         
@@ -424,7 +746,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #333;
+            color: #312E81;
         }
         
         .form-group input, .form-group select {
@@ -512,13 +834,75 @@
         .modal-close:hover {
             color: #dc2626;
         }
+        
+        /* Notificações */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out;
+            max-width: 400px;
+        }
+        
+        .notification.success {
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+        
+        .notification.error {
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        
+        .notification.info {
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Botão Dark Mode -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar modo escuro">
+        <span id="dark-mode-icon">🌙</span>
+        <span id="dark-mode-text">Escuro</span>
+    </button>
+    
     <div class="container">
         <div class="header">
-            <h1>🎹 Rodízio de Organistas - Vila Paula</h1>
-            <p>Período: {{ cfg.bimestre.inicio | date_br }} até {{ cfg.bimestre.fim | date_br }}</p>
+            <h1>🎹 Rodízio de Organistas</h1>
+            <p id="periodo-info">Carregando período...</p>
+            
+            <!-- Seletor de Contexto Hierárquico -->
+            <div id="contexto-selector" class="user-selector" style="background: rgba(255,255,255,0.15); margin-bottom: 15px;">
+                <label>📍 Contexto:</label>
+                <select id="selectRegional" onchange="carregarSubRegionais()" style="min-width: 150px;">
+                    <option value="">Carregando...</option>
+                </select>
+                <span style="color: white; font-size: 1.2em;">›</span>
+                <select id="selectSubRegional" onchange="carregarComuns()" style="min-width: 150px;">
+                    <option value="">Selecione...</option>
+                </select>
+                <span style="color: white; font-size: 1.2em;">›</span>
+                <select id="selectComum" onchange="selecionarContexto()" style="min-width: 150px;">
+                    <option value="">Selecione...</option>
+                </select>
+            </div>
             
             <div class="user-selector">
                 <label>Você está logado como:</label>
@@ -539,26 +923,94 @@
         </div>
         
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            <!-- Dashboard -->
+            <button class="nav-tab active" onclick="showTab(\'dashboard\')">Dashboard</button>
+            
+            <!-- Menu: Rodízios -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-toggle" onclick="toggleDropdown('rodizios-menu')">
+                    Rodízios
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div id="rodizios-menu" class="nav-dropdown-menu">
+                    <div class="nav-dropdown-item" onclick="showTab('escala')">
+                        Culto Oficial
+                    </div>
+                    <div class="nav-dropdown-item" onclick="showTab('rjm')">
+                        RJM
+                    </div>
+                </div>
+            </div>
+            
             {% if user.is_admin %}
-            <button class="nav-tab" onclick="showTab('organistas')">👥 Organistas</button>
-            <button class="nav-tab" onclick="showTab('admin-indisp')">🗓️ Restrições de Dias</button>
-            <button class="nav-tab" onclick="showTab('config')">⚙️ Configurações</button>
-            {% else %}
-            <button class="nav-tab" onclick="showTab('indisponibilidades')">🗓️ Restrições de Dias</button>
+            <!-- Menu: Encarregado Local (Admin) -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-toggle" onclick="toggleDropdown('encarregado-menu')">
+                    Encarregado Local
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div id="encarregado-menu" class="nav-dropdown-menu">
+                    <div class="nav-dropdown-item" onclick="showTab('organistas')">
+                        Organistas
+                    </div>
+                    <div class="nav-dropdown-item" onclick="showTab('config')">
+                        Configurações
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Menu: Agenda Organista (Admin) -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-toggle" onclick="toggleDropdown('agenda-menu-admin')">
+                    Agenda Organista
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div id="agenda-menu-admin" class="nav-dropdown-menu">
+                    <div class="nav-dropdown-item" onclick="showTab('admin-indisp')">
+                        Restrições de Dias
+                    </div>
+                </div>
+            </div>
+            
+            {% if user.tipo == 'master' %}
+            <!-- Menu: Administrativo (Master) -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-toggle" onclick="toggleDropdown('admin-menu')">
+                    Administrativo
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div id="admin-menu" class="nav-dropdown-menu">
+                    <div class="nav-dropdown-item" onclick="showTab('hierarquia')">
+                        Hierarquia
+                    </div>
+                    <div class="nav-dropdown-item" onclick="showTab('usuarios')">
+                        Usuários
+                    </div>
+                </div>
+            </div>
             {% endif %}
-            <button class="nav-tab" onclick="showTab('escala')">📋 Culto Oficial</button>
-            <button class="nav-tab" onclick="showTab('rjm')" style="display: flex; align-items: center; gap: 6px;">
-                <img src="{{ url_for('static', filename='icons8-children-48.png') }}" alt="RJM" style="width: 18px; height: 18px;">
-                RJM
-            </button>
+            
+            {% else %}
+            <!-- Menu: Agenda Organista (Organista) -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-toggle" onclick="toggleDropdown('agenda-menu-org')">
+                    Agenda Organista
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div id="agenda-menu-org" class="nav-dropdown-menu">
+                    <div class="nav-dropdown-item" onclick="showTab('indisponibilidades')">
+                        Restrições de Dias
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
         
         <div class="content">
             <!-- Dashboard Tab -->
             <div id="dashboard" class="tab-panel active">
                 <div class="card">
-                    <h2>🎹 Rodízio de Organistas - Vila Paula</h2>
+                    <h2 id="dashboardComumTitle">🎹 Rodízio de Organistas</h2>
                     
                     <div style="margin-top: 20px;">
                         <span class="info-badge green">{{ cfg.bimestre.inicio | date_br }}</span>
@@ -607,13 +1059,27 @@
                     <div id="alertOrganista" class="alert hidden"></div>
                     
                     <form id="formOrganista" onsubmit="addOrganista(event)">
+                        {% if user.is_master or user.tipo == 'encarregado_comum' %}
+                        <div class="form-group">
+                            <label>📍 Comum:</label>
+                            <select id="orgComumId" required onchange="carregarDiasDoComum()" {% if user.tipo == 'encarregado_comum' %}disabled{% endif %}>
+                                <option value="">{% if user.tipo == 'encarregado_comum' %}Carregando...{% else %}Selecione o comum...{% endif %}</option>
+                            </select>
+                            <small style="color: #666;">{% if user.tipo == 'encarregado_comum' %}Sua comum será usada automaticamente{% else %}Selecione o comum onde a organista atuará{% endif %}</small>
+                            {% if user.tipo == 'encarregado_comum' %}
+                            <input type="hidden" id="orgComumIdHidden" value="{{ user.contexto_id }}">
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        
                         <div class="form-group">
                             <label>ID (único):</label>
-                            <input type="text" id="orgId" required>
+                            <input type="text" id="orgId" required placeholder="Ex: maria_silva">
+                            <small style="color: #666;">Use apenas letras minúsculas e underscore</small>
                         </div>
                         <div class="form-group">
                             <label>Nome:</label>
-                            <input type="text" id="orgNome" required>
+                            <input type="text" id="orgNome" required placeholder="Ex: Maria Silva">
                         </div>
                         <div class="form-group">
                             <label>Email:</label>
@@ -637,10 +1103,9 @@
                         <div class="form-group">
                             <label>Dias Permitidos (Ctrl+clique para múltiplos):</label>
                             <select id="orgDias" multiple required>
-                                <option value="Domingo">Domingo</option>
-                                <option value="Terça">Terça</option>
+                                <!-- Será preenchido dinamicamente com base no comum selecionado -->
                             </select>
-                            <small style="color: #666;">RJM é sempre aos domingos</small>
+                            <small style="color: #666;">Baseado nos dias de culto configurados no comum</small>
                         </div>
                         <button type="submit" class="btn btn-primary">Adicionar Organista</button>
                     </form>
@@ -672,7 +1137,7 @@
             <!-- Indisponibilidades Tab -->
             <div id="indisponibilidades" class="tab-panel">
                 <div class="card">
-                    <h2>🗓️ Restrições de Dias</h2>
+                    <h2>Restrições de Dias</h2>
                     <p>Marque as datas em que você NÃO poderá tocar no período atual.</p>
                     <div id="alertIndisp" class="alert hidden"></div>
                     
@@ -709,7 +1174,7 @@
             <!-- Configurações Tab -->
             <div id="config" class="tab-panel">
                 <div class="card">
-                    <h2>⚙️ Configurações do Sistema</h2>
+                    <h2>Configurações do Sistema</h2>
                     <div id="alertConfig" class="alert hidden"></div>
                     
                     <form id="formConfig" onsubmit="saveConfig(event)">
@@ -734,6 +1199,223 @@
                     <div id="statsSystem">Carregando...</div>
                 </div>
             </div>
+            
+            <!-- Hierarquia Tab (Master Only) -->
+            {% if user.tipo == 'master' %}
+            <div id="hierarquia" class="tab-panel">
+                <div class="card">
+                    <h2>🌐 Gerenciamento da Hierarquia</h2>
+                    <p style="color: #666; margin-bottom: 20px;">
+                        Gerencie a estrutura hierárquica do sistema: Regionais, Sub-Regionais e Comuns.
+                    </p>
+                    
+                    <div id="alertHierarquia" class="alert hidden"></div>
+                    
+                    <!-- Regionais -->
+                    <div style="margin-bottom: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="margin: 0;">🏙️ Regionais</h3>
+                            <button onclick="mostrarModalNovaRegional()" class="btn btn-success">➕ Nova Regional</button>
+                        </div>
+                        <div id="listaRegionais" style="display: grid; gap: 15px;">
+                            <p style="color: #999;">Carregando...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Sub-Regionais -->
+                    <div style="margin-bottom: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="margin: 0;">📍 Sub-Regionais</h3>
+                            <button onclick="mostrarModalNovaSubRegional()" class="btn btn-success">➕ Nova Sub-Regional</button>
+                        </div>
+                        <div id="listaSubRegionais" style="display: grid; gap: 15px;">
+                            <p style="color: #999;">Selecione uma Regional acima</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Comuns -->
+                    <div style="margin-bottom: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="margin: 0;">⛪ Comuns</h3>
+                            <button onclick="mostrarModalNovoComum()" class="btn btn-success">➕ Novo Comum</button>
+                        </div>
+                        <div id="listaComuns" style="display: grid; gap: 15px;">
+                            <p style="color: #999;">Selecione uma Sub-Regional acima</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Usuários Tab (Master Only) -->
+            <div id="usuarios" class="tab-panel">
+                <div class="card">
+                    <h2>👤 Gerenciamento de Usuários</h2>
+                    <p style="color: #666; margin-bottom: 20px;">
+                        Gerencie encarregados e suas atribuições de contexto.
+                    </p>
+                    
+                    <div id="alertUsuarios" class="alert hidden"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0;">Lista de Usuários</h3>
+                        <button onclick="mostrarModalNovoUsuario()" class="btn btn-success">➕ Novo Usuário</button>
+                    </div>
+                    
+                    <div id="listaUsuarios" style="overflow-x: auto;">
+                        <p style="color: #999;">Carregando...</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>Configurações do Comum Atual</h2>
+                    <p style="color: #666; margin-bottom: 20px;">
+                        Configure os dias e horários de culto específicos deste comum.
+                    </p>
+                    
+                    <form id="formConfigComum" onsubmit="salvarConfigComum(event)">
+                        <div class="form-group">
+                            <label style="font-weight: bold; font-size: 16px; margin-bottom: 15px; display: block;">
+                                📅 Dias de Culto e Horários
+                            </label>
+                            
+                            <div id="diasHorariosContainer" style="display: flex; flex-direction: column; gap: 15px;">
+                                <!-- Domingo -->
+                                <div class="dia-horario-group" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: #f8fafc;">
+                                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 600;">
+                                        <input type="checkbox" name="dias_culto" value="Domingo" onchange="toggleHorarios(this)">
+                                        <span style="font-size: 15px;">☀️ Domingo</span>
+                                    </label>
+                                    <div class="horarios-container" style="display: none; margin-left: 30px;">
+                                        <label style="font-size: 13px; color: #666; margin-bottom: 5px; display: block;">Horários:</label>
+                                        <div id="horariosDomingo" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;"></div>
+                                        <button type="button" onclick="adicionarHorario('Domingo')" class="btn-add-horario" style="background: #3b82f6; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                            ➕ Adicionar Horário
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Segunda -->
+                                <div class="dia-horario-group" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: #f8fafc;">
+                                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 600;">
+                                        <input type="checkbox" name="dias_culto" value="Segunda" onchange="toggleHorarios(this)">
+                                        <span style="font-size: 15px;">📅 Segunda</span>
+                                    </label>
+                                    <div class="horarios-container" style="display: none; margin-left: 30px;">
+                                        <label style="font-size: 13px; color: #666; margin-bottom: 5px; display: block;">Horários:</label>
+                                        <div id="horariosSegunda" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;"></div>
+                                        <button type="button" onclick="adicionarHorario('Segunda')" class="btn-add-horario" style="background: #3b82f6; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                            ➕ Adicionar Horário
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Terça -->
+                                <div class="dia-horario-group" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: #f8fafc;">
+                                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 600;">
+                                        <input type="checkbox" name="dias_culto" value="Terça" onchange="toggleHorarios(this)">
+                                        <span style="font-size: 15px;">📅 Terça</span>
+                                    </label>
+                                    <div class="horarios-container" style="display: none; margin-left: 30px;">
+                                        <label style="font-size: 13px; color: #666; margin-bottom: 5px; display: block;">Horários:</label>
+                                        <div id="horariosTerça" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;"></div>
+                                        <button type="button" onclick="adicionarHorario('Terça')" class="btn-add-horario" style="background: #3b82f6; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                            ➕ Adicionar Horário
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quarta -->
+                                <div class="dia-horario-group" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: #f8fafc;">
+                                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 600;">
+                                        <input type="checkbox" name="dias_culto" value="Quarta" onchange="toggleHorarios(this)">
+                                        <span style="font-size: 15px;">📅 Quarta</span>
+                                    </label>
+                                    <div class="horarios-container" style="display: none; margin-left: 30px;">
+                                        <label style="font-size: 13px; color: #666; margin-bottom: 5px; display: block;">Horários:</label>
+                                        <div id="horariosQuarta" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;"></div>
+                                        <button type="button" onclick="adicionarHorario('Quarta')" class="btn-add-horario" style="background: #3b82f6; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                            ➕ Adicionar Horário
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quinta -->
+                                <div class="dia-horario-group" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: #f8fafc;">
+                                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 600;">
+                                        <input type="checkbox" name="dias_culto" value="Quinta" onchange="toggleHorarios(this)">
+                                        <span style="font-size: 15px;">📅 Quinta</span>
+                                    </label>
+                                    <div class="horarios-container" style="display: none; margin-left: 30px;">
+                                        <label style="font-size: 13px; color: #666; margin-bottom: 5px; display: block;">Horários:</label>
+                                        <div id="horariosQuinta" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;"></div>
+                                        <button type="button" onclick="adicionarHorario('Quinta')" class="btn-add-horario" style="background: #3b82f6; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                            ➕ Adicionar Horário
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Sexta -->
+                                <div class="dia-horario-group" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: #f8fafc;">
+                                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 600;">
+                                        <input type="checkbox" name="dias_culto" value="Sexta" onchange="toggleHorarios(this)">
+                                        <span style="font-size: 15px;">📅 Sexta</span>
+                                    </label>
+                                    <div class="horarios-container" style="display: none; margin-left: 30px;">
+                                        <label style="font-size: 13px; color: #666; margin-bottom: 5px; display: block;">Horários:</label>
+                                        <div id="horariosSexta" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;"></div>
+                                        <button type="button" onclick="adicionarHorario('Sexta')" class="btn-add-horario" style="background: #3b82f6; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                            ➕ Adicionar Horário
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Sábado -->
+                                <div class="dia-horario-group" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: #f8fafc;">
+                                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 600;">
+                                        <input type="checkbox" name="dias_culto" value="Sábado" onchange="toggleHorarios(this)">
+                                        <span style="font-size: 15px;">📅 Sábado</span>
+                                    </label>
+                                    <div class="horarios-container" style="display: none; margin-left: 30px;">
+                                        <label style="font-size: 13px; color: #666; margin-bottom: 5px; display: block;">Horários:</label>
+                                        <div id="horariosSábado" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;"></div>
+                                        <button type="button" onclick="adicionarHorario('Sábado')" class="btn-add-horario" style="background: #3b82f6; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                            ➕ Adicionar Horário
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label style="font-weight: bold;">📆 Período do Rodízio:</label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <input type="date" id="configComumInicio" required style="flex: 1; padding: 8px;">
+                                <span style="color: #666;">até</span>
+                                <input type="date" id="configComumFim" required style="flex: 1; padding: 8px;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label style="font-weight: bold;">⏱️ Fechamento de Publicação:</label>
+                            <select id="configFechamentoDias" style="padding: 8px; width: 100%;">
+                                <option value="3">3 dias antes</option>
+                                <option value="5">5 dias antes</option>
+                                <option value="7" selected>7 dias antes (padrão)</option>
+                                <option value="10">10 dias antes</option>
+                                <option value="15">15 dias antes</option>
+                            </select>
+                            <small style="color: #666; display: block; margin-top: 5px;">
+                                Tempo limite para organistas marcarem indisponibilidade antes do culto
+                            </small>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success" style="width: 100%; padding: 12px; font-size: 16px;">
+                            💾 Salvar Todas as Configurações
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
             
             <!-- Escala Tab -->
             <div id="escala" class="tab-panel">
@@ -905,15 +1587,621 @@
         </div>
     </div>
     
+    <!-- Modais de Hierarquia -->
+    {% if user.tipo == 'master' %}
+    <!-- Modal Nova Regional -->
+    <div id="modalNovaRegional" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 style="margin: 0;">➕ Nova Regional</h2>
+                <button class="modal-close" onclick="fecharModalNovaRegional()">✕</button>
+            </div>
+            <form onsubmit="criarRegional(event)">
+                <div class="form-group">
+                    <label>ID da Regional:</label>
+                    <input type="text" id="novaRegionalId" required placeholder="Ex: gru, spo, abc">
+                    <small style="color: #666;">Use apenas letras minúsculas, sem espaços ou acentos</small>
+                </div>
+                <div class="form-group">
+                    <label>Nome da Regional:</label>
+                    <input type="text" id="novaRegionalNome" required placeholder="Ex: GRU - Guarulhos">
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-success" style="flex: 1;">✅ Criar</button>
+                    <button type="button" class="btn" style="flex: 1; background: #6b7280; color: white;" onclick="fecharModalNovaRegional()">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Nova Sub-Regional -->
+    <div id="modalNovaSubRegional" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 style="margin: 0;">➕ Nova Sub-Regional</h2>
+                <button class="modal-close" onclick="fecharModalNovaSubRegional()">✕</button>
+            </div>
+            <form onsubmit="criarSubRegional(event)">
+                <div class="form-group">
+                    <label>Regional:</label>
+                    <select id="novaSubRegionalPai" required>
+                        <option value="">Selecione...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>ID da Sub-Regional:</label>
+                    <input type="text" id="novaSubRegionalId" required placeholder="Ex: santa_isabel, centro">
+                    <small style="color: #666;">Use apenas letras minúsculas e underscore</small>
+                </div>
+                <div class="form-group">
+                    <label>Nome da Sub-Regional:</label>
+                    <input type="text" id="novaSubRegionalNome" required placeholder="Ex: Santa Isabel">
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-success" style="flex: 1;">✅ Criar</button>
+                    <button type="button" class="btn" style="flex: 1; background: #6b7280; color: white;" onclick="fecharModalNovaSubRegional()">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Novo Comum -->
+    <div id="modalNovoComum" class="modal-overlay">
+        <div class="modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h2 style="margin: 0;">➕ Novo Comum</h2>
+                <button class="modal-close" onclick="fecharModalNovoComum()">✕</button>
+            </div>
+            <form onsubmit="criarComum(event)">
+                <div class="form-group">
+                    <label>Regional:</label>
+                    <select id="novoComumRegional" onchange="carregarSubRegionaisModal()" required>
+                        <option value="">Selecione...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sub-Regional:</label>
+                    <select id="novoComumSubRegional" required>
+                        <option value="">Selecione Regional primeiro...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>ID do Comum:</label>
+                    <input type="text" id="novoComumId" required placeholder="Ex: vila_paula, centro">
+                    <small style="color: #666;">Use apenas letras minúsculas e underscore</small>
+                </div>
+                <div class="form-group">
+                    <label>Nome do Comum:</label>
+                    <input type="text" id="novoComumNome" required placeholder="Ex: Vila Paula">
+                </div>
+                
+                <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e7eb;">
+                
+                <h3 style="margin-bottom: 15px;">📅 Configuração de Dias e Horários</h3>
+                
+                <div class="form-group">
+                    <label style="font-weight: bold; color: #333; margin-bottom: 8px; display: block;">Selecione os dias de culto e configure os horários:</label>
+                    <div style="background: #f9fafb; padding: 15px; border-radius: 8px; border: 2px solid #e5e7eb;">
+                        <div style="display: grid; gap: 12px;">
+                            <div class="dia-horario-config">
+                                <label style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" name="modal_dias_culto" value="Domingo" onchange="toggleModalHorarios(this.parentElement.parentElement.parentElement)" style="width: 18px; height: 18px;">
+                                        <strong style="font-size: 1.05em; color: #dc2626;">☀️ Domingo</strong>
+                                    </div>
+                                    <div class="modal-horarios-container" style="display: none; padding-left: 28px;">
+                                        <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 4px;">⏰ Horários (separados por vírgula):</label>
+                                        <input type="text" class="modal-horarios-input" data-dia="Domingo" placeholder="Ex: 09:00, 18:00, 20:00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.95em;">
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="dia-horario-config">
+                                <label style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" name="modal_dias_culto" value="Segunda" onchange="toggleModalHorarios(this.parentElement.parentElement.parentElement)" style="width: 18px; height: 18px;">
+                                        <strong style="font-size: 1.05em; color: #2563eb;">📅 Segunda-feira</strong>
+                                    </div>
+                                    <div class="modal-horarios-container" style="display: none; padding-left: 28px;">
+                                        <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 4px;">⏰ Horários:</label>
+                                        <input type="text" class="modal-horarios-input" data-dia="Segunda" placeholder="Ex: 20:00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.95em;">
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="dia-horario-config">
+                                <label style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" name="modal_dias_culto" value="Terça" onchange="toggleModalHorarios(this.parentElement.parentElement.parentElement)" style="width: 18px; height: 18px;">
+                                        <strong style="font-size: 1.05em; color: #059669;">📅 Terça-feira</strong>
+                                    </div>
+                                    <div class="modal-horarios-container" style="display: none; padding-left: 28px;">
+                                        <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 4px;">⏰ Horários:</label>
+                                        <input type="text" class="modal-horarios-input" data-dia="Terça" placeholder="Ex: 20:00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.95em;">
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="dia-horario-config">
+                                <label style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" name="modal_dias_culto" value="Quarta" onchange="toggleModalHorarios(this.parentElement.parentElement.parentElement)" style="width: 18px; height: 18px;">
+                                        <strong style="font-size: 1.05em; color: #ea580c;">📅 Quarta-feira</strong>
+                                    </div>
+                                    <div class="modal-horarios-container" style="display: none; padding-left: 28px;">
+                                        <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 4px;">⏰ Horários:</label>
+                                        <input type="text" class="modal-horarios-input" data-dia="Quarta" placeholder="Ex: 19:30, 20:00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.95em;">
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="dia-horario-config">
+                                <label style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" name="modal_dias_culto" value="Quinta" onchange="toggleModalHorarios(this.parentElement.parentElement.parentElement)" style="width: 18px; height: 18px;">
+                                        <strong style="font-size: 1.05em; color: #7c3aed;">📅 Quinta-feira</strong>
+                                    </div>
+                                    <div class="modal-horarios-container" style="display: none; padding-left: 28px;">
+                                        <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 4px;">⏰ Horários:</label>
+                                        <input type="text" class="modal-horarios-input" data-dia="Quinta" placeholder="Ex: 20:00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.95em;">
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="dia-horario-config">
+                                <label style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" name="modal_dias_culto" value="Sexta" onchange="toggleModalHorarios(this.parentElement.parentElement.parentElement)" style="width: 18px; height: 18px;">
+                                        <strong style="font-size: 1.05em; color: #0891b2;">📅 Sexta-feira</strong>
+                                    </div>
+                                    <div class="modal-horarios-container" style="display: none; padding-left: 28px;">
+                                        <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 4px;">⏰ Horários:</label>
+                                        <input type="text" class="modal-horarios-input" data-dia="Sexta" placeholder="Ex: 19:30, 20:00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.95em;">
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="dia-horario-config">
+                                <label style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" name="modal_dias_culto" value="Sábado" onchange="toggleModalHorarios(this.parentElement.parentElement.parentElement)" style="width: 18px; height: 18px;">
+                                        <strong style="font-size: 1.05em; color: #ca8a04;">📅 Sábado</strong>
+                                    </div>
+                                    <div class="modal-horarios-container" style="display: none; padding-left: 28px;">
+                                        <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 4px;">⏰ Horários:</label>
+                                        <input type="text" class="modal-horarios-input" data-dia="Sábado" placeholder="Ex: 18:00, 19:00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.95em;">
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 12px; padding: 10px; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
+                            <small style="color: #1e40af; font-size: 0.9em;">
+                                💡 <strong>Dica:</strong> Marque o checkbox do dia e depois digite os horários no formato HH:MM, separados por vírgula.<br>
+                                Exemplo: <code style="background: white; padding: 2px 6px; border-radius: 3px;">09:00, 18:00, 20:00</code>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>⏱️ Fechamento de Publicação:</label>
+                    <select id="novoComumFechamentoDias">
+                        <option value="3">3 dias antes</option>
+                        <option value="5">5 dias antes</option>
+                        <option value="7" selected>7 dias antes (padrão)</option>
+                        <option value="10">10 dias antes</option>
+                        <option value="15">15 dias antes</option>
+                    </select>
+                    <small style="color: #666;">Prazo para organistas marcarem indisponibilidade</small>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-success" style="flex: 1;">✅ Criar Comum</button>
+                    <button type="button" class="btn" style="flex: 1; background: #6b7280; color: white;" onclick="fecharModalNovoComum()">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Novo Usuário -->
+    <div id="modalNovoUsuario" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 style="margin: 0;">➕ Novo Usuário</h2>
+                <button class="modal-close" onclick="fecharModalNovoUsuario()">✕</button>
+            </div>
+            <form onsubmit="criarUsuario(event)">
+                <div class="form-group">
+                    <label>ID do Usuário (login):</label>
+                    <input type="text" id="novoUsuarioId" required placeholder="Ex: encarregado_itaquera">
+                    <small style="color: #666;">Use apenas letras minúsculas e underscore</small>
+                </div>
+                <div class="form-group">
+                    <label>Nome Completo:</label>
+                    <input type="text" id="novoUsuarioNome" required placeholder="Ex: João Silva">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Usuário:</label>
+                    <select id="novoUsuarioTipo" required onchange="atualizarContextoUsuario()">
+                        <option value="">Selecione...</option>
+                        <option value="master">Master (Acesso Total)</option>
+                        <option value="admin_regional">Admin Regional</option>
+                        <option value="encarregado_sub_regional">Encarregado Sub-Regional</option>
+                        <option value="encarregado_comum">Encarregado de Comum</option>
+                    </select>
+                </div>
+                <div class="form-group" id="divContextoUsuario" style="display: none;">
+                    <label>Contexto (Atribuição):</label>
+                    <select id="novoUsuarioContexto">
+                        <option value="">Selecione o tipo primeiro...</option>
+                    </select>
+                    <small style="color: #666;">Regional, Sub-Regional ou Comum que o usuário gerenciará</small>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="novoUsuarioEmail" placeholder="usuario@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Telefone:</label>
+                    <input type="tel" id="novoUsuarioTelefone" placeholder="(11) 98765-4321">
+                </div>
+                <div class="form-group">
+                    <label>Senha Inicial:</label>
+                    <input type="password" id="novoUsuarioSenha" placeholder="Deixe vazio para usar 'senha123'">
+                    <small style="color: #666;">O usuário poderá alterar depois no login</small>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-success" style="flex: 1;">✅ Criar Usuário</button>
+                    <button type="button" class="btn" style="flex: 1; background: #6b7280; color: white;" onclick="fecharModalNovoUsuario()">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Editar Comum -->
+    <div id="modalEditarComum" class="modal-overlay">
+        <div class="modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h2 style="margin: 0;">✏️ Editar Comum</h2>
+                <button class="modal-close" onclick="fecharModalEditarComum()">✕</button>
+            </div>
+            <form onsubmit="salvarEdicaoComum(event)">
+                <input type="hidden" id="editComumRegionalId">
+                <input type="hidden" id="editComumSubRegionalId">
+                <input type="hidden" id="editComumId">
+                
+                <div class="form-group">
+                    <label>Nome do Comum:</label>
+                    <input type="text" id="editComumNome" required placeholder="Ex: Vila Paula">
+                </div>
+                
+                <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e7eb;">
+                
+                <h3 style="margin-bottom: 15px;">📅 Configuração de Dias e Horários</h3>
+                
+                <div class="form-group">
+                    <label style="font-weight: bold; color: #333; margin-bottom: 8px; display: block;">Dias de culto e horários:</label>
+                    <div style="background: #f9fafb; padding: 15px; border-radius: 8px; border: 2px solid #e5e7eb;">
+                        <div style="display: grid; gap: 12px;" id="editDiasHorariosContainer">
+                            <!-- Será preenchido dinamicamente -->
+                        </div>
+                        
+                        <div style="margin-top: 12px; padding: 10px; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
+                            <small style="color: #1e40af; font-size: 0.9em;">
+                                💡 <strong>Dica:</strong> Marque/desmarque os dias e ajuste os horários conforme necessário.<br>
+                                Formato: <code style="background: white; padding: 2px 6px; border-radius: 3px;">HH:MM</code>, separados por vírgula.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>⏱️ Fechamento de Publicação:</label>
+                    <select id="editComumFechamentoDias">
+                        <option value="3">3 dias antes</option>
+                        <option value="5">5 dias antes</option>
+                        <option value="7">7 dias antes (padrão)</option>
+                        <option value="10">10 dias antes</option>
+                        <option value="15">15 dias antes</option>
+                    </select>
+                    <small style="color: #666;">Prazo para organistas marcarem indisponibilidade</small>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-success" style="flex: 1;">✅ Salvar Alterações</button>
+                    <button type="button" class="btn" style="flex: 1; background: #6b7280; color: white;" onclick="fecharModalEditarComum()">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    
     <script>
+        // ==================== Dark Mode ====================
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDark = body.classList.toggle('dark-mode');
+            
+            // Salvar preferência no localStorage
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+            
+            // Atualizar ícone e texto
+            const icon = document.getElementById('dark-mode-icon');
+            const text = document.getElementById('dark-mode-text');
+            
+            if (isDark) {
+                icon.textContent = '☀️';
+                text.textContent = 'Claro';
+            } else {
+                icon.textContent = '🌙';
+                text.textContent = 'Escuro';
+            }
+        }
+        
+        // Carregar preferência salva ao carregar a página
+        window.addEventListener('DOMContentLoaded', function() {
+            const darkMode = localStorage.getItem('darkMode');
+            
+            if (darkMode === 'enabled') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dark-mode-icon').textContent = '☀️';
+                document.getElementById('dark-mode-text').textContent = 'Claro';
+            }
+        });
+        
+        // ==================== Variáveis Globais ====================
         const currentUserId = '{{ user.id }}';
         const isAdmin = {{ 'true' if user.is_admin else 'false' }};
+        const userTipo = '{{ user.tipo if user.tipo else "organista" }}';
         // Compatibilidade
         const isCoord = isAdmin;
         let organistas = [];
         let indisponibilidades = [];
         
-        // Navegação entre tabs
+        // Debug: Informações do usuário
+        console.log('👤 DEBUG USUÁRIO:');
+        console.log('  ID:', '{{ user.id }}');
+        console.log('  Nome:', '{{ user.nome }}');
+        console.log('  Tipo:', '{{ user.tipo }}');
+        console.log('  Contexto ID:', '{{ user.contexto_id }}');
+        console.log('  Is Master:', {{ 'true' if user.is_master else 'false' }});
+        
+        // ==================== Gerenciamento de Contexto ====================
+        let contextoAtual = {
+            regional: null,
+            sub_regional: null,
+            comum: null,
+            nivel: '{{ user.tipo if user.tipo else "organista" }}'
+        };
+        
+        // Carregar contexto atual do usuário
+        async function carregarContextoAtual() {
+            try {
+                const response = await fetch('/api/contexto/atual');
+                const data = await response.json();
+                
+                contextoAtual = {
+                    regional: data.regional,
+                    sub_regional: data.sub_regional,
+                    comum: data.comum,
+                    nivel: data.nivel
+                };
+                
+                // Atualizar título do header
+                document.querySelector('.header h1').textContent = `🎹 Rodízio de Organistas - ${data.comum.nome}`;
+                
+                // Atualizar título do card do dashboard
+                const dashboardTitle = document.getElementById('dashboardComumTitle');
+                if (dashboardTitle) {
+                    dashboardTitle.textContent = `🎹 Rodízio de Organistas - ${data.comum.nome}`;
+                }
+                
+                // Atualizar período
+                const config = data.comum.config || {};
+                const periodo = config.periodo || config.bimestre || {};
+                if (periodo.inicio && periodo.fim) {
+                    const dataInicio = new Date(periodo.inicio + 'T00:00:00').toLocaleDateString('pt-BR');
+                    const dataFim = new Date(periodo.fim + 'T00:00:00').toLocaleDateString('pt-BR');
+                    document.getElementById('periodo-info').textContent = `Período: ${dataInicio} até ${dataFim}`;
+                } else {
+                    document.getElementById('periodo-info').textContent = 'Período: Não configurado';
+                }
+                
+                // Se for master, mostrar seletor de contexto
+                if (data.nivel === 'master') {
+                    document.getElementById('contexto-selector').style.display = 'flex';
+                    await inicializarSeletorContexto();
+                } else {
+                    // Para outros níveis, esconder seletor
+                    document.getElementById('contexto-selector').style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Erro ao carregar contexto:', error);
+            }
+        }
+        
+        // Inicializar seletor de contexto (apenas para Master)
+        async function inicializarSeletorContexto() {
+            try {
+                // Carregar regionais
+                const response = await fetch('/api/regionais');
+                const regionais = await response.json();
+                
+                const selectRegional = document.getElementById('selectRegional');
+                selectRegional.innerHTML = '<option value="">Selecione Regional...</option>';
+                
+                regionais.forEach(regional => {
+                    const option = document.createElement('option');
+                    option.value = regional.id;
+                    option.textContent = regional.nome;
+                    if (contextoAtual.regional && regional.id === contextoAtual.regional.id) {
+                        option.selected = true;
+                    }
+                    selectRegional.appendChild(option);
+                });
+                
+                // Se já tem regional selecionada, carregar sub-regionais
+                if (contextoAtual.regional) {
+                    await carregarSubRegionais();
+                }
+            } catch (error) {
+                console.error('Erro ao inicializar seletor:', error);
+            }
+        }
+        
+        // Carregar sub-regionais quando seleciona uma regional
+        async function carregarSubRegionais() {
+            const regionalId = document.getElementById('selectRegional').value;
+            if (!regionalId) {
+                document.getElementById('selectSubRegional').innerHTML = '<option value="">Selecione Regional primeiro</option>';
+                document.getElementById('selectComum').innerHTML = '<option value="">Selecione...</option>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais`);
+                const subRegionais = await response.json();
+                
+                const selectSubRegional = document.getElementById('selectSubRegional');
+                selectSubRegional.innerHTML = '<option value="">Selecione Sub-Regional...</option>';
+                
+                subRegionais.forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub.id;
+                    option.textContent = sub.nome;
+                    if (contextoAtual.sub_regional && sub.id === contextoAtual.sub_regional.id) {
+                        option.selected = true;
+                    }
+                    selectSubRegional.appendChild(option);
+                });
+                
+                // Se já tem sub-regional selecionada, carregar comuns
+                if (contextoAtual.sub_regional) {
+                    await carregarComuns();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar sub-regionais:', error);
+            }
+        }
+        
+        // Carregar comuns quando seleciona uma sub-regional
+        async function carregarComuns() {
+            const regionalId = document.getElementById('selectRegional').value;
+            const subRegionalId = document.getElementById('selectSubRegional').value;
+            
+            if (!regionalId || !subRegionalId) {
+                document.getElementById('selectComum').innerHTML = '<option value="">Selecione Sub-Regional primeiro</option>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subRegionalId}/comuns`);
+                const comuns = await response.json();
+                
+                const selectComum = document.getElementById('selectComum');
+                selectComum.innerHTML = '<option value="">Selecione Comum...</option>';
+                
+                comuns.forEach(comum => {
+                    const option = document.createElement('option');
+                    option.value = comum.id;
+                    option.textContent = comum.nome;
+                    if (contextoAtual.comum && comum.id === contextoAtual.comum.id) {
+                        option.selected = true;
+                    }
+                    selectComum.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar comuns:', error);
+            }
+        }
+        
+        // Selecionar novo contexto
+        async function selecionarContexto() {
+            const regionalId = document.getElementById('selectRegional').value;
+            const subRegionalId = document.getElementById('selectSubRegional').value;
+            const comumId = document.getElementById('selectComum').value;
+            
+            if (!regionalId || !subRegionalId || !comumId) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/contexto/selecionar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        regional_id: regionalId,
+                        sub_regional_id: subRegionalId,
+                        comum_id: comumId
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    console.log('✅ Contexto alterado com sucesso para:', data.contexto.comum_nome);
+                    
+                    // Mostrar mensagem e recarregar página
+                    showNotification(`Contexto alterado para: ${data.contexto.comum_nome}. Recarregando...`, 'success');
+                    
+                    // Recarregar página após 800ms para garantir que o backend salvou o contexto
+                    console.log('🔄 Recarregando página em 800ms...');
+                    setTimeout(() => {
+                        console.log('🔄 Executando reload agora...');
+                        window.location.reload(true); // true força reload do servidor
+                    }, 800);
+                } else {
+                    showNotification('Erro ao alterar contexto', 'error');
+                }
+            } catch (error) {
+                console.error('Erro ao selecionar contexto:', error);
+                showNotification('Erro ao selecionar contexto', 'error');
+            }
+        }
+        
+        // ==================== Navegação entre tabs ====================
+        
+        // Controlar dropdowns
+        function toggleDropdown(menuId) {
+            event.stopPropagation();
+            
+            const menu = document.getElementById(menuId);
+            const toggle = event.currentTarget;
+            
+            // Fechar todos os outros dropdowns
+            document.querySelectorAll('.nav-dropdown-menu').forEach(m => {
+                if (m.id !== menuId) {
+                    m.classList.remove('show');
+                }
+            });
+            
+            document.querySelectorAll('.nav-dropdown-toggle').forEach(t => {
+                if (t !== toggle) {
+                    t.classList.remove('open');
+                }
+            });
+            
+            // Toggle do menu atual
+            menu.classList.toggle('show');
+            toggle.classList.toggle('open');
+        }
+        
+        // Fechar dropdowns ao clicar fora
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.nav-dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+                document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+                    toggle.classList.remove('open');
+                });
+            }
+        });
+        
         function showTab(tabName) {
             document.querySelectorAll('.tab-panel').forEach(panel => {
                 panel.classList.remove('active');
@@ -921,9 +2209,37 @@
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
+            document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+                toggle.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+                item.classList.remove('active');
+            });
             
+            // Ativar a tab
             document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
+            
+            // Ativar o item do menu que foi clicado
+            if (event && event.target) {
+                if (event.target.classList.contains('nav-dropdown-item')) {
+                    event.target.classList.add('active');
+                    // Ativar também o dropdown toggle pai
+                    const dropdown = event.target.closest('.nav-dropdown');
+                    if (dropdown) {
+                        dropdown.querySelector('.nav-dropdown-toggle').classList.add('active');
+                    }
+                } else if (event.target.classList.contains('nav-tab')) {
+                    event.target.classList.add('active');
+                }
+            }
+            
+            // Fechar dropdown após selecionar
+            document.querySelectorAll('.nav-dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+            document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+                toggle.classList.remove('open');
+            });
             
             // Carregar dados específicos de cada aba
             if (tabName === 'indisponibilidades') {
@@ -932,8 +2248,15 @@
                 loadAdminIndisp();
             } else if (tabName === 'organistas') {
                 loadOrganistas();
+                carregarComunsParaOrganista();
+                carregarDiasDoComum();
             } else if (tabName === 'rjm') {
                 loadEscalaRJM();
+            } else if (tabName === 'hierarquia') {
+                carregarHierarquia();
+            } else if (tabName === 'usuarios') {
+                carregarUsuarios();
+                carregarConfigComum();
             }
         }
         
@@ -947,6 +2270,21 @@
             if (confirm('Deseja realmente sair?')) {
                 window.location.href = '/logout';
             }
+        }
+        
+        // Mostrar notificação
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
         }
         
         // Carregar organistas
@@ -1027,14 +2365,14 @@
                 const hoje = new Date();
                 hoje.setHours(0, 0, 0, 0);
                 
-                // Filtrar e ordenar: pegar próximos 10 eventos a partir de hoje
+                // Filtrar e ordenar: pegar próximos 20 eventos a partir de hoje
                 const proximasEscalas = escala
                     .filter(item => {
                         const dataEscala = new Date(item.data);
                         return dataEscala >= hoje;
                     })
                     .sort((a, b) => new Date(a.data) - new Date(b.data))
-                    .slice(0, 10);
+                    .slice(0, 20);
                 
                 if (proximasEscalas.length === 0) {
                     container.innerHTML = '<div class="no-escala">Todas as escalas já passaram</div>';
@@ -1053,8 +2391,29 @@
                                     'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'][data.getMonth()];
                     const ano = data.getFullYear();
                     
-                    const diaSemana = item.dia_semana === 'Sunday' ? 'Domingo' : 'Terça-feira';
-                    const tipoDia = item.dia_semana === 'Sunday' ? 'domingo' : 'terca';
+                    // Mapear corretamente todos os dias da semana
+                    const diasSemanaMap = {
+                        'Sunday': 'Domingo',
+                        'Monday': 'Segunda',
+                        'Tuesday': 'Terça',
+                        'Wednesday': 'Quarta',
+                        'Thursday': 'Quinta',
+                        'Friday': 'Sexta',
+                        'Saturday': 'Sábado'
+                    };
+                    const diaSemana = diasSemanaMap[item.dia_semana] || item.dia_semana;
+                    
+                    // Map day of week to CSS class
+                    const tipoDiaMap = {
+                        'Sunday': 'domingo',
+                        'Monday': 'segunda',
+                        'Tuesday': 'terca',
+                        'Wednesday': 'quarta',
+                        'Thursday': 'quinta',
+                        'Friday': 'sexta',
+                        'Saturday': 'sabado'
+                    };
+                    const tipoDia = tipoDiaMap[item.dia_semana] || '';
                     const emoji = diaSemana === 'Domingo' ? '🙏' : '📖';
                     
                     return `
@@ -1149,8 +2508,29 @@
                                     'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'][data.getMonth()];
                     const ano = data.getFullYear();
                     
-                    const diaSemana = item.dia_semana === 'Sunday' ? 'Domingo' : 'Terça-feira';
-                    const tipoDia = item.dia_semana === 'Sunday' ? 'domingo' : 'terca';
+                    // Mapear corretamente todos os dias da semana
+                    const diasSemanaMap = {
+                        'Sunday': 'Domingo',
+                        'Monday': 'Segunda',
+                        'Tuesday': 'Terça',
+                        'Wednesday': 'Quarta',
+                        'Thursday': 'Quinta',
+                        'Friday': 'Sexta',
+                        'Saturday': 'Sábado'
+                    };
+                    const diaSemana = diasSemanaMap[item.dia_semana] || item.dia_semana;
+                    
+                    // Map day of week to CSS class
+                    const tipoDiaMap = {
+                        'Sunday': 'domingo',
+                        'Monday': 'segunda',
+                        'Tuesday': 'terca',
+                        'Wednesday': 'quarta',
+                        'Thursday': 'quinta',
+                        'Friday': 'sexta',
+                        'Saturday': 'sabado'
+                    };
+                    const tipoDia = tipoDiaMap[item.dia_semana] || '';
                     const emoji = diaSemana === 'Domingo' ? '🙏' : '📖';
                     
                     // Verificar em qual serviço o organista está
@@ -1210,10 +2590,343 @@
                     '<div class="no-escala">Erro ao carregar seus dias</div>';
             }
         }
+        // Carregar lista de comuns para seletor de organistas
+        async function carregarComunsParaOrganista() {
+            console.log('🔄 carregarComunsParaOrganista() chamada');
+            
+            const selectComum = document.getElementById('orgComumId');
+            console.log('  📋 selectComum encontrado:', selectComum !== null);
+            
+            if (!selectComum) {
+                console.log('⚠️ Campo orgComumId não encontrado - usuário não é Master ou Encarregado');
+                return;
+            }
+            
+            // Se for encarregado de comum, carregar apenas sua comum
+            const hiddenComumId = document.getElementById('orgComumIdHidden');
+            console.log('  📋 hiddenComumId encontrado:', hiddenComumId !== null);
+            console.log('  📋 hiddenComumId.value:', hiddenComumId ? hiddenComumId.value : 'N/A');
+            
+            if (hiddenComumId && hiddenComumId.value) {
+                console.log('👤 Usuário é Encarregado de Comum, carregando contexto específico...');
+                await carregarComumDoEncarregado(hiddenComumId.value);
+                return;
+            }
+            
+            console.log('🔄 Iniciando carregamento de comuns (Master)...');
+            selectComum.innerHTML = '<option value="">⏳ Carregando comuns...</option>';
+            selectComum.disabled = true;
+            
+            try {
+                const response = await fetch('/api/regionais');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const regionais = await response.json();
+                console.log('✅ Regionais carregadas:', regionais.length, regionais);
+                
+                if (!Array.isArray(regionais) || regionais.length === 0) {
+                    selectComum.innerHTML = '<option value="">❌ Nenhuma regional encontrada</option>';
+                    console.warn('⚠️ Array de regionais vazio ou inválido');
+                    return;
+                }
+                
+                selectComum.innerHTML = '<option value="">Selecione o comum...</option>';
+                let totalComuns = 0;
+                
+                for (const regional of regionais) {
+                    console.log(`📍 Processando regional: ${regional.nome} (${regional.id})`);
+                    
+                    try {
+                        const subResponse = await fetch(`/api/regionais/${regional.id}/sub-regionais`);
+                        if (!subResponse.ok) {
+                            throw new Error(`HTTP ${subResponse.status}`);
+                        }
+                        const subRegionais = await subResponse.json();
+                        console.log(`  ✅ Sub-regionais: ${subRegionais.length}`, subRegionais);
+                        
+                        for (const sub of subRegionais) {
+                            console.log(`    📍 Processando sub-regional: ${sub.nome} (${sub.id})`);
+                            
+                            try {
+                                const comunsResponse = await fetch(`/api/regionais/${regional.id}/sub-regionais/${sub.id}/comuns`);
+                                if (!comunsResponse.ok) {
+                                    throw new Error(`HTTP ${comunsResponse.status}`);
+                                }
+                                const comuns = await comunsResponse.json();
+                                console.log(`      ✅ Comuns: ${comuns.length}`, comuns);
+                                
+                                for (const comum of comuns) {
+                                    const option = document.createElement('option');
+                                    option.value = comum.id;
+                                    option.textContent = `${regional.nome} › ${sub.nome} › ${comum.nome}`;
+                                    selectComum.appendChild(option);
+                                    totalComuns++;
+                                    console.log(`        ✅ Adicionado: ${comum.nome} (ID: ${comum.id})`);
+                                }
+                            } catch (error) {
+                                console.error(`      ❌ Erro ao carregar comuns de ${sub.nome}:`, error);
+                            }
+                        }
+                    } catch (error) {
+                        console.error(`  ❌ Erro ao carregar sub-regionais de ${regional.nome}:`, error);
+                    }
+                }
+                
+                console.log(`🎉 Total de comuns carregados: ${totalComuns}`);
+                
+                if (totalComuns === 0) {
+                    selectComum.innerHTML = '<option value="">❌ Nenhum comum encontrado</option>';
+                    console.warn('⚠️ Nenhum comum foi carregado. Verifique se existem comuns cadastrados.');
+                } else {
+                    selectComum.disabled = false;
+                    console.log(`✅ Seletor habilitado com ${totalComuns} comuns`);
+                }
+                
+            } catch (error) {
+                console.error('❌ ERRO CRÍTICO ao carregar comuns:', error);
+                selectComum.innerHTML = '<option value="">❌ Erro ao carregar - veja console</option>';
+                selectComum.disabled = false;
+            }
+        }
+        
+        // Carregar comum específica para encarregado
+        async function carregarComumDoEncarregado(comumId) {
+            const selectComum = document.getElementById('orgComumId');
+            selectComum.innerHTML = '<option value="">⏳ Carregando sua comum...</option>';
+            selectComum.disabled = true;
+            
+            try {
+                console.log(`🔍 Encarregado de Comum detectado`);
+                console.log(`🔑 contexto_id: "${comumId}"`);
+                console.log(`📡 Buscando dados da comum...`);
+                
+                // Buscar em todas as regionais para encontrar a comum
+                const response = await fetch('/api/regionais');
+                if (!response.ok) {
+                    throw new Error(`Erro ao buscar regionais: HTTP ${response.status}`);
+                }
+                const regionais = await response.json();
+                console.log(`✅ Regionais recebidas:`, regionais);
+                
+                let comumEncontrada = null;
+                let hierarquia = null;
+                
+                // Buscar a comum na hierarquia
+                for (const regional of regionais) {
+                    console.log(`🔎 Procurando em regional: ${regional.nome} (${regional.id})`);
+                    
+                    const subResponse = await fetch(`/api/regionais/${regional.id}/sub-regionais`);
+                    if (!subResponse.ok) {
+                        console.warn(`⚠️ Erro ao buscar sub-regionais de ${regional.id}`);
+                        continue;
+                    }
+                    const subRegionais = await subResponse.json();
+                    console.log(`  ✅ Sub-regionais:`, subRegionais);
+                    
+                    for (const sub of subRegionais) {
+                        console.log(`  🔎 Procurando em sub-regional: ${sub.nome} (${sub.id})`);
+                        
+                        const comunsResponse = await fetch(`/api/regionais/${regional.id}/sub-regionais/${sub.id}/comuns`);
+                        if (!comunsResponse.ok) {
+                            console.warn(`    ⚠️ Erro ao buscar comuns de ${sub.id}`);
+                            continue;
+                        }
+                        const comuns = await comunsResponse.json();
+                        console.log(`    ✅ Comuns encontradas:`, comuns);
+                        
+                        // Comparar IDs
+                        console.log(`    🔍 Procurando comum com ID: "${comumId}"`);
+                        const comum = comuns.find(c => {
+                            console.log(`      🔸 Comparando: "${c.id}" === "${comumId}" = ${c.id === comumId}`);
+                            return c.id === comumId;
+                        });
+                        
+                        if (comum) {
+                            console.log(`    🎯 COMUM ENCONTRADA!`, comum);
+                            comumEncontrada = comum;
+                            hierarquia = {
+                                regional: regional.nome,
+                                subRegional: sub.nome
+                            };
+                            break;
+                        }
+                    }
+                    if (comumEncontrada) break;
+                }
+                
+                if (comumEncontrada && hierarquia) {
+                    const textoCompleto = `${hierarquia.regional} › ${hierarquia.subRegional} › ${comumEncontrada.nome}`;
+                    selectComum.innerHTML = `<option value="${comumId}" selected>${textoCompleto}</option>`;
+                    selectComum.disabled = true; // Mantém desabilitado para encarregados
+                    console.log(`✅ Select preenchido com: "${textoCompleto}"`);
+                    console.log(`🎉 Comum carregada com sucesso!`);
+                    
+                    // Carregar dias da comum automaticamente
+                    await carregarDiasDoComum();
+                } else {
+                    console.error(`❌ Comum "${comumId}" NÃO ENCONTRADA na hierarquia!`);
+                    console.warn(`💡 Possíveis causas:`);
+                    console.warn(`   1. ID errado no user.contexto_id`);
+                    console.warn(`   2. Comum não cadastrada no banco`);
+                    console.warn(`   3. Problema na estrutura hierárquica`);
+                    
+                    // Mesmo assim, usar o ID para permitir cadastro
+                    selectComum.innerHTML = `<option value="${comumId}" selected>Sua Comum (${comumId})</option>`;
+                    selectComum.disabled = true;
+                }
+                
+            } catch (error) {
+                console.error('❌ ERRO CRÍTICO ao carregar comum do encarregado:');
+                console.error(error);
+                selectComum.innerHTML = `<option value="${comumId}" selected>Sua Comum (${comumId})</option>`;
+                selectComum.disabled = true;
+                showAlert('alertOrganista', `Aviso: Não foi possível carregar o nome completo da sua comum. O sistema usará automaticamente a comum "${comumId}". Entre em contato com o administrador se o problema persistir.`, 'warning');
+            }
+        }
+        
+        // Carregar dias do comum selecionado e atualizar contexto para Master
+        async function carregarDiasDoComum() {
+            // Se for Master, também atualizar o contexto do dashboard
+            if (userTipo === 'master') {
+                const selectComum = document.getElementById('orgComumId');
+                if (selectComum && selectComum.value) {
+                    console.log('🔄 Master: atualizando contexto do dashboard para comum:', selectComum.value);
+                    await atualizarContextoMaster(selectComum.value);
+                }
+            }
+            
+            // Continuar com carregamento normal dos dias
+            await carregarDiasDoComumInterno();
+        }
+        
+        // Atualizar contexto do Master no backend
+        async function atualizarContextoMaster(comumId) {
+            try {
+                // Buscar informações completas da comum
+                const db = await fetch('/api/regionais').then(r => r.json());
+                
+                let regional_id, sub_regional_id;
+                for (const regional of db) {
+                    for (const subRegional of regional.sub_regionais || []) {
+                        const comum = (subRegional.comuns || []).find(c => c.id === comumId);
+                        if (comum) {
+                            regional_id = regional.id;
+                            sub_regional_id = subRegional.id;
+                            break;
+                        }
+                    }
+                    if (regional_id) break;
+                }
+                
+                if (regional_id && sub_regional_id) {
+                    // Atualizar contexto no backend
+                    const response = await fetch('/api/contexto/selecionar', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ regional_id, sub_regional_id, comum_id: comumId })
+                    });
+                    
+                    if (response.ok) {
+                        console.log('✅ Contexto atualizado no backend');
+                        // Recarregar organistas e escala
+                        await loadOrganistas();
+                        await loadEscalaAtual();
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Erro ao atualizar contexto:', error);
+            }
+        }
+        
+        // Carregar dias do comum selecionado (lógica interna)
+        async function carregarDiasDoComumInterno() {
+            const selectComum = document.getElementById('orgComumId');
+            const hiddenComumId = document.getElementById('orgComumIdHidden');
+            const selectDias = document.getElementById('orgDias');
+            
+            // Pegar comum_id: primeiro do hidden (encarregado), depois do select (master), depois do contexto
+            let comumId = null;
+            if (hiddenComumId && hiddenComumId.value) {
+                comumId = hiddenComumId.value;
+                console.log('🔑 carregarDiasDoComum: usando comum_id do hidden:', comumId);
+            } else if (selectComum && selectComum.value) {
+                comumId = selectComum.value;
+                console.log('🔑 carregarDiasDoComum: usando comum_id do select:', comumId);
+            } else if (contextoAtual.comum && contextoAtual.comum.id) {
+                comumId = contextoAtual.comum.id;
+                console.log('🔑 carregarDiasDoComum: usando comum_id do contexto:', comumId);
+            }
+            
+            if (!comumId) {
+                console.warn('⚠️ carregarDiasDoComum: Nenhum comum_id disponível');
+                selectDias.innerHTML = '<option value="">Selecione o comum primeiro</option>';
+                return;
+            }
+            
+            try {
+                console.log(`📡 Buscando config da comum: /api/comuns/${comumId}/config`);
+                const response = await fetch(`/api/comuns/${comumId}/config`);
+                
+                if (!response.ok) {
+                    console.error(`❌ Erro HTTP ${response.status} ao buscar config da comum ${comumId}`);
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const config = await response.json();
+                console.log(`✅ Config recebida da comum ${comumId}:`, config);
+                console.log(`  📅 Dias de culto:`, config.dias_culto);
+                
+                selectDias.innerHTML = '';
+                
+                if (config.dias_culto && config.dias_culto.length > 0) {
+                    console.log(`✅ Carregando ${config.dias_culto.length} dias da config`);
+                    config.dias_culto.forEach(dia => {
+                        const option = document.createElement('option');
+                        option.value = dia;
+                        option.textContent = dia;
+                        selectDias.appendChild(option);
+                        console.log(`  ➕ Adicionado dia: ${dia}`);
+                    });
+                } else {
+                    console.warn(`⚠️ Config sem dias_culto, usando fallback`);
+                    // Fallback para dias padrão
+                    ['Domingo', 'Terça'].forEach(dia => {
+                        const option = document.createElement('option');
+                        option.value = dia;
+                        option.textContent = dia;
+                        selectDias.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao carregar dias do comum:', error);
+                // Fallback para dias padrão
+                selectDias.innerHTML = '';
+                ['Domingo', 'Terça'].forEach(dia => {
+                    const option = document.createElement('option');
+                    option.value = dia;
+                    option.textContent = dia;
+                    selectDias.appendChild(option);
+                });
+            }
+        }
         
         // Adicionar organista
         async function addOrganista(event) {
             event.preventDefault();
+            
+            const selectComum = document.getElementById('orgComumId');
+            const hiddenComumId = document.getElementById('orgComumIdHidden');
+            
+            // Pegar comum_id do select (Master) ou do hidden (Encarregado)
+            let comumId = null;
+            if (hiddenComumId && hiddenComumId.value) {
+                comumId = hiddenComumId.value;
+                console.log('🔑 Usando comum_id do encarregado:', comumId);
+            } else if (selectComum) {
+                comumId = selectComum.value;
+                console.log('🔑 Usando comum_id selecionado:', comumId);
+            }
             
             const payload = {
                 id: document.getElementById('orgId').value,
@@ -1224,6 +2937,15 @@
                 dias_permitidos: Array.from(document.getElementById('orgDias').selectedOptions).map(o => o.value),
                 regras_especiais: {}
             };
+            
+            // Adicionar comum_id ao payload
+            if (selectComum || hiddenComumId) {
+                if (!comumId) {
+                    showAlert('alertOrganista', 'Selecione o comum onde a organista atuará', 'error');
+                    return;
+                }
+                payload.comum_id = comumId;
+            }
             
             try {
                 const response = await fetch('/organistas', {
@@ -1558,10 +3280,10 @@
                 for (const [orgId, info] of Object.entries(data)) {
                     const card = document.createElement('div');
                     card.className = 'card';
-                    card.style.background = '#f9fafb';
+                    card.style.background = '#EDE9FE';
                     card.style.marginBottom = '15px';
                     
-                    let html = `<h3 style="color: #667eea; margin-bottom: 10px;">👤 ${info.nome}</h3>`;
+                    let html = `<h3 style="color: #312E81; margin-bottom: 10px;">👤 ${info.nome}</h3>`;
                     
                     if (info.indisponibilidades.length === 0) {
                         html += '<p style="color: #666;">Nenhuma indisponibilidade marcada.</p>';
@@ -1652,7 +3374,10 @@
         }
         
         // Inicialização
-        window.onload = function() {
+        window.onload = async function() {
+            // Carregar contexto primeiro
+            await carregarContextoAtual();
+            
             loadOrganistas();
             
             // Carregar dashboard apropriado
@@ -1692,32 +3417,56 @@
                     throw new Error('Não foi possível carregar a lista de organistas');
                 }
                 
-                // Buscar configuração do bimestre
+                // Buscar configuração do período
                 const configResponse = await fetch('/admin/config');
                 const config = await configResponse.json();
                 
-                const inicio = new Date(config.bimestre.inicio + 'T00:00:00');
-                const fim = new Date(config.bimestre.fim + 'T00:00:00');
+                console.log('📅 Config recebida:', config);
                 
-                // Criar escala vazia com todos os domingos e terças
+                // Suportar tanto 'periodo' (nova estrutura) quanto 'bimestre' (antiga)
+                const periodoConfig = config.periodo || config.bimestre;
+                
+                if (!periodoConfig || !periodoConfig.inicio || !periodoConfig.fim) {
+                    throw new Error('Período não configurado. Configure o período da comum primeiro nas Configurações.');
+                }
+                
+                const inicio = new Date(periodoConfig.inicio + 'T00:00:00');
+                const fim = new Date(periodoConfig.fim + 'T00:00:00');
+                
+                // Mapear dias da semana em português para números
+                const diasSemanaMap = {
+                    'Domingo': 0,
+                    'Segunda': 1,
+                    'Terça': 2,
+                    'Quarta': 3,
+                    'Quinta': 4,
+                    'Sexta': 5,
+                    'Sábado': 6
+                };
+                
+                // Mapear números para nomes em inglês (necessário para compatibilidade com renderização)
+                const diasSemanaIngles = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                
+                // Pegar dias de culto da config (ou usar padrão)
+                const diasCulto = config.dias_culto || ['Domingo', 'Terça'];
+                const diasCultoNumeros = diasCulto.map(dia => diasSemanaMap[dia]).filter(n => n !== undefined);
+                
+                console.log('📅 Dias de culto configurados:', diasCulto);
+                console.log('📅 Números dos dias:', diasCultoNumeros);
+                console.log('📅 Período:', periodoConfig.inicio, 'até', periodoConfig.fim);
+                
+                // Criar escala vazia com os dias de culto configurados
                 const escala = [];
                 let current = new Date(inicio);
                 
                 while (current <= fim) {
                     const dayOfWeek = current.getDay();
                     
-                    // Domingo (0) ou Terça (2)
-                    if (dayOfWeek === 0) {
+                    // Verificar se é um dia de culto
+                    if (diasCultoNumeros.includes(dayOfWeek)) {
                         escala.push({
                             data: current.toISOString().split('T')[0],
-                            dia_semana: 'Sunday',
-                            meia_hora: null,
-                            culto: null
-                        });
-                    } else if (dayOfWeek === 2) {
-                        escala.push({
-                            data: current.toISOString().split('T')[0],
-                            dia_semana: 'Tuesday',
+                            dia_semana: diasSemanaIngles[dayOfWeek],  // CORRIGIDO: usar nome em inglês
                             meia_hora: null,
                             culto: null
                         });
@@ -1725,6 +3474,8 @@
                     
                     current.setDate(current.getDate() + 1);
                 }
+                
+                console.log(`✅ Escala criada com ${escala.length} dias`);
                 
                 // Publicar escala vazia
                 const response = await fetch('/escala/publicar', {
@@ -1825,6 +3576,8 @@
                 'Saturday': 'Sábado'
             };
 
+            console.log('📊 DEBUG: Primeiros 3 itens da escala:', escala.slice(0, 3));
+
             escala.forEach(item => {
                 const date = new Date(item.data + 'T00:00:00');
                 const mesAno = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
@@ -1856,14 +3609,14 @@
                 
                 html += `
                     <div style="margin-bottom: 30px;">
-                        <h3 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 15px;">
+                        <h3 style="background: linear-gradient(135deg, #A78BFA 0%, #6D28D9 100%); color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 15px;">
                             📅 ${mes.nome}
                         </h3>
                         
                         <div style="overflow-x: auto;">
                             <table style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                                 <thead>
-                                    <tr style="background: #667eea; color: white;">
+                                    <tr style="background: #8B5CF6; color: white;">
                                         <th style="padding: 12px; text-align: left;">Data</th>
                                         <th style="padding: 12px; text-align: left;">Dia</th>
                                         <th style="padding: 12px; text-align: center; border-left: 2px solid rgba(255,255,255,0.3);">
@@ -2136,7 +3889,7 @@
             
             Object.entries(stats).forEach(([nome, contagem]) => {
                 html += `
-                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px;">
+                    <div style="background: linear-gradient(135deg, #A78BFA 0%, #6D28D9 100%); color: white; padding: 15px; border-radius: 8px;">
                         <div style="font-size: 0.9em; opacity: 0.9;">${nome}</div>
                         <div style="font-size: 2em; font-weight: bold; margin-top: 5px;">${contagem.total}</div>
                         <div style="font-size: 0.85em; opacity: 0.8; margin-top: 5px;">
@@ -2206,9 +3959,10 @@
                 });
                 
                 // Gerar arquivo iCalendar
+                const comumNome = contextoAtual.comum?.nome || 'Nossa Comum';
                 let icsContent = 'BEGIN:VCALENDAR\r\n';
                 icsContent += 'VERSION:2.0\r\n';
-                icsContent += 'PRODID:-//Rodízio de Organistas - Vila Paula//PT\r\n';
+                icsContent += `PRODID:-//Rodízio de Organistas - ${comumNome}//PT\r\n`;
                 icsContent += 'CALSCALE:GREGORIAN\r\n';
                 icsContent += 'METHOD:PUBLISH\r\n';
                 
@@ -2231,8 +3985,8 @@
                     icsContent += `DTSTART:${dtStart}\r\n`;
                     icsContent += `DTEND:${dtEnd}\r\n`;
                     icsContent += `SUMMARY:${evento.titulo} - Rodízio de Organistas\r\n`;
-                    icsContent += `DESCRIPTION:Rodízio de Organistas - Vila Paula\\n${evento.titulo}\r\n`;
-                    icsContent += `LOCATION:Igreja Vila Paula\r\n`;
+                    icsContent += `DESCRIPTION:Rodízio de Organistas - ${comumNome}\\n${evento.titulo}\r\n`;
+                    icsContent += `LOCATION:Igreja ${comumNome}\r\n`;
                     icsContent += `STATUS:CONFIRMED\r\n`;
                     icsContent += 'BEGIN:VALARM\r\n';
                     icsContent += 'TRIGGER:-PT1H\r\n';
@@ -2279,7 +4033,8 @@
                 }
                 
                 // Construir mensagem
-                let mensagem = `*ESCALA DE ORGANISTAS - VILA PAULA*\n`;
+                const comumNome = contextoAtual.comum?.nome || 'Nossa Comum';
+                let mensagem = `*ESCALA DE ORGANISTAS - ${comumNome.toUpperCase()}*\n`;
                 mensagem += `Período: {{ cfg.bimestre.inicio | date_br }} até {{ cfg.bimestre.fim | date_br }}\n\n`;
                 
                 // Agrupar por mês
@@ -2303,7 +4058,18 @@
                     meses[mes].forEach(item => {
                         const data = new Date(item.data);
                         const dia = data.getDate().toString().padStart(2, '0');
-                        const diaSemana = item.dia_semana === 'Sunday' ? 'Domingo' : 'Terça';
+                        
+                        // Mapear corretamente todos os dias da semana
+                        const diasSemanaMap = {
+                            'Sunday': 'Domingo',
+                            'Monday': 'Segunda',
+                            'Tuesday': 'Terça',
+                            'Wednesday': 'Quarta',
+                            'Thursday': 'Quinta',
+                            'Friday': 'Sexta',
+                            'Saturday': 'Sábado'
+                        };
+                        const diaSemana = diasSemanaMap[item.dia_semana] || item.dia_semana;
                         
                         mensagem += `\n*${dia} - ${diaSemana}*\n`;
                         mensagem += `Meia-hora: ${item.meia_hora || 'Não definido'}\n`;
@@ -2331,15 +4097,42 @@
         // Inicializar dados ao carregar a página
         async function initializeApp() {
             try {
+                console.log('🚀 Inicializando aplicação...');
+                
+                // Carregar contexto atual
+                await carregarContextoAtual();
+                
                 // Carregar organistas primeiro
                 await loadOrganistas();
                 
-                // Depois carregar escala se estiver na aba
-                if (document.getElementById('escala')) {
+                // Carregar indisponibilidades
+                if (typeof loadIndisponibilidades === 'function') {
+                    loadIndisponibilidades();
+                }
+                
+                // Carregar escala do dashboard
+                if (document.getElementById('escalaAtual')) {
                     await loadEscalaAtual();
                 }
+                
+                // Carregar "Meus Dias" para organistas
+                if (document.getElementById('meusDias')) {
+                    await renderMeusDias();
+                }
+                
+                // Carregar configurações
+                if (typeof loadConfig === 'function') {
+                    loadConfig();
+                }
+                
+                // Carregar seletores de contexto para Master
+                if (typeof carregarSeletoresContexto === 'function') {
+                    await carregarSeletoresContexto();
+                }
+                
+                console.log('✅ Aplicação inicializada com sucesso!');
             } catch (error) {
-                console.error('Erro ao inicializar:', error);
+                console.error('❌ Erro ao inicializar:', error);
             }
         }
 
@@ -2540,7 +4333,8 @@
                     return;
                 }
                 
-                let mensagem = `*ESCALA RJM - VILA PAULA*\n`;
+                const comumNome = contextoAtual.comum?.nome || 'Nossa Comum';
+                let mensagem = `*ESCALA RJM - ${comumNome.toUpperCase()}*\n`;
                 mensagem += `Reunião de Jovens e Menores\n`;
                 mensagem += `Horário: Domingos 10:00 - 11:30\n\n`;
                 
@@ -2578,6 +4372,1198 @@
             } catch (error) {
                 console.error('Erro ao compartilhar no WhatsApp:', error);
                 alert('❌ Erro ao gerar mensagem para o WhatsApp.');
+            }
+        }
+        
+        // ==================== Gerenciamento de Hierarquia ====================
+        
+        let regionalSelecionada = null;
+        let subRegionalSelecionada = null;
+        
+        // Carregar hierarquia completa
+        async function carregarHierarquia() {
+            if (contextoAtual.nivel !== 'master') return;
+            
+            try {
+                const response = await fetch('/api/regionais');
+                const regionais = await response.json();
+                
+                const container = document.getElementById('listaRegionais');
+                container.innerHTML = '';
+                
+                if (regionais.length === 0) {
+                    container.innerHTML = '<p style="color: #999;">Nenhuma regional cadastrada</p>';
+                    return;
+                }
+                
+                regionais.forEach(regional => {
+                    const card = document.createElement('div');
+                    card.style.cssText = 'background: #f3f4f6; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;';
+                    card.onclick = () => selecionarRegional(regional.id);
+                    
+                    if (regionalSelecionada === regional.id) {
+                        card.style.background = '#dbeafe';
+                        card.style.borderLeft = '4px solid #3b82f6';
+                    }
+                    
+                    card.innerHTML = `
+                        <div>
+                            <strong style="font-size: 1.1em;">🏙️ ${regional.nome}</strong>
+                            <div style="font-size: 0.9em; color: #666;">ID: ${regional.id}</div>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn" style="padding: 5px 10px; background: #3b82f6; color: white;" onclick="event.stopPropagation(); editarRegional('${regional.id}', '${regional.nome}')">✏️</button>
+                            <button class="btn" style="padding: 5px 10px; background: #ef4444; color: white;" onclick="event.stopPropagation(); deletarRegional('${regional.id}')">🗑️</button>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+                
+            } catch (error) {
+                console.error('Erro ao carregar hierarquia:', error);
+                showNotification('Erro ao carregar hierarquia', 'error');
+            }
+        }
+        
+        // Selecionar regional
+        async function selecionarRegional(regionalId) {
+            regionalSelecionada = regionalId;
+            subRegionalSelecionada = null;
+            await carregarHierarquia();
+            await carregarSubRegionaisHierarquia(regionalId);
+            
+            const container = document.getElementById('listaComuns');
+            container.innerHTML = '<p style="color: #999;">Selecione uma Sub-Regional</p>';
+        }
+        
+        // Carregar sub-regionais
+        async function carregarSubRegionaisHierarquia(regionalId) {
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais`);
+                const subRegionais = await response.json();
+                
+                const container = document.getElementById('listaSubRegionais');
+                container.innerHTML = '';
+                
+                if (subRegionais.length === 0) {
+                    container.innerHTML = '<p style="color: #999;">Nenhuma sub-regional nesta regional</p>';
+                    return;
+                }
+                
+                subRegionais.forEach(sub => {
+                    const card = document.createElement('div');
+                    card.style.cssText = 'background: #f3f4f6; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;';
+                    card.onclick = () => selecionarSubRegional(sub.id);
+                    
+                    if (subRegionalSelecionada === sub.id) {
+                        card.style.background = '#dbeafe';
+                        card.style.borderLeft = '4px solid #3b82f6';
+                    }
+                    
+                    card.innerHTML = `
+                        <div>
+                            <strong style="font-size: 1.1em;">📍 ${sub.nome}</strong>
+                            <div style="font-size: 0.9em; color: #666;">ID: ${sub.id}</div>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn" style="padding: 5px 10px; background: #3b82f6; color: white;" onclick="event.stopPropagation(); editarSubRegional('${regionalId}', '${sub.id}', '${sub.nome}')">✏️</button>
+                            <button class="btn" style="padding: 5px 10px; background: #ef4444; color: white;" onclick="event.stopPropagation(); deletarSubRegional('${regionalId}', '${sub.id}')">🗑️</button>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+                
+            } catch (error) {
+                console.error('Erro ao carregar sub-regionais:', error);
+            }
+        }
+        
+        // Selecionar sub-regional
+        async function selecionarSubRegional(subId) {
+            subRegionalSelecionada = subId;
+            await carregarSubRegionaisHierarquia(regionalSelecionada);
+            await carregarComunsHierarquia(regionalSelecionada, subId);
+        }
+        
+        // Carregar comuns
+        async function carregarComunsHierarquia(regionalId, subId) {
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}/comuns`);
+                const comuns = await response.json();
+                
+                const container = document.getElementById('listaComuns');
+                container.innerHTML = '';
+                
+                if (comuns.length === 0) {
+                    container.innerHTML = '<p style="color: #999;">Nenhum comum nesta sub-regional</p>';
+                    return;
+                }
+                
+                comuns.forEach(comum => {
+                    const card = document.createElement('div');
+                    card.style.cssText = 'background: #f3f4f6; padding: 15px; border-radius: 8px; margin-bottom: 10px;';
+                    
+                    // Montar informações de configuração
+                    let configInfo = '';
+                    if (comum.config) {
+                        const diasCulto = comum.config.dias_culto || [];
+                        const horarios = comum.config.horarios || {};
+                        
+                        if (diasCulto.length > 0) {
+                            configInfo += '<div style="margin-top: 10px; padding: 10px; background: white; border-radius: 6px; border-left: 3px solid #3b82f6;">';
+                            configInfo += '<div style="font-size: 0.85em; color: #666; margin-bottom: 8px;"><strong>📅 Dias e Horários Configurados:</strong></div>';
+                            configInfo += '<div style="display: flex; flex-wrap: wrap; gap: 8px;">';
+                            
+                            diasCulto.forEach(dia => {
+                                const horasDia = horarios[dia] || [];
+                                const horariosTexto = horasDia.length > 0 ? horasDia.join(', ') : 'não definidos';
+                                
+                                // Escolher cor por dia
+                                let corDia = '#6b7280';
+                                if (dia === 'Domingo') corDia = '#dc2626';
+                                else if (dia === 'Segunda') corDia = '#2563eb';
+                                else if (dia === 'Terça') corDia = '#059669';
+                                else if (dia === 'Quarta') corDia = '#ea580c';
+                                else if (dia === 'Quinta') corDia = '#7c3aed';
+                                else if (dia === 'Sexta') corDia = '#0891b2';
+                                else if (dia === 'Sábado') corDia = '#ca8a04';
+                                
+                                configInfo += `
+                                    <div style="background: ${corDia}15; border: 1px solid ${corDia}; padding: 6px 10px; border-radius: 6px; font-size: 0.85em;">
+                                        <strong style="color: ${corDia};">${dia}</strong><br>
+                                        <span style="color: #666; font-size: 0.9em;">⏰ ${horariosTexto}</span>
+                                    </div>
+                                `;
+                            });
+                            
+                            configInfo += '</div>';
+                            
+                            // Fechamento
+                            const fechamento = comum.config.fechamento_publicacao_dias || 7;
+                            configInfo += `<div style="margin-top: 8px; font-size: 0.8em; color: #666;">⏱️ Fechamento: ${fechamento} dias antes</div>`;
+                            configInfo += '</div>';
+                        }
+                    }
+                    
+                    card.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div style="flex: 1;">
+                                <strong style="font-size: 1.1em;">⛪ ${comum.nome}</strong>
+                                <div style="font-size: 0.9em; color: #666;">ID: ${comum.id}</div>
+                                ${configInfo}
+                            </div>
+                            <div style="display: flex; gap: 5px; flex-shrink: 0;">
+                                <button class="btn" style="padding: 5px 10px; background: #3b82f6; color: white;" onclick="abrirModalEditarComum('${regionalId}', '${subId}', '${comum.id}')">✏️</button>
+                                <button class="btn" style="padding: 5px 10px; background: #ef4444; color: white;" onclick="deletarComum('${regionalId}', '${subId}', '${comum.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+                
+            } catch (error) {
+                console.error('Erro ao carregar comuns:', error);
+            }
+        }
+        
+        // Modais
+        function mostrarModalNovaRegional() {
+            document.getElementById('modalNovaRegional').style.display = 'flex';
+        }
+        
+        function fecharModalNovaRegional() {
+            document.getElementById('modalNovaRegional').style.display = 'none';
+            document.getElementById('novaRegionalId').value = '';
+            document.getElementById('novaRegionalNome').value = '';
+        }
+        
+        async function mostrarModalNovaSubRegional() {
+            // Carregar regionais no select
+            const response = await fetch('/api/regionais');
+            const regionais = await response.json();
+            
+            const select = document.getElementById('novaSubRegionalPai');
+            select.innerHTML = '<option value="">Selecione...</option>';
+            regionais.forEach(r => {
+                const option = document.createElement('option');
+                option.value = r.id;
+                option.textContent = r.nome;
+                if (regionalSelecionada === r.id) option.selected = true;
+                select.appendChild(option);
+            });
+            
+            document.getElementById('modalNovaSubRegional').style.display = 'flex';
+        }
+        
+        function fecharModalNovaSubRegional() {
+            document.getElementById('modalNovaSubRegional').style.display = 'none';
+            document.getElementById('novaSubRegionalId').value = '';
+            document.getElementById('novaSubRegionalNome').value = '';
+        }
+        
+        async function mostrarModalNovoComum() {
+            // Carregar regionais
+            const response = await fetch('/api/regionais');
+            const regionais = await response.json();
+            
+            const select = document.getElementById('novoComumRegional');
+            select.innerHTML = '<option value="">Selecione...</option>';
+            regionais.forEach(r => {
+                const option = document.createElement('option');
+                option.value = r.id;
+                option.textContent = r.nome;
+                if (regionalSelecionada === r.id) option.selected = true;
+                select.appendChild(option);
+            });
+            
+            // Se há regional selecionada, carregar sub-regionais
+            if (regionalSelecionada) {
+                await carregarSubRegionaisModal();
+            }
+            
+            document.getElementById('modalNovoComum').style.display = 'flex';
+        }
+        
+        function fecharModalNovoComum() {
+            document.getElementById('modalNovoComum').style.display = 'none';
+            document.getElementById('novoComumId').value = '';
+            document.getElementById('novoComumNome').value = '';
+        }
+        
+        async function carregarSubRegionaisModal() {
+            const regionalId = document.getElementById('novoComumRegional').value;
+            if (!regionalId) {
+                document.getElementById('novoComumSubRegional').innerHTML = '<option value="">Selecione Regional primeiro...</option>';
+                return;
+            }
+            
+            const response = await fetch(`/api/regionais/${regionalId}/sub-regionais`);
+            const subs = await response.json();
+            
+            const select = document.getElementById('novoComumSubRegional');
+            select.innerHTML = '<option value="">Selecione...</option>';
+            subs.forEach(s => {
+                const option = document.createElement('option');
+                option.value = s.id;
+                option.textContent = s.nome;
+                if (subRegionalSelecionada === s.id) option.selected = true;
+                select.appendChild(option);
+            });
+        }
+        
+        // CRUD Regional
+        async function criarRegional(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('novaRegionalId').value;
+            const nome = document.getElementById('novaRegionalNome').value;
+            
+            try {
+                const response = await fetch('/api/regionais', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id, nome})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(`Regional "${nome}" criada com sucesso!`, 'success');
+                    fecharModalNovaRegional();
+                    await carregarHierarquia();
+                } else {
+                    showNotification(data.error || 'Erro ao criar regional', 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao criar regional', 'error');
+            }
+        }
+        
+        async function editarRegional(id, nomeAtual) {
+            const novoNome = prompt('Novo nome para a regional:', nomeAtual);
+            if (!novoNome || novoNome === nomeAtual) return;
+            
+            try {
+                const response = await fetch(`/api/regionais/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({nome: novoNome})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Regional atualizada!', 'success');
+                    await carregarHierarquia();
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao editar regional', 'error');
+            }
+        }
+        
+        async function deletarRegional(id) {
+            if (!confirm('Tem certeza que deseja deletar esta regional? Ela deve estar vazia.')) return;
+            
+            try {
+                const response = await fetch(`/api/regionais/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Regional deletada!', 'success');
+                    if (regionalSelecionada === id) {
+                        regionalSelecionada = null;
+                        subRegionalSelecionada = null;
+                    }
+                    await carregarHierarquia();
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao deletar regional', 'error');
+            }
+        }
+        
+        // CRUD Sub-Regional
+        async function criarSubRegional(event) {
+            event.preventDefault();
+            
+            const regionalId = document.getElementById('novaSubRegionalPai').value;
+            const id = document.getElementById('novaSubRegionalId').value;
+            const nome = document.getElementById('novaSubRegionalNome').value;
+            
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id, nome})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(`Sub-Regional "${nome}" criada!`, 'success');
+                    fecharModalNovaSubRegional();
+                    regionalSelecionada = regionalId;
+                    await carregarHierarquia();
+                    await carregarSubRegionaisHierarquia(regionalId);
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao criar sub-regional', 'error');
+            }
+        }
+        
+        async function editarSubRegional(regionalId, subId, nomeAtual) {
+            const novoNome = prompt('Novo nome para a sub-regional:', nomeAtual);
+            if (!novoNome || novoNome === nomeAtual) return;
+            
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({nome: novoNome})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Sub-Regional atualizada!', 'success');
+                    await carregarSubRegionaisHierarquia(regionalId);
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao editar sub-regional', 'error');
+            }
+        }
+        
+        async function deletarSubRegional(regionalId, subId) {
+            if (!confirm('Tem certeza? A sub-regional deve estar vazia.')) return;
+            
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Sub-Regional deletada!', 'success');
+                    if (subRegionalSelecionada === subId) {
+                        subRegionalSelecionada = null;
+                    }
+                    await carregarSubRegionaisHierarquia(regionalId);
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao deletar sub-regional', 'error');
+            }
+        }
+        
+        // Toggle horários no modal de comum
+        function toggleModalHorarios(containerLabel) {
+            const checkbox = containerLabel.querySelector('input[type="checkbox"]');
+            const horariosContainer = containerLabel.querySelector('.modal-horarios-container');
+            const inputHorarios = containerLabel.querySelector('.modal-horarios-input');
+            const parentCard = containerLabel.closest('.dia-horario-config label');
+            
+            if (checkbox.checked) {
+                horariosContainer.style.display = 'block';
+                parentCard.style.borderColor = '#3b82f6';
+                parentCard.style.background = '#eff6ff';
+                inputHorarios.required = true;
+                setTimeout(() => inputHorarios.focus(), 100);
+            } else {
+                horariosContainer.style.display = 'none';
+                parentCard.style.borderColor = '#e5e7eb';
+                parentCard.style.background = 'white';
+                inputHorarios.required = false;
+                inputHorarios.value = '';
+            }
+        }
+        
+        // CRUD Comum
+        async function criarComum(event) {
+            event.preventDefault();
+            
+            const regionalId = document.getElementById('novoComumRegional').value;
+            const subId = document.getElementById('novoComumSubRegional').value;
+            const id = document.getElementById('novoComumId').value;
+            const nome = document.getElementById('novoComumNome').value;
+            const fechamentoDias = parseInt(document.getElementById('novoComumFechamentoDias').value);
+            
+            // Coletar dias e horários
+            const checkboxes = document.querySelectorAll('input[name="modal_dias_culto"]:checked');
+            const dias_culto = [];
+            const horarios = {};
+            
+            let erro = false;
+            checkboxes.forEach(cb => {
+                const dia = cb.value;
+                dias_culto.push(dia);
+                
+                const inputHorarios = document.querySelector(`.modal-horarios-input[data-dia="${dia}"]`);
+                const horariosTexto = inputHorarios.value.trim();
+                
+                if (!horariosTexto) {
+                    showNotification(`Digite os horários para ${dia}`, 'error');
+                    erro = true;
+                    return;
+                }
+                
+                // Parse horários (separados por vírgula)
+                const horariosArray = horariosTexto.split(',')
+                    .map(h => h.trim())
+                    .filter(h => h)
+                    .sort();
+                
+                if (horariosArray.length === 0) {
+                    showNotification(`Digite pelo menos um horário para ${dia}`, 'error');
+                    erro = true;
+                    return;
+                }
+                
+                // Validar formato HH:MM
+                const formatoValido = horariosArray.every(h => /^\d{2}:\d{2}$/.test(h));
+                if (!formatoValido) {
+                    showNotification(`Formato inválido em ${dia}. Use HH:MM (ex: 09:00)`, 'error');
+                    erro = true;
+                    return;
+                }
+                
+                horarios[dia] = horariosArray;
+            });
+            
+            if (erro) return;
+            
+            if (dias_culto.length === 0) {
+                showNotification('Selecione pelo menos um dia de culto', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}/comuns`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        id, 
+                        nome,
+                        config: {
+                            dias_culto,
+                            horarios,
+                            fechamento_publicacao_dias: fechamentoDias
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(`✅ Comum "${nome}" criado com sucesso!`, 'success');
+                    fecharModalNovoComum();
+                    regionalSelecionada = regionalId;
+                    subRegionalSelecionada = subId;
+                    await carregarHierarquia();
+                    await carregarSubRegionaisHierarquia(regionalId);
+                    await carregarComunsHierarquia(regionalId, subId);
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao criar comum', 'error');
+            }
+        }
+        
+        // Abrir modal de editar comum
+        async function abrirModalEditarComum(regionalId, subId, comumId) {
+            try {
+                // Buscar dados do comum
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}/comuns/${comumId}`);
+                const comum = await response.json();
+                
+                // Preencher campos básicos
+                document.getElementById('editComumRegionalId').value = regionalId;
+                document.getElementById('editComumSubRegionalId').value = subId;
+                document.getElementById('editComumId').value = comumId;
+                document.getElementById('editComumNome').value = comum.nome;
+                
+                // Preencher fechamento
+                const fechamento = comum.config?.fechamento_publicacao_dias || 7;
+                document.getElementById('editComumFechamentoDias').value = fechamento;
+                
+                // Montar dias e horários
+                const diasCulto = comum.config?.dias_culto || [];
+                const horarios = comum.config?.horarios || {};
+                
+                const container = document.getElementById('editDiasHorariosContainer');
+                container.innerHTML = '';
+                
+                const todosDias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                const coresDias = {
+                    'Domingo': '#dc2626',
+                    'Segunda': '#2563eb',
+                    'Terça': '#059669',
+                    'Quarta': '#ea580c',
+                    'Quinta': '#7c3aed',
+                    'Sexta': '#0891b2',
+                    'Sábado': '#ca8a04'
+                };
+                
+                todosDias.forEach(dia => {
+                    const checked = diasCulto.includes(dia);
+                    const horasDia = horarios[dia] || [];
+                    const horariosTexto = horasDia.join(', ');
+                    const cor = coresDias[dia];
+                    
+                    const diaHtml = `
+                        <div class="dia-horario-config">
+                            <label style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: ${checked ? cor + '15' : 'white'}; border: 2px solid ${checked ? cor : '#e5e7eb'}; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" name="edit_dias_culto" value="${dia}" ${checked ? 'checked' : ''} onchange="toggleModalHorariosEdit(this.parentElement.parentElement.parentElement)" style="width: 18px; height: 18px;">
+                                    <strong style="font-size: 1.05em; color: ${cor};">${dia === 'Domingo' ? '☀️' : '📅'} ${dia}${dia !== 'Domingo' && dia !== 'Sábado' ? '-feira' : ''}</strong>
+                                </div>
+                                <div class="modal-horarios-container" style="display: ${checked ? 'block' : 'none'}; padding-left: 28px;">
+                                    <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 4px;">⏰ Horários:</label>
+                                    <input type="text" class="modal-horarios-input" data-dia="${dia}" value="${horariosTexto}" placeholder="Ex: 09:00, 18:00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.95em;" ${checked ? 'required' : ''}>
+                                </div>
+                            </label>
+                        </div>
+                    `;
+                    
+                    container.insertAdjacentHTML('beforeend', diaHtml);
+                });
+                
+                // Mostrar modal
+                document.getElementById('modalEditarComum').style.display = 'flex';
+                
+            } catch (error) {
+                console.error('Erro ao carregar dados do comum:', error);
+                showNotification('Erro ao carregar dados do comum', 'error');
+            }
+        }
+        
+        function fecharModalEditarComum() {
+            document.getElementById('modalEditarComum').style.display = 'none';
+        }
+        
+        function toggleModalHorariosEdit(containerLabel) {
+            const checkbox = containerLabel.querySelector('input[type="checkbox"]');
+            const horariosContainer = containerLabel.querySelector('.modal-horarios-container');
+            const inputHorarios = containerLabel.querySelector('.modal-horarios-input');
+            const parentCard = containerLabel.closest('.dia-horario-config label');
+            const dia = checkbox.value;
+            
+            // Cores por dia
+            const coresDias = {
+                'Domingo': '#dc2626',
+                'Segunda': '#2563eb',
+                'Terça': '#059669',
+                'Quarta': '#ea580c',
+                'Quinta': '#7c3aed',
+                'Sexta': '#0891b2',
+                'Sábado': '#ca8a04'
+            };
+            const cor = coresDias[dia];
+            
+            if (checkbox.checked) {
+                horariosContainer.style.display = 'block';
+                parentCard.style.borderColor = cor;
+                parentCard.style.background = cor + '15';
+                inputHorarios.required = true;
+                setTimeout(() => inputHorarios.focus(), 100);
+            } else {
+                horariosContainer.style.display = 'none';
+                parentCard.style.borderColor = '#e5e7eb';
+                parentCard.style.background = 'white';
+                inputHorarios.required = false;
+                inputHorarios.value = '';
+            }
+        }
+        
+        async function salvarEdicaoComum(event) {
+            event.preventDefault();
+            
+            const regionalId = document.getElementById('editComumRegionalId').value;
+            const subId = document.getElementById('editComumSubRegionalId').value;
+            const comumId = document.getElementById('editComumId').value;
+            const nome = document.getElementById('editComumNome').value;
+            const fechamentoDias = parseInt(document.getElementById('editComumFechamentoDias').value);
+            
+            // Coletar dias e horários
+            const checkboxes = document.querySelectorAll('input[name="edit_dias_culto"]:checked');
+            const dias_culto = [];
+            const horarios = {};
+            
+            let erro = false;
+            checkboxes.forEach(cb => {
+                const dia = cb.value;
+                dias_culto.push(dia);
+                
+                const inputHorarios = document.querySelector(`.modal-horarios-input[data-dia="${dia}"]`);
+                const horariosTexto = inputHorarios.value.trim();
+                
+                if (!horariosTexto) {
+                    showNotification(`Digite os horários para ${dia}`, 'error');
+                    erro = true;
+                    return;
+                }
+                
+                // Parse horários
+                const horariosArray = horariosTexto.split(',')
+                    .map(h => h.trim())
+                    .filter(h => h)
+                    .sort();
+                
+                if (horariosArray.length === 0) {
+                    showNotification(`Digite pelo menos um horário para ${dia}`, 'error');
+                    erro = true;
+                    return;
+                }
+                
+                // Validar formato HH:MM
+                const formatoValido = horariosArray.every(h => /^\d{2}:\d{2}$/.test(h));
+                if (!formatoValido) {
+                    showNotification(`Formato inválido em ${dia}. Use HH:MM`, 'error');
+                    erro = true;
+                    return;
+                }
+                
+                horarios[dia] = horariosArray;
+            });
+            
+            if (erro) return;
+            
+            if (dias_culto.length === 0) {
+                showNotification('Selecione pelo menos um dia de culto', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}/comuns/${comumId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        nome,
+                        config: {
+                            dias_culto,
+                            horarios,
+                            fechamento_publicacao_dias: fechamentoDias
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('✅ Comum atualizado com sucesso!', 'success');
+                    fecharModalEditarComum();
+                    await carregarComunsHierarquia(regionalId, subId);
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao atualizar comum', 'error');
+            }
+        }
+        
+        async function deletarComum(regionalId, subId, comumId) {
+            if (!confirm('Tem certeza? O comum deve estar vazio (sem organistas, escalas, etc).')) return;
+            
+            try {
+                const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}/comuns/${comumId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Comum deletado!', 'success');
+                    await carregarComunsHierarquia(regionalId, subId);
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao deletar comum', 'error');
+            }
+        }
+        
+        // ==================== Gerenciamento de Usuários ====================
+        
+        async function carregarUsuarios() {
+            if (contextoAtual.nivel !== 'master') return;
+            
+            try {
+                const response = await fetch('/api/usuarios');
+                const usuarios = await response.json();
+                
+                const container = document.getElementById('listaUsuarios');
+                
+                if (usuarios.length === 0) {
+                    container.innerHTML = '<p style="color: #999;">Nenhum usuário cadastrado</p>';
+                    return;
+                }
+                
+                // Criar tabela
+                let html = `
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f3f4f6; text-align: left;">
+                                <th style="padding: 12px; border: 1px solid #ddd;">ID</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Nome</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Tipo</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Contexto</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Email</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Status</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                usuarios.forEach(user => {
+                    const tipoLabel = {
+                        'master': '🔐 Master',
+                        'admin_regional': '🏙️ Admin Regional',
+                        'encarregado_sub_regional': '📍 Enc. Sub-Regional',
+                        'encarregado_comum': '⛪ Enc. Comum'
+                    }[user.tipo] || user.tipo;
+                    
+                    const statusBadge = user.ativo 
+                        ? '<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.85em;">Ativo</span>'
+                        : '<span style="background: #6b7280; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.85em;">Inativo</span>';
+                    
+                    html += `
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 12px;">${user.id}</td>
+                            <td style="padding: 12px;"><strong>${user.nome}</strong></td>
+                            <td style="padding: 12px;">${tipoLabel}</td>
+                            <td style="padding: 12px;">${user.contexto_id || '-'}</td>
+                            <td style="padding: 12px;">${user.email || '-'}</td>
+                            <td style="padding: 12px;">${statusBadge}</td>
+                            <td style="padding: 12px;">
+                                <button class="btn" style="padding: 5px 10px; background: #3b82f6; color: white;" 
+                                    onclick="editarUsuario('${user.id}')">✏️</button>
+                                ${user.id !== 'admin_master' ? `
+                                    <button class="btn" style="padding: 5px 10px; background: #ef4444; color: white;" 
+                                        onclick="deletarUsuario('${user.id}')">🗑️</button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Erro ao carregar usuários:', error);
+                showNotification('Erro ao carregar usuários', 'error');
+            }
+        }
+        
+        function mostrarModalNovoUsuario() {
+            document.getElementById('modalNovoUsuario').style.display = 'flex';
+        }
+        
+        function fecharModalNovoUsuario() {
+            document.getElementById('modalNovoUsuario').style.display = 'none';
+            document.getElementById('novoUsuarioId').value = '';
+            document.getElementById('novoUsuarioNome').value = '';
+            document.getElementById('novoUsuarioTipo').value = '';
+            document.getElementById('novoUsuarioContexto').innerHTML = '<option value="">Selecione o tipo primeiro...</option>';
+            document.getElementById('novoUsuarioEmail').value = '';
+            document.getElementById('novoUsuarioTelefone').value = '';
+            document.getElementById('novoUsuarioSenha').value = '';
+            document.getElementById('divContextoUsuario').style.display = 'none';
+        }
+        
+        async function atualizarContextoUsuario() {
+            const tipo = document.getElementById('novoUsuarioTipo').value;
+            const divContexto = document.getElementById('divContextoUsuario');
+            const selectContexto = document.getElementById('novoUsuarioContexto');
+            
+            if (tipo === 'master') {
+                divContexto.style.display = 'none';
+                selectContexto.innerHTML = '<option value="">Não requer contexto</option>';
+                return;
+            }
+            
+            divContexto.style.display = 'block';
+            selectContexto.innerHTML = '<option value="">Carregando...</option>';
+            
+            try {
+                if (tipo === 'admin_regional') {
+                    // Carregar regionais
+                    const response = await fetch('/api/regionais');
+                    const regionais = await response.json();
+                    
+                    selectContexto.innerHTML = '<option value="">Selecione Regional...</option>';
+                    regionais.forEach(r => {
+                        const option = document.createElement('option');
+                        option.value = r.id;
+                        option.textContent = r.nome;
+                        selectContexto.appendChild(option);
+                    });
+                    
+                } else if (tipo === 'encarregado_sub_regional') {
+                    // Carregar sub-regionais de todas regionais
+                    const response = await fetch('/api/regionais');
+                    const regionais = await response.json();
+                    
+                    selectContexto.innerHTML = '<option value="">Selecione Sub-Regional...</option>';
+                    
+                    for (const regional of regionais) {
+                        const subResponse = await fetch(`/api/regionais/${regional.id}/sub-regionais`);
+                        const subs = await subResponse.json();
+                        
+                        subs.forEach(sub => {
+                            const option = document.createElement('option');
+                            option.value = sub.id;
+                            option.textContent = `${regional.nome} › ${sub.nome}`;
+                            selectContexto.appendChild(option);
+                        });
+                    }
+                    
+                } else if (tipo === 'encarregado_comum') {
+                    // Carregar todos comuns
+                    const response = await fetch('/api/regionais');
+                    const regionais = await response.json();
+                    
+                    selectContexto.innerHTML = '<option value="">Selecione Comum...</option>';
+                    
+                    for (const regional of regionais) {
+                        const subResponse = await fetch(`/api/regionais/${regional.id}/sub-regionais`);
+                        const subs = await subResponse.json();
+                        
+                        for (const sub of subs) {
+                            const comunsResponse = await fetch(`/api/regionais/${regional.id}/sub-regionais/${sub.id}/comuns`);
+                            const comuns = await comunsResponse.json();
+                            
+                            comuns.forEach(comum => {
+                                const option = document.createElement('option');
+                                option.value = comum.id;
+                                option.textContent = `${regional.nome} › ${sub.nome} › ${comum.nome}`;
+                                selectContexto.appendChild(option);
+                            });
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar contextos:', error);
+                selectContexto.innerHTML = '<option value="">Erro ao carregar</option>';
+            }
+        }
+        
+        async function criarUsuario(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('novoUsuarioId').value;
+            const nome = document.getElementById('novoUsuarioNome').value;
+            const tipo = document.getElementById('novoUsuarioTipo').value;
+            const contexto_id = document.getElementById('novoUsuarioContexto').value;
+            const email = document.getElementById('novoUsuarioEmail').value;
+            const telefone = document.getElementById('novoUsuarioTelefone').value;
+            const senha = document.getElementById('novoUsuarioSenha').value;
+            
+            try {
+                const response = await fetch('/api/usuarios', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        id,
+                        nome,
+                        tipo,
+                        contexto_id,
+                        email,
+                        telefone,
+                        senha: senha || 'senha123'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(`Usuário "${nome}" criado com sucesso! Login: ${id} / Senha: ${senha || 'senha123'}`, 'success');
+                    fecharModalNovoUsuario();
+                    await carregarUsuarios();
+                } else {
+                    showNotification(data.error || 'Erro ao criar usuário', 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao criar usuário', 'error');
+            }
+        }
+        
+        async function editarUsuario(userId) {
+            const novoNome = prompt('Novo nome para o usuário:');
+            if (!novoNome) return;
+            
+            try {
+                const response = await fetch(`/api/usuarios/${userId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({nome: novoNome})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Usuário atualizado!', 'success');
+                    await carregarUsuarios();
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao editar usuário', 'error');
+            }
+        }
+        
+        async function deletarUsuario(userId) {
+            if (!confirm(`Tem certeza que deseja deletar o usuário "${userId}"?`)) return;
+            
+            try {
+                const response = await fetch(`/api/usuarios/${userId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Usuário deletado!', 'success');
+                    await carregarUsuarios();
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao deletar usuário', 'error');
+            }
+        }
+        
+        // Toggle exibição de horários quando marca/desmarca dia
+        function toggleHorarios(checkbox) {
+            const container = checkbox.closest('.dia-horario-group').querySelector('.horarios-container');
+            if (checkbox.checked) {
+                container.style.display = 'block';
+                // Se não tem horário, adicionar um padrão
+                const dia = checkbox.value;
+                const horariosDiv = document.getElementById(`horarios${dia}`);
+                if (horariosDiv.children.length === 0) {
+                    adicionarHorario(dia, '09:00'); // Horário padrão
+                }
+            } else {
+                container.style.display = 'none';
+            }
+        }
+        
+        // Adicionar campo de horário para um dia específico
+        function adicionarHorario(dia, valorInicial = '') {
+            const container = document.getElementById(`horarios${dia}`);
+            
+            const horarioItem = document.createElement('div');
+            horarioItem.className = 'horario-item';
+            horarioItem.style.cssText = 'display: flex; align-items: center; gap: 5px; background: white; padding: 5px 10px; border-radius: 4px; border: 1px solid #cbd5e1;';
+            
+            const input = document.createElement('input');
+            input.type = 'time';
+            input.className = 'horario-input';
+            input.dataset.dia = dia;
+            input.value = valorInicial;
+            input.required = true;
+            input.style.cssText = 'border: none; padding: 2px; font-size: 14px;';
+            
+            const btnRemover = document.createElement('button');
+            btnRemover.type = 'button';
+            btnRemover.textContent = '✕';
+            btnRemover.style.cssText = 'background: #ef4444; color: white; border: none; border-radius: 3px; width: 22px; height: 22px; cursor: pointer; font-size: 12px; padding: 0;';
+            btnRemover.onclick = () => {
+                horarioItem.remove();
+            };
+            
+            horarioItem.appendChild(input);
+            horarioItem.appendChild(btnRemover);
+            container.appendChild(horarioItem);
+        }
+        
+        // Remover horário específico
+        function removerHorario(button) {
+            button.closest('.horario-item').remove();
+        }
+        
+        // Configuração do Comum
+        async function carregarConfigComum() {
+            if (!contextoAtual.comum) return;
+            
+            try {
+                const response = await fetch(`/api/comuns/${contextoAtual.comum.id}/config`);
+                const config = await response.json();
+                
+                // Configurar checkboxes de dias e seus horários
+                const checkboxes = document.querySelectorAll('input[name="dias_culto"]');
+                checkboxes.forEach(cb => {
+                    const dia = cb.value;
+                    const estaMarcado = config.dias_culto && config.dias_culto.includes(dia);
+                    cb.checked = estaMarcado;
+                    
+                    // Mostrar/ocultar container de horários
+                    const container = cb.closest('.dia-horario-group').querySelector('.horarios-container');
+                    container.style.display = estaMarcado ? 'block' : 'none';
+                    
+                    // Limpar horários existentes
+                    const horariosDiv = document.getElementById(`horarios${dia}`);
+                    horariosDiv.innerHTML = '';
+                    
+                    // Carregar horários salvos
+                    if (estaMarcado && config.horarios && config.horarios[dia]) {
+                        config.horarios[dia].forEach(horario => {
+                            adicionarHorario(dia, horario);
+                        });
+                    } else if (estaMarcado) {
+                        // Se está marcado mas não tem horário, adicionar padrão
+                        adicionarHorario(dia, '09:00');
+                    }
+                });
+                
+                // Configurar período
+                if (config.periodo) {
+                    document.getElementById('configComumInicio').value = config.periodo.inicio;
+                    document.getElementById('configComumFim').value = config.periodo.fim;
+                }
+                
+                // Configurar fechamento de publicação
+                if (config.fechamento_publicacao_dias) {
+                    document.getElementById('configFechamentoDias').value = config.fechamento_publicacao_dias;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar config do comum:', error);
+            }
+        }
+        
+        async function salvarConfigComum(event) {
+            event.preventDefault();
+            
+            if (!contextoAtual.comum) {
+                showNotification('Nenhum comum selecionado', 'error');
+                return;
+            }
+            
+            // Coletar dias marcados
+            const checkboxes = document.querySelectorAll('input[name="dias_culto"]:checked');
+            const dias_culto = Array.from(checkboxes).map(cb => cb.value);
+            
+            if (dias_culto.length === 0) {
+                showNotification('Selecione pelo menos um dia de culto', 'error');
+                return;
+            }
+            
+            // Coletar horários de cada dia
+            const horarios = {};
+            for (const dia of dias_culto) {
+                const inputsHorarios = document.querySelectorAll(`.horario-input[data-dia="${dia}"]`);
+                const horariosArray = Array.from(inputsHorarios).map(input => input.value).filter(h => h);
+                
+                if (horariosArray.length === 0) {
+                    showNotification(`Adicione pelo menos um horário para ${dia}`, 'error');
+                    return;
+                }
+                
+                // Ordenar horários
+                horariosArray.sort();
+                horarios[dia] = horariosArray;
+            }
+            
+            const inicio = document.getElementById('configComumInicio').value;
+            const fim = document.getElementById('configComumFim').value;
+            const fechamentoDias = parseInt(document.getElementById('configFechamentoDias').value);
+            
+            try {
+                const response = await fetch(`/api/comuns/${contextoAtual.comum.id}/config`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        dias_culto,
+                        horarios,
+                        periodo: {
+                            inicio,
+                            fim
+                        },
+                        fechamento_publicacao_dias: fechamentoDias
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('✅ Configurações salvas com sucesso!', 'success');
+                    // Recarregar config para confirmar
+                    await carregarConfigComum();
+                } else {
+                    showNotification(data.error || 'Erro ao salvar', 'error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao salvar configurações', 'error');
             }
         }
 
