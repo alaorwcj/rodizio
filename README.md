@@ -2,10 +2,11 @@
 
 Sistema web completo para gerenciamento de escalas de organistas em igrejas, com suporte a múltiplos níveis hierárquicos (Regional → Sub-Regional → Comum).
 
-## � Screenshots
+##  Screenshots
 
 ### Dashboard - Administrador
-![Dashboard Administrador](images/dashboard-admin.png)
+<img width="1064" height="740" alt="image" src="https://github.com/user-attachments/assets/10908f34-6bb5-4d31-835b-25f9187724d0" />
+
 *Visualização completa das próximas 20 escalas com cards coloridos por dia da semana*
 
 ### Gerenciamento de Escala - Modo Manual
@@ -388,3 +389,4 @@ Desenvolvido por **Alaor Rodrigues**
 ---
 
 **Sistema de Rodízio de Organistas** - Facilitando a gestão musical nas igrejas 🎹✨
+
