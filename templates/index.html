@@ -897,6 +897,167 @@
                 opacity: 1;
             }
         }
+        
+        /* ========== RESPONSIVIDADE MOBILE ========== */
+        @media (max-width: 768px) {
+            /* Botão Dark Mode menor no mobile */
+            .dark-mode-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 1em;
+                gap: 5px;
+            }
+            
+            .dark-mode-toggle span {
+                font-size: 0.9em;
+            }
+            
+            /* Header mais compacto */
+            header {
+                padding: 15px 10px !important;
+            }
+            
+            header h1 {
+                font-size: 1.5em !important;
+            }
+            
+            /* Container com padding menor */
+            .container {
+                margin: 10px;
+                padding: 10px;
+            }
+            
+            /* Menu de abas responsivo */
+            nav {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+                padding: 0 5px;
+            }
+            
+            nav a {
+                display: inline-block;
+                padding: 12px 15px !important;
+                font-size: 0.85em !important;
+                min-width: auto;
+            }
+            
+            /* Cards mais compactos */
+            .card {
+                padding: 15px !important;
+                margin-bottom: 15px !important;
+            }
+            
+            .card h2 {
+                font-size: 1.2em !important;
+            }
+            
+            /* Botões menores */
+            .btn {
+                padding: 10px 15px !important;
+                font-size: 0.9em !important;
+            }
+            
+            /* Formulários */
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            input[type="date"],
+            input[type="number"],
+            select,
+            textarea {
+                font-size: 16px !important; /* Evita zoom no iOS */
+                padding: 10px !important;
+            }
+            
+            /* Tabelas responsivas */
+            .escala-table {
+                font-size: 0.85em !important;
+            }
+            
+            .escala-table th,
+            .escala-table td {
+                padding: 8px 5px !important;
+            }
+            
+            /* Grid de cards das escalas */
+            .escalas-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+                gap: 10px !important;
+            }
+            
+            /* Modais responsivos */
+            .modal-content {
+                width: 95% !important;
+                max-width: 95% !important;
+                margin: 20px auto !important;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            
+            .modal-header h2 {
+                font-size: 1.3em !important;
+            }
+            
+            /* Ajustes no dashboard */
+            .info-box {
+                padding: 12px !important;
+            }
+            
+            .info-box h3 {
+                font-size: 1em !important;
+            }
+            
+            .info-box .value {
+                font-size: 1.8em !important;
+            }
+            
+            /* Contexto (Regional, Sub-regional, Comum) */
+            .context-selector,
+            .context-display {
+                padding: 10px !important;
+            }
+            
+            .context-selector select {
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+            
+            /* Botões de ação em linha */
+            .btn-group,
+            .action-buttons {
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            
+            .btn-group .btn,
+            .action-buttons .btn {
+                flex: 1 1 auto !important;
+                min-width: 120px !important;
+            }
+        }
+        
+        /* Mobile muito pequeno (< 375px) */
+        @media (max-width: 375px) {
+            header h1 {
+                font-size: 1.3em !important;
+            }
+            
+            nav a {
+                padding: 10px 12px !important;
+                font-size: 0.8em !important;
+            }
+            
+            .btn {
+                padding: 8px 12px !important;
+                font-size: 0.85em !important;
+            }
+            
+            .escalas-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1447,12 +1608,15 @@
                     <h2>📋 Gerenciamento de Escala</h2>
                     <div id="alertEscala" class="alert hidden"></div>
                     
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
                         <button onclick="loadEscalaAtual()" class="btn" style="background: #64748b; color: white;">
                             🔄 Carregar Escala Atual
                         </button>
                         <button onclick="criarEscalaVazia()" class="btn btn-success">
                             ➕ Criar Nova Escala
+                        </button>
+                        <button onclick="deletarEscalaAtual()" class="btn btn-danger">
+                            🗑️ Deletar Escala Atual
                         </button>
                     </div>
                 </div>
@@ -1516,6 +1680,9 @@
                             </button>
                             <button onclick="criarEscalaRJM()" class="btn btn-primary">
                                 ➕ Criar Escala RJM Vazia
+                            </button>
+                            <button onclick="deletarEscalaRJM()" class="btn btn-danger">
+                                🗑️ Deletar Escala RJM
                             </button>
                             {% endif %}
                             <button onclick="exportarPDFRJM()" class="btn" style="background: #dc2626; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -1889,6 +2056,23 @@
                 <h2 style="margin: 0;">✏️ Editar Comum</h2>
                 <button class="modal-close" onclick="fecharModalEditarComum()">✕</button>
             </div>
+            
+            <!-- Informações do Comum -->
+            <div id="editComumInfoBox" style="background: #f0f9ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 15px; margin-bottom: 20px; display: none;">
+                <h3 style="margin: 0 0 10px 0; color: #1e40af; font-size: 1em;">📊 Dados Cadastrados</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                    <div style="background: white; padding: 10px; border-radius: 6px;">
+                        <div style="font-size: 0.85em; color: #666;">👥 Organistas</div>
+                        <div id="editComumOrganistasCount" style="font-size: 1.5em; font-weight: bold; color: #1e40af;">-</div>
+                    </div>
+                    <div style="background: white; padding: 10px; border-radius: 6px;">
+                        <div style="font-size: 0.85em; color: #666;">📅 Escalas Ativas</div>
+                        <div id="editComumEscalasCount" style="font-size: 1.5em; font-weight: bold; color: #1e40af;">-</div>
+                    </div>
+                </div>
+                <div id="editComumOrganistasLista" style="margin-top: 10px; max-height: 100px; overflow-y: auto; background: white; padding: 8px; border-radius: 4px; font-size: 0.85em; display: none;"></div>
+            </div>
+            
             <form onsubmit="salvarEdicaoComum(event)">
                 <input type="hidden" id="editComumRegionalId">
                 <input type="hidden" id="editComumSubRegionalId">
@@ -3568,6 +3752,113 @@
             }
         }
 
+        // Deletar Escala Atual
+        async function deletarEscalaAtual() {
+            try {
+                // Buscar escala atual para mostrar informações
+                const response = await fetch('/escala/atual');
+                const data = await response.json();
+                
+                if (!data.escala || data.escala.length === 0) {
+                    alert('⚠️ Não há escala cadastrada para deletar.');
+                    return;
+                }
+                
+                const escala = data.escala;
+                
+                // Contar informações
+                const totalDatas = escala.length;
+                const organistasUnicos = [...new Set(escala.flatMap(item => [
+                    item.meia_hora?.nome,
+                    item.culto?.nome
+                ].filter(Boolean)))];
+                
+                // Agrupar por mês
+                const datas = escala.map(item => new Date(item.data));
+                const dataInicio = new Date(Math.min(...datas));
+                const dataFim = new Date(Math.max(...datas));
+                
+                const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                const mesInicio = mesesNome[dataInicio.getMonth()];
+                const mesFim = mesesNome[dataFim.getMonth()];
+                const anoInicio = dataInicio.getFullYear();
+                const anoFim = dataFim.getFullYear();
+                
+                const periodoTexto = anoInicio === anoFim 
+                    ? `${mesInicio} a ${mesFim}/${anoInicio}`
+                    : `${mesInicio}/${anoInicio} a ${mesFim}/${anoFim}`;
+                
+                // Montar mensagem
+                let mensagem = `🗑️ DELETAR ESCALA DE CULTO OFICIAL\n\n`;
+                mensagem += `📊 Informações da Escala:\n`;
+                mensagem += `📅 Período: ${periodoTexto}\n`;
+                mensagem += `📆 Total de datas: ${totalDatas}\n`;
+                mensagem += `👥 Organistas envolvidos: ${organistasUnicos.length}\n\n`;
+                
+                if (organistasUnicos.length > 0) {
+                    mensagem += `Organistas:\n`;
+                    organistasUnicos.slice(0, 8).forEach(org => {
+                        mensagem += `  • ${org}\n`;
+                    });
+                    if (organistasUnicos.length > 8) {
+                        mensagem += `  ... e mais ${organistasUnicos.length - 8} organista(s)\n`;
+                    }
+                    mensagem += `\n`;
+                }
+                
+                mensagem += `⚠️ ATENÇÃO: Esta ação NÃO pode ser desfeita!\n\n`;
+                mensagem += `Todos os dados desta escala serão PERMANENTEMENTE removidos.\n\n`;
+                mensagem += `Deseja realmente deletar esta escala?`;
+                
+                if (!confirm(mensagem)) {
+                    return;
+                }
+                
+                // Confirmar novamente
+                const confirmacao = confirm('⚠️ ÚLTIMA CONFIRMAÇÃO\n\nTem CERTEZA ABSOLUTA que deseja deletar?\n\nEsta escala será PERDIDA PERMANENTEMENTE!');
+                if (!confirmacao) {
+                    return;
+                }
+                
+                // Prosseguir com a exclusão
+                showAlertEscala('Deletando escala...', 'info');
+                
+                const deleteResponse = await fetch('/escala/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await deleteResponse.json();
+                
+                if (result.success) {
+                    showAlertEscala('✅ Escala deletada com sucesso!', 'success');
+                    
+                    // Limpar visualização
+                    document.getElementById('escalaContainer').innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #999;">
+                            <p>✅ Escala deletada com sucesso.</p>
+                            <p style="font-size: 0.9em; margin-top: 10px;">Clique em "Criar Nova Escala" para gerar uma nova.</p>
+                        </div>
+                    `;
+                    
+                    // Limpar estatísticas se existirem
+                    const statsContainer = document.getElementById('estatisticasContainer');
+                    if (statsContainer) {
+                        statsContainer.innerHTML = '';
+                    }
+                    
+                } else {
+                    showAlertEscala('❌ Erro ao deletar: ' + (result.error || 'Erro desconhecido'), 'error');
+                }
+                
+            } catch (error) {
+                console.error('Erro ao deletar escala:', error);
+                showAlertEscala('❌ Erro ao deletar escala: ' + error.message, 'error');
+            }
+        }
+
         function renderEscala(escala) {
             const container = document.getElementById('escalaContainer');
             
@@ -4185,6 +4476,110 @@
             }
         }
         
+        // Deletar Escala RJM
+        async function deletarEscalaRJM() {
+            try {
+                // Buscar escala RJM atual para mostrar informações
+                const response = await fetch('/rjm/atual');
+                const data = await response.json();
+                
+                if (!data.escala_rjm || data.escala_rjm.length === 0) {
+                    alert('⚠️ Não há escala RJM cadastrada para deletar.');
+                    return;
+                }
+                
+                const escalaRJM = data.escala_rjm;
+                
+                // Contar informações
+                const totalDatas = escalaRJM.length;
+                const organistasUnicos = [...new Set(escalaRJM
+                    .map(item => item.organista?.nome)
+                    .filter(Boolean))];
+                
+                // Agrupar por mês
+                const datas = escalaRJM.map(item => new Date(item.data));
+                const dataInicio = new Date(Math.min(...datas));
+                const dataFim = new Date(Math.max(...datas));
+                
+                const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                const mesInicio = mesesNome[dataInicio.getMonth()];
+                const mesFim = mesesNome[dataFim.getMonth()];
+                const anoInicio = dataInicio.getFullYear();
+                const anoFim = dataFim.getFullYear();
+                
+                const periodoTexto = anoInicio === anoFim 
+                    ? `${mesInicio} a ${mesFim}/${anoInicio}`
+                    : `${mesInicio}/${anoInicio} a ${mesFim}/${anoFim}`;
+                
+                // Montar mensagem
+                let mensagem = `🗑️ DELETAR ESCALA RJM\n\n`;
+                mensagem += `📊 Informações da Escala:\n`;
+                mensagem += `📅 Período: ${periodoTexto}\n`;
+                mensagem += `📆 Total de datas: ${totalDatas}\n`;
+                mensagem += `👥 Organistas envolvidos: ${organistasUnicos.length}\n\n`;
+                
+                if (organistasUnicos.length > 0) {
+                    mensagem += `Organistas:\n`;
+                    organistasUnicos.slice(0, 8).forEach(org => {
+                        mensagem += `  • ${org}\n`;
+                    });
+                    if (organistasUnicos.length > 8) {
+                        mensagem += `  ... e mais ${organistasUnicos.length - 8} organista(s)\n`;
+                    }
+                    mensagem += `\n`;
+                }
+                
+                mensagem += `⚠️ ATENÇÃO: Esta ação NÃO pode ser desfeita!\n\n`;
+                mensagem += `Todos os dados desta escala RJM serão PERMANENTEMENTE removidos.\n\n`;
+                mensagem += `Deseja realmente deletar esta escala?`;
+                
+                if (!confirm(mensagem)) {
+                    return;
+                }
+                
+                // Confirmar novamente
+                const confirmacao = confirm('⚠️ ÚLTIMA CONFIRMAÇÃO\n\nTem CERTEZA ABSOLUTA que deseja deletar?\n\nEsta escala RJM será PERDIDA PERMANENTEMENTE!');
+                if (!confirmacao) {
+                    return;
+                }
+                
+                // Prosseguir com a exclusão
+                const deleteResponse = await fetch('/rjm/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await deleteResponse.json();
+                
+                if (result.success) {
+                    alert('✅ Escala RJM deletada com sucesso!');
+                    
+                    // Limpar visualização
+                    document.getElementById('escalaRJMContainer').innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #999;">
+                            <p>✅ Escala RJM deletada com sucesso.</p>
+                            <p style="font-size: 0.9em; margin-top: 10px;">Clique em "Criar Escala RJM Vazia" para gerar uma nova.</p>
+                        </div>
+                    `;
+                    
+                    // Limpar estatísticas
+                    const statsContainer = document.getElementById('statsEscalaRJM');
+                    if (statsContainer) {
+                        statsContainer.innerHTML = '<p style="color: #666;">Gere uma escala para ver as estatísticas.</p>';
+                    }
+                    
+                } else {
+                    alert('❌ Erro ao deletar: ' + (result.error || 'Erro desconhecido'));
+                }
+                
+            } catch (error) {
+                console.error('Erro ao deletar escala RJM:', error);
+                alert('❌ Erro ao deletar escala RJM: ' + error.message);
+            }
+        }
+        
         async function loadEscalaRJM() {
             try {
                 const response = await fetch('/rjm/atual');
@@ -4419,6 +4814,11 @@
                     return;
                 }
                 
+                // Se não há regional selecionada, selecionar a primeira automaticamente
+                if (!regionalSelecionada && regionais.length > 0) {
+                    regionalSelecionada = regionais[0].id;
+                }
+                
                 regionais.forEach(regional => {
                     const card = document.createElement('div');
                     card.style.cssText = 'background: #f3f4f6; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;';
@@ -4442,6 +4842,11 @@
                     
                     container.appendChild(card);
                 });
+                
+                // Se há regional selecionada, carregar suas sub-regionais
+                if (regionalSelecionada) {
+                    await carregarSubRegionaisHierarquia(regionalSelecionada);
+                }
                 
             } catch (error) {
                 console.error('Erro ao carregar hierarquia:', error);
@@ -4471,7 +4876,14 @@
                 
                 if (subRegionais.length === 0) {
                     container.innerHTML = '<p style="color: #999;">Nenhuma sub-regional nesta regional</p>';
+                    const comunsContainer = document.getElementById('listaComuns');
+                    comunsContainer.innerHTML = '<p style="color: #999;">Nenhuma sub-regional disponível</p>';
                     return;
+                }
+                
+                // Se não há sub-regional selecionada, selecionar a primeira automaticamente
+                if (!subRegionalSelecionada && subRegionais.length > 0) {
+                    subRegionalSelecionada = subRegionais[0].id;
                 }
                 
                 subRegionais.forEach(sub => {
@@ -4497,6 +4909,11 @@
                     
                     container.appendChild(card);
                 });
+                
+                // Se há sub-regional selecionada, carregar suas comuns
+                if (subRegionalSelecionada) {
+                    await carregarComunsHierarquia(regionalId, subRegionalSelecionada);
+                }
                 
             } catch (error) {
                 console.error('Erro ao carregar sub-regionais:', error);
@@ -4961,6 +5378,45 @@
                 const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}/comuns/${comumId}`);
                 const comum = await response.json();
                 
+                // Buscar organistas do comum
+                const orgResponse = await fetch(`/organistas?comum_id=${comumId}`);
+                const organistas = await orgResponse.json();
+                
+                // Buscar escalas do comum
+                let escalasCount = 0;
+                try {
+                    const escalaResponse = await fetch('/escala/atual');
+                    const escalaData = await escalaResponse.json();
+                    if (escalaData.escala && Array.isArray(escalaData.escala)) {
+                        escalasCount = escalaData.escala.length;
+                    }
+                } catch (e) {
+                    console.log('Não foi possível verificar escalas');
+                }
+                
+                // Mostrar informações
+                const infoBox = document.getElementById('editComumInfoBox');
+                infoBox.style.display = 'block';
+                
+                document.getElementById('editComumOrganistasCount').textContent = organistas.length;
+                document.getElementById('editComumEscalasCount').textContent = escalasCount;
+                
+                // Mostrar lista de organistas se houver
+                const orgLista = document.getElementById('editComumOrganistasLista');
+                if (organistas.length > 0) {
+                    orgLista.style.display = 'block';
+                    let listaHtml = '<strong>Organistas cadastrados:</strong><br>';
+                    organistas.slice(0, 10).forEach(org => {
+                        listaHtml += `• ${org.nome}<br>`;
+                    });
+                    if (organistas.length > 10) {
+                        listaHtml += `<em>... e mais ${organistas.length - 10} organista(s)</em>`;
+                    }
+                    orgLista.innerHTML = listaHtml;
+                } else {
+                    orgLista.style.display = 'none';
+                }
+                
                 // Preencher campos básicos
                 document.getElementById('editComumRegionalId').value = regionalId;
                 document.getElementById('editComumSubRegionalId').value = subId;
@@ -5148,9 +5604,64 @@
         }
         
         async function deletarComum(regionalId, subId, comumId) {
-            if (!confirm('Tem certeza? O comum deve estar vazio (sem organistas, escalas, etc).')) return;
-            
             try {
+                // Primeiro, buscar informações do comum
+                const infoResponse = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}/comuns/${comumId}`);
+                const comumInfo = await infoResponse.json();
+                
+                // Buscar organistas do comum
+                const orgResponse = await fetch(`/organistas?comum_id=${comumId}`);
+                const organistas = await orgResponse.json();
+                
+                // Buscar escalas do comum
+                let escalasCount = 0;
+                try {
+                    const escalaResponse = await fetch('/escala/atual');
+                    const escalaData = await escalaResponse.json();
+                    if (escalaData.escala && Array.isArray(escalaData.escala)) {
+                        escalasCount = escalaData.escala.length;
+                    }
+                } catch (e) {
+                    console.log('Não foi possível verificar escalas');
+                }
+                
+                // Montar mensagem com informações
+                let mensagem = `🏛️ Comum: ${comumInfo.nome}\n`;
+                mensagem += `📋 ID: ${comumId}\n\n`;
+                mensagem += `📊 Dados Cadastrados:\n`;
+                mensagem += `👥 Organistas: ${organistas.length}\n`;
+                mensagem += `📅 Escalas: ${escalasCount}\n\n`;
+                
+                if (organistas.length > 0 || escalasCount > 0) {
+                    mensagem += `⚠️ ATENÇÃO: Este comum possui dados cadastrados!\n\n`;
+                    
+                    if (organistas.length > 0) {
+                        mensagem += `Organistas cadastrados:\n`;
+                        organistas.slice(0, 5).forEach(org => {
+                            mensagem += `  • ${org.nome}\n`;
+                        });
+                        if (organistas.length > 5) {
+                            mensagem += `  ... e mais ${organistas.length - 5} organista(s)\n`;
+                        }
+                        mensagem += `\n`;
+                    }
+                    
+                    mensagem += `❌ Não é possível deletar este comum.\n`;
+                    mensagem += `Por favor, remova primeiro:\n`;
+                    mensagem += `1. Todas as escalas (Rodízios > Carregar/Deletar Escala)\n`;
+                    mensagem += `2. Todos os organistas (Encarregado Local > Organistas)\n`;
+                    
+                    alert(mensagem);
+                    return;
+                }
+                
+                // Se chegou aqui, o comum está vazio
+                mensagem += `✅ Este comum está vazio e pode ser deletado.\n\n`;
+                mensagem += `Deseja realmente deletar o comum "${comumInfo.nome}"?`;
+                
+                if (!confirm(mensagem)) return;
+                
+                // Prosseguir com a exclusão
                 const response = await fetch(`/api/regionais/${regionalId}/sub-regionais/${subId}/comuns/${comumId}`, {
                     method: 'DELETE'
                 });
@@ -5158,14 +5669,14 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    showNotification('Comum deletado!', 'success');
+                    showNotification('✅ Comum deletado com sucesso!', 'success');
                     await carregarComunsHierarquia(regionalId, subId);
                 } else {
-                    showNotification(data.error, 'error');
+                    showNotification(data.error || 'Erro ao deletar comum', 'error');
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                showNotification('Erro ao deletar comum', 'error');
+                showNotification('❌ Erro ao processar solicitação', 'error');
             }
         }
         

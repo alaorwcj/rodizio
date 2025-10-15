@@ -1246,6 +1246,59 @@ def obter_escala():
         "estatisticas": stats["por_organista"]
     })
 
+@app.delete("/escala/delete")
+@login_required
+def deletar_escala():
+    """Deleta a escala atual - com suporte para estrutura antiga e nova"""
+    if not current_user.is_admin:
+        return jsonify({"success": False, "error": "Sem permissão"}), 403
+    
+    db = load_db()
+    
+    try:
+        # NOVA ESTRUTURA
+        if 'regionais' in db:
+            comum_data = get_comum_for_user(db, current_user)
+            if not comum_data:
+                return jsonify({"success": False, "error": "Comum não encontrada"}), 404
+            
+            # Verificar se há escala
+            escala_atual = comum_data['comum'].get('escala', [])
+            if not escala_atual:
+                return jsonify({"success": False, "error": "Não há escala para deletar"}), 400
+            
+            # Deletar escala
+            comum_data['comum']['escala'] = []
+            comum_data['comum']['escala_publicada_em'] = None
+            comum_data['comum']['escala_publicada_por'] = None
+            
+            # Navegar até o local correto e salvar
+            regional = db['regionais'][comum_data['regional_id']]
+            sub_regional = regional['sub_regionais'][comum_data['sub_regional_id']]
+            sub_regional['comuns'][comum_data['comum_id']] = comum_data['comum']
+            
+        else:
+            # ESTRUTURA ANTIGA
+            if not db.get('escala'):
+                return jsonify({"success": False, "error": "Não há escala para deletar"}), 400
+            
+            db['escala'] = []
+            db['escala_publicada_em'] = None
+            db['escala_publicada_por'] = None
+        
+        save_db(db)
+        
+        return jsonify({
+            "success": True,
+            "message": "Escala deletada com sucesso"
+        })
+        
+    except Exception as e:
+        print(f"❌ Erro ao deletar escala: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": str(e)}), 500
+
 @app.put("/escala/editar/<data_iso>")
 @login_required
 def editar_dia_escala(data_iso):
@@ -1619,6 +1672,55 @@ def get_escala_rjm():
     else:
         # ESTRUTURA ANTIGA
         return jsonify({"escala_rjm": db.get("escala_rjm", [])}), 200
+
+@app.delete("/rjm/delete")
+@login_required
+def deletar_escala_rjm():
+    """Deleta a escala RJM atual - com suporte para estrutura antiga e nova"""
+    if not current_user.is_admin:
+        return jsonify({"success": False, "error": "Sem permissão"}), 403
+    
+    db = load_db()
+    
+    try:
+        # NOVA ESTRUTURA
+        if 'regionais' in db:
+            comum_data = get_comum_for_user(db, current_user)
+            if not comum_data:
+                return jsonify({"success": False, "error": "Comum não encontrada"}), 404
+            
+            # Verificar se há escala RJM
+            escala_rjm_atual = comum_data['comum'].get('escala_rjm', [])
+            if not escala_rjm_atual:
+                return jsonify({"success": False, "error": "Não há escala RJM para deletar"}), 400
+            
+            # Deletar escala RJM
+            comum_data['comum']['escala_rjm'] = []
+            
+            # Navegar até o local correto e salvar
+            regional = db['regionais'][comum_data['regional_id']]
+            sub_regional = regional['sub_regionais'][comum_data['sub_regional_id']]
+            sub_regional['comuns'][comum_data['comum_id']] = comum_data['comum']
+            
+        else:
+            # ESTRUTURA ANTIGA
+            if not db.get('escala_rjm'):
+                return jsonify({"success": False, "error": "Não há escala RJM para deletar"}), 400
+            
+            db['escala_rjm'] = []
+        
+        save_db(db)
+        
+        return jsonify({
+            "success": True,
+            "message": "Escala RJM deletada com sucesso"
+        })
+        
+    except Exception as e:
+        print(f"❌ Erro ao deletar escala RJM: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.post("/rjm/atualizar-multiplos")
 @login_required
