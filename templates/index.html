@@ -12,8 +12,9 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #A78BFA 0%, #6D28D9 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 15px;
+            background: #E5E7EB;
             min-height: 100vh;
             padding: 20px;
             transition: background 0.3s ease;
@@ -21,21 +22,21 @@
         
         /* Dark Mode Styles */
         body.dark-mode {
-            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            background: #1e293b;
         }
         
         body.dark-mode .container {
-            background: #1e293b;
+            background: #0f172a;
             color: #e2e8f0;
         }
         
         body.dark-mode .card {
-            background: #334155;
+            background: #1e293b;
             color: #e2e8f0;
         }
         
         body.dark-mode .card h2 {
-            color: #c4b5fd;
+            color: #93c5fd;
         }
         
         body.dark-mode .nav-tabs {
@@ -56,60 +57,64 @@
         
         body.dark-mode .nav-tab.active,
         body.dark-mode .nav-dropdown-toggle.active {
-            background: #334155;
-            color: #c4b5fd;
+            background: #475569;
+            color: #93c5fd;
+            border-bottom-color: #60a5fa;
         }
         
         body.dark-mode .nav-dropdown-menu {
-            background: #1e293b;
+            background: #0f172a;
         }
         
         body.dark-mode .nav-dropdown-item {
-            background: #1e293b;
+            background: #0f172a;
             color: #cbd5e1;
-            border-bottom-color: #334155;
+            border-bottom-color: #1e293b;
         }
         
         body.dark-mode .nav-dropdown-item:hover {
-            background: #334155;
+            background: #475569;
+            color: #93c5fd;
         }
         
         body.dark-mode .nav-dropdown-item.active {
             background: #475569;
+            color: #93c5fd;
+            border-left-color: #60a5fa;
         }
         
         body.dark-mode .content {
-            background: #1e293b;
+            background: #0f172a;
         }
         
         body.dark-mode table {
-            background: #334155;
+            background: #1e293b;
             color: #e2e8f0;
         }
         
         body.dark-mode table th {
-            background: #7c3aed;
+            background: #1e3a8a;
         }
         
         body.dark-mode table tr:hover {
-            background: #475569;
+            background: #334155;
         }
         
         body.dark-mode .form-group input,
         body.dark-mode .form-group select,
         body.dark-mode .form-group textarea {
-            background: #334155;
+            background: #1e293b;
             color: #e2e8f0;
-            border-color: #475569;
+            border-color: #334155;
         }
         
         body.dark-mode .escala-item {
-            background: #334155;
+            background: #1e293b;
             color: #e2e8f0;
         }
         
         body.dark-mode .escala-dia-numero {
-            color: #c4b5fd;
+            color: #93c5fd;
         }
         
         body.dark-mode .escala-dia-semana,
@@ -122,11 +127,11 @@
         }
         
         body.dark-mode .dashboard-title {
-            color: #c4b5fd;
+            color: #93c5fd;
         }
         
         body.dark-mode .header {
-            background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%);
+            background: linear-gradient(120deg, #1e293b 0%, #334155 35%, #475569 65%, #64748b 100%);
         }
         
         body.dark-mode .user-selector {
@@ -189,14 +194,14 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
+            background: #F9FAFB;
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
             overflow: hidden;
         }
         
         .header {
-            background: linear-gradient(135deg, #A78BFA 0%, #6D28D9 100%);
+            background: linear-gradient(120deg, #2E5090 0%, #4A6FA5 35%, #7B8FB8 65%, #9CA8C0 100%);
             color: white;
             padding: 30px;
             text-align: center;
@@ -247,8 +252,8 @@
         }
         
         .user-indicator {
-            background: #D8B4FE;
-            color: #312E81;
+            background: #CBD5E1;
+            color: #1E3A8A;
             padding: 5px 15px;
             border-radius: 20px;
             font-weight: bold;
@@ -257,8 +262,8 @@
         
         .nav-tabs {
             display: flex;
-            background: #f5f5f5;
-            border-bottom: 2px solid #ddd;
+            background: #F9FAFB;
+            border-bottom: 2px solid #E5E7EB;
             position: relative;
         }
         
@@ -267,22 +272,24 @@
             padding: 20px;
             text-align: center;
             cursor: pointer;
-            background: #f5f5f5;
+            background: #F9FAFB;
             border: none;
             font-size: 1.1em;
+            color: #374151;
+            font-weight: 500;
             transition: all 0.3s;
             position: relative;
         }
         
         .nav-tab:hover {
-            background: #e0e0e0;
+            background: #E5E7EB;
         }
         
         .nav-tab.active {
-            background: white;
-            border-bottom: 3px solid #6366F1;
-            font-weight: bold;
-            color: #6366F1;
+            background: #C4B5FD;
+            border-bottom: 3px solid #1E3A8A;
+            font-weight: 600;
+            color: #1E3A8A;
         }
         
         /* Menu Dropdown */
@@ -296,9 +303,11 @@
             padding: 20px;
             text-align: center;
             cursor: pointer;
-            background: #f5f5f5;
+            background: #F9FAFB;
             border: none;
             font-size: 1.1em;
+            color: #374151;
+            font-weight: 500;
             transition: all 0.3s;
             display: flex;
             align-items: center;
@@ -307,14 +316,14 @@
         }
         
         .nav-dropdown-toggle:hover {
-            background: #e0e0e0;
+            background: #E5E7EB;
         }
         
         .nav-dropdown-toggle.active {
-            background: white;
-            border-bottom: 3px solid #6366F1;
-            font-weight: bold;
-            color: #6366F1;
+            background: #C4B5FD;
+            border-bottom: 3px solid #1E3A8A;
+            font-weight: 600;
+            color: #1E3A8A;
         }
         
         .nav-dropdown-menu {
@@ -323,7 +332,7 @@
             top: 100%;
             left: 0;
             right: 0;
-            background: white;
+            background: #F9FAFB;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1000;
             border-radius: 0 0 8px 8px;
@@ -349,11 +358,13 @@
         .nav-dropdown-item {
             padding: 15px 20px;
             cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            transition: all 0.2s;
+            border-bottom: 1px solid #E5E7EB;
+            transition: all 0.3s;
             font-size: 0.95em;
             text-align: left;
-            background: white;
+            background: #F9FAFB;
+            color: #374151;
+            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -364,15 +375,16 @@
         }
         
         .nav-dropdown-item:hover {
-            background: #f8f9fa;
+            background: #C4B5FD;
             padding-left: 25px;
+            color: #1E3A8A;
         }
         
         .nav-dropdown-item.active {
-            background: #eff6ff;
-            border-left: 3px solid #6366F1;
+            background: #C4B5FD;
+            border-left: 3px solid #1E3A8A;
             font-weight: 600;
-            color: #6366F1;
+            color: #1E3A8A;
         }
         
         .dropdown-arrow {
@@ -397,16 +409,23 @@
         }
         
         .card {
-            background: #EDE9FE;
+            background: white;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
         
         .card h2 {
-            color: #312E81;
+            color: #1E3A8A;
             margin-bottom: 15px;
+            font-weight: 600;
         }
         
         .btn {
@@ -420,40 +439,43 @@
         }
         
         .btn-primary {
-            background: #8B5CF6;
+            background: #2563EB;
             color: white;
+            font-weight: 500;
         }
         
         .btn-primary:hover {
-            background: #6D28D9;
+            background: #1E40AF;
         }
         
         .btn-success {
-            background: #10b981;
+            background: #4ADE80;
             color: white;
+            font-weight: 500;
         }
         
         .btn-success:hover {
-            background: #059669;
+            background: #22c55e;
         }
         
         .btn-danger {
-            background: #ef4444;
+            background: #EF4444;
             color: white;
+            font-weight: 500;
         }
         
         .btn-danger:hover {
-            background: #dc2626;
+            background: #B91C1C;
         }
         
         .btn-warning {
-            background: #8B5CF6;
+            background: #2563EB;
             color: white;
-            font-weight: 600;
+            font-weight: 500;
         }
         
         .btn-warning:hover {
-            background: #6D28D9;
+            background: #1E40AF;
         }
         
         .info-badge {
@@ -485,8 +507,8 @@
             background: white;
             border-radius: 6px;
             padding: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-top: 2px solid #6366F1;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border-top: 2px solid #2563EB;
             transition: all 0.3s;
             display: flex;
             flex-direction: column;
@@ -495,8 +517,8 @@
         }
         
         .escala-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
         
         /* Domingo - Vermelho */
@@ -555,7 +577,7 @@
         .escala-dia-numero {
             font-size: 1.4em;
             font-weight: bold;
-            color: #6366F1;
+            color: #1E3A8A;
             line-height: 1;
             margin-bottom: 2px;
         }
@@ -591,13 +613,13 @@
         .escala-dia-semana {
             font-size: 0.7em;
             font-weight: 600;
-            color: #312E81;
+            color: #1E3A8A;
             margin-bottom: 1px;
         }
         
         .escala-mes-ano {
             font-size: 0.6em;
-            color: #666;
+            color: #374151;
         }
         
         .escala-badge {
@@ -638,9 +660,9 @@
             justify-content: center;
             gap: 4px;
             padding: 4px 6px;
-            background: rgba(99, 102, 241, 0.05);
+            background: rgba(37, 99, 235, 0.05);
             border-radius: 4px;
-            border-left: 2px solid #6366F1;
+            border-left: 2px solid #2563EB;
         }
         
         .escala-item.domingo .escala-servico {
@@ -666,7 +688,7 @@
         .escala-tipo {
             font-size: 0.55em;
             font-weight: 600;
-            color: #666;
+            color: #374151;
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
@@ -674,11 +696,11 @@
         .escala-organista {
             font-size: 0.7em;
             font-weight: 600;
-            color: #312E81;
+            color: #1E3A8A;
         }
         
         .escala-vazio {
-            color: #999;
+            color: #9CA3AF;
             font-style: italic;
             font-size: 0.65em;
         }
@@ -703,7 +725,8 @@
         
         .dashboard-title {
             font-size: 1.5em;
-            color: #312E81;
+            color: #1E3A8A;
+            font-weight: 600;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
