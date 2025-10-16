@@ -1248,11 +1248,13 @@ def obter_escala():
         escala = comum_data['comum'].get('escala', [])
         organistas = comum_data['comum'].get('organistas', [])
         publicada_em = comum_data['comum'].get('escala_publicada_em')
+        publicada_por = comum_data['comum'].get('escala_publicada_por')
     else:
         # ESTRUTURA ANTIGA
         escala = db.get("escala", [])
         organistas = db.get("organistas", [])
         publicada_em = db.get("escala_publicada_em")
+        publicada_por = db.get("escala_publicada_por")
     
     if not escala:
         return jsonify({
@@ -1265,7 +1267,7 @@ def obter_escala():
     return jsonify({
         "escala": escala,
         "publicada_em": publicada_em,
-        "publicada_por": db.get("escala_publicada_por"),
+        "publicada_por": publicada_por,
         "estatisticas": stats["por_organista"]
     })
 
@@ -2372,7 +2374,8 @@ def get_contexto_atual():
             },
             "comum": {
                 "id": comum_id,
-                "nome": comum.get("nome", comum_id.replace("_", " ").title()) if comum else comum_id
+                "nome": comum.get("nome", comum_id.replace("_", " ").title()) if comum else comum_id,
+                "config": (comum or {}).get("config", {})
             },
             "nivel": current_user.tipo
         })
