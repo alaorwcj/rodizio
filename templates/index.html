@@ -1458,6 +1458,9 @@
             <div class="nav-mobile-submenu-item" onclick="showTabMobile('indisponibilidades')">
                 📅 Minha Agenda
             </div>
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('trocas')">
+                🔁 Trocas
+            </div>
             <div class="nav-mobile-submenu-item" onclick="showTabMobile('admin-indisp')">
                 🔐 Gerenciar Todas
             </div>
@@ -1483,6 +1486,9 @@
         <!-- Menu simplificado para organistas: vai direto para restrições -->
         <div class="nav-mobile-item" onclick="showTabMobile('indisponibilidades')">
             📅 Restrição de Dias
+        </div>
+        <div class="nav-mobile-item" onclick="showTabMobile('trocas')">
+            🔁 Trocas
         </div>
         {% endif %}
     </div>
@@ -1581,6 +1587,9 @@
                     <div class="nav-dropdown-item" onclick="showTab('indisponibilidades')">
                         📅 Minha Agenda
                     </div>
+                    <div class="nav-dropdown-item" onclick="showTab('trocas')">
+                        🔁 Trocas
+                    </div>
                     <div class="nav-dropdown-item" onclick="showTab('admin-indisp')">
                         🔐 Gerenciar Todas
                     </div>
@@ -1616,6 +1625,9 @@
                     <div class="nav-dropdown-item" onclick="showTab('indisponibilidades')">
                         Restrições de Dias
                     </div>
+                    <div class="nav-dropdown-item" onclick="showTab('trocas')">
+                        🔁 Trocas
+                    </div>
                 </div>
             </div>
             {% endif %}
@@ -1641,6 +1653,19 @@
                         <h2 class="dashboard-title">🎹 Meus Dias de Rodízio</h2>
                         <div id="meusDias" class="escala-atual">
                             <div class="no-escala">Carregando seus dias...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumo de Trocas (apenas para organistas) -->
+                <div class="card">
+                    <div class="dashboard-section">
+                        <h2 class="dashboard-title">🔁 Minhas Trocas</h2>
+                        <div id="trocasResumo" style="padding: 10px;">
+                            <div class="no-escala">Carregando suas solicitações de troca...</div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button class="btn btn-primary" onclick="showTab('trocas')">Abrir Trocas</button>
                         </div>
                     </div>
                 </div>
@@ -1786,6 +1811,64 @@
                 </div>
             </div>
             
+            <!-- Trocas Tab -->
+            <div id="trocas" class="tab-panel">
+                <div class="card">
+                    <h2>🔁 Solicitar Troca</h2>
+                    <div id="alertTrocas" class="alert hidden"></div>
+                    <form id="formTroca" onsubmit="criarSolicitacaoTroca(event)">
+                        <div class="form-group">
+                            <label>Tipo:</label>
+                            <select id="trocaTipo" required onchange="atualizarSlotAlvoVisibilidade(); carregarDatasTroca(); popularAlvosTroca();">
+                                <option value="culto" selected>Culto Oficial</option>
+                                <option value="rjm">RJM</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Data:</label>
+                            <select id="trocaData" required onchange="popularAlvosTroca()">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="trocaSlotGroup">
+                            <label>Fase/Slot:</label>
+                            <select id="trocaSlot" onchange="popularAlvosTroca()">
+                                <option value="meia_hora" selected>Meia-hora</option>
+                                <option value="culto">Culto</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Destino (opcional):</label>
+                            <select id="trocaAlvo">
+                                <option value="">Aberta (qualquer organista)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Motivo (opcional):</label>
+                            <textarea id="trocaMotivo" rows="2" placeholder="Descreva o motivo..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">➕ Criar Solicitação</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>📨 Minhas Solicitações</h2>
+                    <div id="trocasMinhasList">Carregando...</div>
+                </div>
+
+                <div class="card">
+                    <h2>📥 Recebidas</h2>
+                    <div id="trocasRecebidasList">Carregando...</div>
+                </div>
+
+                {% if user.is_admin %}
+                <div class="card">
+                    <h2>🔐 Todas as Solicitações</h2>
+                    <div id="trocasTodasList">Carregando...</div>
+                </div>
+                {% endif %}
+            </div>
+
             <!-- Configurações Tab -->
             <div id="config" class="tab-panel">
                 <div class="card">
@@ -2649,26 +2732,26 @@
         }
         
         // ==================== Variáveis Globais ====================
-        const currentUserId = '{{ user.id }}';
-        const isAdmin = {{ 'true' if user.is_admin else 'false' }};
-        const userTipo = '{{ user.tipo if user.tipo else "organista" }}';
+    const currentUserId = '{{ user.id }}';
+    const isAdmin = ('{{ "true" if user.is_admin else "false" }}' === 'true');
+    const userTipo = '{{ user.tipo if user.tipo else "organista" }}';
         // Compatibilidade
         const isCoord = isAdmin;
         let organistas = [];
         let indisponibilidades = [];
         
         // Debug: Informações do usuário
-        console.log('👤 DEBUG USUÁRIO:');
-        console.log('  ID:', '{{ user.id }}');
-        console.log('  Nome:', '{{ user.nome }}');
-        console.log('  Tipo:', '{{ user.tipo }}');
-        console.log('  Nível:', '{{ user.nivel }}');
-        console.log('  Contexto ID:', '{{ user.contexto_id }}');
-        console.log('  Is Admin:', {{ 'true' if user.is_admin else 'false' }});
-        console.log('  Is Master:', {{ 'true' if user.is_master else 'false' }});
-        console.log('  Is Encarregado Comum:', {{ 'true' if user.is_encarregado_comum else 'false' }});
-        console.log('  Is Encarregado Sub:', {{ 'true' if user.is_encarregado_sub else 'false' }});
-        console.log('  Is Organista:', {{ 'true' if user.is_organista else 'false' }});
+    console.log('👤 DEBUG USUÁRIO:');
+    console.log('  ID:', '{{ user.id }}');
+    console.log('  Nome:', '{{ user.nome }}');
+    console.log('  Tipo:', '{{ user.tipo }}');
+    console.log('  Nível:', '{{ user.nivel }}');
+    console.log('  Contexto ID:', '{{ user.contexto_id }}');
+    console.log('  Is Admin:', isAdmin);
+    console.log('  Is Master:', ('{{ "true" if user.is_master else "false" }}' === 'true'));
+    console.log('  Is Encarregado Comum:', ('{{ "true" if user.is_encarregado_comum else "false" }}' === 'true'));
+    console.log('  Is Encarregado Sub:', ('{{ "true" if user.is_encarregado_sub else "false" }}' === 'true'));
+    console.log('  Is Organista:', ('{{ "true" if user.is_organista else "false" }}' === 'true'));
         
         
         
@@ -2907,7 +2990,7 @@
             }
         });
         
-        function showTab(tabName) {
+    async function showTab(tabName) {
             // Alias de compatibilidade para tabs antigas (desktop)
             if (tabName === 'indisp') {
                 console.warn('↪️ Alias de tab: "indisp" → "indisponibilidades"');
@@ -2972,6 +3055,11 @@
             } else if (tabName === 'usuarios') {
                 carregarUsuarios();
                 carregarConfigComum();
+            } else if (tabName === 'trocas') {
+                atualizarSlotAlvoVisibilidade();
+                await carregarDatasTroca();
+                await popularAlvosTroca();
+                await loadTrocas();
             }
         }
         
@@ -4941,6 +5029,10 @@
                 if (document.getElementById('meusDias')) {
                     await renderMeusDias();
                 }
+                // Carregar Resumo de Trocas no dashboard (organistas)
+                if (document.getElementById('trocasResumo')) {
+                    await loadTrocasResumoDashboard();
+                }
                 
                 // Carregar configurações
                 if (typeof loadConfig === 'function') {
@@ -4958,7 +5050,7 @@
             }
         }
 
-        // ========== FUNÇÕES RJM ==========
+    // ========== FUNÇÕES RJM ==========
         
         async function criarEscalaRJM() {
             if (!confirm('Criar nova escala RJM vazia? Isso irá substituir a escala existente.')) {
@@ -5298,6 +5390,334 @@
             } catch (error) {
                 console.error('Erro ao compartilhar no WhatsApp:', error);
                 alert('❌ Erro ao gerar mensagem para o WhatsApp.');
+            }
+        }
+
+        // ========== DASHBOARD: Resumo de Trocas ==========
+        async function loadTrocasResumoDashboard() {
+            const container = document.getElementById('trocasResumo');
+            if (!container) return;
+            try {
+                container.innerHTML = '<div style="color:#666;">Carregando...</div>';
+                const resp = await fetch('/trocas');
+                const trocas = await resp.json();
+                // Classificações
+                const minhasPendentes = trocas.filter(t => t.solicitante_id === currentUserId && t.status === 'pendente');
+                const recebidasPendentes = trocas.filter(t => t.solicitante_id !== currentUserId && t.status === 'pendente' && (t.alvo_id === currentUserId || !t.alvo_id));
+                const aguardandoAprovacao = trocas.filter(t => t.status === 'aceita' && (t.solicitante_id === currentUserId || t.alvo_id === currentUserId));
+
+                let html = '';
+                // Badges resumo
+                html += '<div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;">';
+                html += badgeResumo('📤 Minhas pendentes', minhasPendentes.length, '#1d4ed8');
+                html += badgeResumo('📥 Recebidas pendentes', recebidasPendentes.length, '#d97706');
+                html += badgeResumo('⏳ Aguardando aprovação', aguardandoAprovacao.length, '#0f766e');
+                html += '</div>';
+
+                // Seções com ações rápidas (top 3 de cada)
+                const quick = [];
+                recebidasPendentes.slice(0, 3).forEach(t => quick.push(renderTrocaLinha(t)));
+                aguardandoAprovacao.slice(0, 3).forEach(t => quick.push(renderTrocaLinha(t)));
+                minhasPendentes.slice(0, 3).forEach(t => quick.push(renderTrocaLinha(t)));
+
+                if (quick.length === 0) {
+                    html += '<div style="color:#555;">Sem ações pendentes no momento. ✨</div>';
+                } else {
+                    html += '<div style="display:grid; gap:8px;">' + quick.join('') + '</div>';
+                }
+
+                container.innerHTML = html;
+            } catch (e) {
+                console.error('Erro ao carregar resumo de trocas:', e);
+                container.innerHTML = '<div style="color:red;">Erro ao carregar trocas</div>';
+            }
+        }
+
+        function badgeResumo(titulo, valor, cor) {
+            return `<div style="background:${cor}15; border:1px solid ${cor}; color:${cor}; padding:8px 12px; border-radius:8px; font-weight:600;">${titulo}: ${valor}</div>`;
+        }
+
+        function renderTrocaLinha(t) {
+            const slotLabel = t.tipo === 'rjm' ? 'RJM' : (t.slot === 'meia_hora' ? 'Meia-hora' : 'Culto');
+            const alvo = t.alvo_nome || '(Aberta)';
+            const quando = formatDateBR(t.data);
+            const acoes = [];
+            const isSolic = t.solicitante_id === currentUserId;
+            const isAlvo = t.alvo_id === currentUserId || (!t.alvo_id && !isSolic);
+            if (t.status === 'pendente') {
+                if (isSolic) acoes.push(`<button class="btn btn-danger" onclick="cancelarTroca('${t.id}')">Cancelar</button>`);
+                if (isAlvo) {
+                    acoes.push(`<button class="btn btn-success" onclick="aceitarTroca('${t.id}')">Aceitar</button>`);
+                    acoes.push(`<button class="btn" style="background:#ef4444;color:#fff" onclick="recusarTroca('${t.id}')">Recusar</button>`);
+                }
+            } else if (t.status === 'aceita') {
+                if (isSolic) acoes.push(`<span style="color:#666;">Aguardando aprovação do admin</span>`);
+            }
+            const verBtn = "<button class=\"btn\" onclick=\"showTab('trocas')\">Ver</button>";
+            return `
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px; border:1px solid #e5e7eb; border-radius:8px; padding:8px 12px; background:#fff;">
+                    <div><strong>${quando}</strong> • ${t.tipo.toUpperCase()} • ${slotLabel}<br><span style="font-size:.9em;color:#555;">${isSolic ? 'Para' : 'De'}: ${isSolic ? alvo : t.solicitante_nome}</span></div>
+                    <div style="display:flex;gap:8px;">${acoes.join(' ') || verBtn}</div>
+                </div>
+            `;
+        }
+        // ========== FUNÇÕES TROCAS ==========
+        function showAlertTrocas(message, type) {
+            const alert = document.getElementById('alertTrocas');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.classList.remove('hidden');
+            setTimeout(() => alert.classList.add('hidden'), 4000);
+        }
+
+        function atualizarSlotAlvoVisibilidade() {
+            const tipo = document.getElementById('trocaTipo').value;
+            const slotGroup = document.getElementById('trocaSlotGroup');
+            const slotSel = document.getElementById('trocaSlot');
+            if (tipo === 'rjm') {
+                slotGroup.style.display = 'none';
+                slotSel.value = 'unica';
+            } else {
+                slotGroup.style.display = 'block';
+                if (slotSel.value === 'unica') slotSel.value = 'meia_hora';
+            }
+        }
+
+        async function carregarDatasTroca() {
+            try {
+                const tipo = document.getElementById('trocaTipo').value;
+                const sel = document.getElementById('trocaData');
+                sel.innerHTML = '<option value="">Carregando...</option>';
+
+                if (tipo === 'culto') {
+                    const resp = await fetch('/escala/atual');
+                    const data = await resp.json();
+                    const escala = data.escala || [];
+                    const minhasDatas = [];
+                    escala.forEach(item => {
+                        if (item.meia_hora === '{{ user.nome }}' || item.culto === '{{ user.nome }}' || item.unica === '{{ user.nome }}') {
+                            minhasDatas.push({ data: item.data, slots: {
+                                meia_hora: item.meia_hora === '{{ user.nome }}',
+                                culto: item.culto === '{{ user.nome }}'
+                            }});
+                        }
+                    });
+                    if (minhasDatas.length === 0) {
+                        sel.innerHTML = '<option value="">Você não está escalado em nenhuma data</option>';
+                        return;
+                    }
+                    sel.innerHTML = '';
+                    minhasDatas.forEach(d => {
+                        const opt = document.createElement('option');
+                        opt.value = d.data;
+                        const slotsTxt = [d.slots.meia_hora ? 'Meia-hora' : null, d.slots.culto ? 'Culto' : null].filter(Boolean).join(' & ');
+                        opt.textContent = `${formatDateBR(d.data)} (${slotsTxt})`;
+                        sel.appendChild(opt);
+                    });
+
+                    // Ajustar slot default conforme seleção
+                    const slotSel = document.getElementById('trocaSlot');
+                    const primeira = minhasDatas[0];
+                    if (primeira) {
+                        if (primeira.slots.meia_hora && !primeira.slots.culto) slotSel.value = 'meia_hora';
+                        else if (!primeira.slots.meia_hora && primeira.slots.culto) slotSel.value = 'culto';
+                    }
+                } else {
+                    const resp = await fetch('/rjm/atual');
+                    const data = await resp.json();
+                    const escalaRJM = data.escala_rjm || [];
+                    const minhasDatas = escalaRJM.filter(i => i.organista === '{{ user.nome }}');
+                    if (minhasDatas.length === 0) {
+                        sel.innerHTML = '<option value="">Você não está escalado em nenhuma data</option>';
+                        return;
+                    }
+                    sel.innerHTML = '';
+                    minhasDatas.forEach(i => {
+                        const opt = document.createElement('option');
+                        opt.value = i.data;
+                        opt.textContent = `${formatDateBR(i.data)} (RJM)`;
+                        sel.appendChild(opt);
+                    });
+                }
+            } catch (e) {
+                console.error('Erro ao carregar datas para trocas:', e);
+                document.getElementById('trocaData').innerHTML = '<option value="">Erro ao carregar</option>';
+            }
+        }
+
+        async function popularAlvosTroca() {
+            try {
+                const tipo = document.getElementById('trocaTipo').value;
+                const dataSel = document.getElementById('trocaData').value;
+                const slot = document.getElementById('trocaSlot').value;
+                const sel = document.getElementById('trocaAlvo');
+                sel.innerHTML = '<option value="">Aberta (qualquer organista)</option>';
+
+                if (!organistas || organistas.length === 0) {
+                    try {
+                        const resp = await fetch('/organistas');
+                        organistas = await resp.json();
+                    } catch {}
+                }
+
+                organistas.forEach(org => {
+                    if (org.id === currentUserId) return; // não listar a si mesmo
+                    // checar tipos por slot/tipo
+                    let habilitado = false;
+                    if (tipo === 'culto') {
+                        if (slot === 'meia_hora') habilitado = org.tipos.includes('Meia-hora');
+                        if (slot === 'culto') habilitado = org.tipos.includes('Culto');
+                    } else {
+                        habilitado = org.tipos.includes('RJM');
+                    }
+                    if (!habilitado) return;
+
+                    // se tiver data selecionada, evitar quem está indisponível
+                    const indisponivel = dataSel && indisponibilidades.some(i => i.id === org.id && i.data === dataSel);
+                    const opt = document.createElement('option');
+                    opt.value = org.id;
+                    opt.textContent = org.nome + (indisponivel ? ' (indisponível)' : '');
+                    opt.disabled = !!indisponivel;
+                    sel.appendChild(opt);
+                });
+            } catch (e) {
+                console.error('Erro ao popular alvos:', e);
+            }
+        }
+
+        async function criarSolicitacaoTroca(event) {
+            event.preventDefault();
+            const tipo = document.getElementById('trocaTipo').value;
+            const data = document.getElementById('trocaData').value;
+            let slot = document.getElementById('trocaSlot').value;
+            const alvo_id = document.getElementById('trocaAlvo').value;
+            const motivo = document.getElementById('trocaMotivo').value.trim();
+
+            if (!data) { showAlertTrocas('Selecione a data', 'error'); return; }
+            if (tipo === 'rjm') slot = 'unica';
+
+            try {
+                const resp = await fetch('/trocas', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ tipo, data, slot, alvo_id: alvo_id || undefined, motivo })
+                });
+                const result = await resp.json();
+                if (!resp.ok) throw new Error(result.error || 'Falha ao criar solicitação');
+                showAlertTrocas('✅ Solicitação criada!', 'success');
+                document.getElementById('formTroca').reset();
+                atualizarSlotAlvoVisibilidade();
+                await carregarDatasTroca();
+                await popularAlvosTroca();
+                await loadTrocas();
+            } catch (e) {
+                console.error(e);
+                showAlertTrocas('❌ ' + e.message, 'error');
+            }
+        }
+
+        function badgeStatus(status) {
+            const map = {
+                pendente: '#f59e0b',
+                aceita: '#3b82f6',
+                aprovada: '#10b981',
+                recusada: '#ef4444',
+                cancelada: '#6b7280'
+            };
+            const cor = map[status] || '#6b7280';
+            return `<span style="background:${cor}22;color:${cor};padding:3px 8px;border-radius:12px;font-size:.85em;">${status}</span>`;
+        }
+
+        function renderListaTrocas(containerId, trocas) {
+            const c = document.getElementById(containerId);
+            if (!trocas || trocas.length === 0) {
+                c.innerHTML = '<p style="color:#666;">Nenhuma solicitação.</p>';
+                return;
+            }
+            let html = '<div style="display:grid; gap:10px;">';
+            trocas.sort((a,b)=>a.data.localeCompare(b.data)).forEach(t => {
+                const alvo = t.alvo_nome || '(Aberta)';
+                const slotLabel = t.tipo === 'rjm' ? 'RJM' : (t.slot === 'meia_hora' ? 'Meia-hora' : 'Culto');
+                html += `<div class="card" style="padding:12px;">`+
+                    `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">`+
+                    `<div>`+
+                    `<div><strong>${formatDateBR(t.data)}</strong> • ${t.tipo.toUpperCase()} • ${slotLabel}</div>`+
+                    `<div style="font-size:.9em;color:#555;">De: ${t.solicitante_nome} → Para: ${alvo}</div>`+
+                    `</div>`+
+                    `<div style="display:flex;align-items:center;gap:8px;">${badgeStatus(t.status)} ${renderAcoesTroca(t)}</div>`+
+                    `</div>`+
+                    `${t.motivo ? `<div style="margin-top:8px;font-size:.9em;color:#444;">📝 ${t.motivo}</div>` : ''}`+
+                    `</div>`;
+            });
+            html += '</div>';
+            c.innerHTML = html;
+        }
+
+        function renderAcoesTroca(t) {
+            const isSolic = t.solicitante_id === currentUserId;
+            const isAlvo = t.alvo_id === currentUserId;
+            const buttons = [];
+            if (t.status === 'pendente') {
+                if (isSolic || isAdmin) buttons.push(`<button class="btn btn-danger" onclick="cancelarTroca('${t.id}')">Cancelar</button>`);
+                if (!isSolic && (isAlvo || !t.alvo_id)) {
+                    buttons.push(`<button class="btn btn-success" onclick="aceitarTroca('${t.id}')">Aceitar</button>`);
+                    buttons.push(`<button class="btn" style="background:#ef4444;color:#fff" onclick="recusarTroca('${t.id}')">Recusar</button>`);
+                }
+                if (isAdmin && !isSolic && !isAlvo) {
+                    buttons.push(`<button class="btn" style="background:#ef4444;color:#fff" onclick="recusarTroca('${t.id}')">Recusar</button>`);
+                }
+            } else if (t.status === 'aceita') {
+                if (isAdmin) buttons.push(`<button class="btn btn-success" onclick="aprovarTroca('${t.id}')">Aprovar</button>`);
+                if (isSolic || isAdmin) buttons.push(`<button class="btn btn-danger" onclick="cancelarTroca('${t.id}')">Cancelar</button>`);
+            }
+            return buttons.join(' ');
+        }
+
+        async function loadTrocas() {
+            try {
+                const resp = await fetch('/trocas');
+                const trocas = await resp.json();
+                const minhas = trocas.filter(t => t.solicitante_id === currentUserId);
+                const recebidas = trocas.filter(t => t.solicitante_id !== currentUserId && (t.alvo_id === currentUserId || !t.alvo_id));
+                renderListaTrocas('trocasMinhasList', minhas);
+                renderListaTrocas('trocasRecebidasList', recebidas);
+                if (isAdmin) renderListaTrocas('trocasTodasList', trocas);
+            } catch (e) {
+                console.error('Erro ao carregar trocas:', e);
+                ['trocasMinhasList','trocasRecebidasList','trocasTodasList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = '<p style="color:red;">Erro ao carregar</p>'; });
+            }
+        }
+
+        async function aceitarTroca(id) {
+            if (!confirm('Aceitar esta solicitação?')) return;
+            const resp = await fetch(`/trocas/${id}/aceitar`, { method: 'POST' });
+            const data = await resp.json();
+            if (resp.ok) { await loadTrocas(); } else { alert(data.error || 'Falha ao aceitar'); }
+        }
+        async function recusarTroca(id) {
+            if (!confirm('Recusar esta solicitação?')) return;
+            const resp = await fetch(`/trocas/${id}/recusar`, { method: 'POST' });
+            const data = await resp.json();
+            if (resp.ok) { await loadTrocas(); } else { alert(data.error || 'Falha ao recusar'); }
+        }
+        async function cancelarTroca(id) {
+            if (!confirm('Cancelar esta solicitação?')) return;
+            const resp = await fetch(`/trocas/${id}/cancelar`, { method: 'POST' });
+            const data = await resp.json();
+            if (resp.ok) { await loadTrocas(); } else { alert(data.error || 'Falha ao cancelar'); }
+        }
+        async function aprovarTroca(id) {
+            if (!confirm('Aprovar e aplicar a troca na escala?')) return;
+            const resp = await fetch(`/trocas/${id}/aprovar`, { method: 'POST' });
+            const data = await resp.json();
+            if (resp.ok) {
+                await loadTrocas();
+                // Atualizar escalas para refletir mudanças
+                try { await loadEscalaAtual(); } catch {}
+                try { await loadEscalaRJM(); } catch {}
+                showNotification('✅ Troca aprovada e aplicada!', 'success');
+            } else {
+                alert(data.error || 'Falha ao aprovar');
             }
         }
         

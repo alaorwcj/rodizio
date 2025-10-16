@@ -12,6 +12,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.enums import TA_CENTER
+import uuid
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
@@ -1941,6 +1942,290 @@ def exportar_pdf_rjm():
         'Content-Type': 'application/pdf',
         'Content-Disposition': f'attachment; filename=escala_rjm_{datetime.now().strftime("%Y%m%d")}.pdf'
     }
+
+# ========== TROCAS (Solicitações de Substituição/Troca) ==========
+
+def _get_comum_context_for_current_user(db):
+    """Helper para obter comuns e chaves de contexto do usuário atual"""
+    comum_result = get_comum_for_user(db, current_user)
+    if not comum_result:
+        return None, None, None, None
+    return (
+        comum_result['comum'],
+        comum_result['regional_id'],
+        comum_result['sub_regional_id'],
+        comum_result['comum_id']
+    )
+
+def _ensure_trocas_array(comum_data):
+    if 'trocas' not in comum_data or not isinstance(comum_data['trocas'], list):
+        comum_data['trocas'] = []
+    return comum_data['trocas']
+
+def _organista_nome_by_id(comum_data, org_id):
+    for org in comum_data.get('organistas', []):
+        if org.get('id') == org_id:
+            return org.get('nome', org_id)
+    return org_id
+
+def _dia_escala_by_data(comum_data, data_iso):
+    for d in comum_data.get('escala', []):
+        if d.get('data') == data_iso:
+            return d
+    return None
+
+def _rjm_item_by_data(comum_data, data_iso):
+    for d in comum_data.get('escala_rjm', []):
+        if d.get('data') == data_iso:
+            return d
+    return None
+
+def _find_troca(trocas, troca_id):
+    return next((t for t in trocas if t.get('id') == troca_id), None)
+
+def _add_historico(troca, acao, por):
+    troca.setdefault('historico', []).append({
+        'quando': datetime.utcnow().isoformat(),
+        'acao': acao,
+        'por': por
+    })
+
+@app.get("/trocas")
+@login_required
+def listar_trocas():
+    """Lista trocas da comum atual. Admin vê todas. Organista vê as envolvidas."""
+    db = load_db()
+    if 'regionais' not in db:
+        # Estrutura antiga: manter compatibilidade mínima
+        trocas = db.get('trocas', [])
+        if current_user.is_admin:
+            return jsonify(trocas)
+        return jsonify([t for t in trocas if t.get('solicitante_id') == current_user.id or t.get('alvo_id') == current_user.id])
+
+    comum_data, regional_id, sub_regional_id, comum_id = _get_comum_context_for_current_user(db)
+    if not comum_data:
+        return jsonify([])
+
+    trocas = _ensure_trocas_array(comum_data)
+    if current_user.is_admin:
+        return jsonify(trocas)
+    return jsonify([t for t in trocas if t.get('solicitante_id') == current_user.id or t.get('alvo_id') == current_user.id])
+
+@app.post("/trocas")
+@login_required
+def criar_troca():
+    """Cria nova solicitação de troca/substituição"""
+    payload = request.get_json() or {}
+    tipo = payload.get('tipo')  # 'culto' | 'rjm'
+    data_iso = payload.get('data')  # YYYY-MM-DD
+    slot = payload.get('slot')  # 'meia_hora' | 'culto' | 'unica'
+    modalidade = payload.get('modalidade', 'substituicao')
+    alvo_id = payload.get('alvo_id')  # opcional
+    motivo = payload.get('motivo', '')
+
+    if tipo not in ['culto', 'rjm']:
+        return jsonify({"error": "tipo inválido (use 'culto' ou 'rjm')"}), 400
+    if not data_iso:
+        return jsonify({"error": "data é obrigatória"}), 400
+    if tipo == 'culto' and slot not in ['meia_hora', 'culto']:
+        return jsonify({"error": "slot inválido para 'culto' (meia_hora ou culto)"}), 400
+    if tipo == 'rjm' and slot not in [None, '', 'unica']:
+        return jsonify({"error": "slot inválido para 'rjm' (use 'unica' ou deixe em branco)"}), 400
+
+    db = load_db()
+    if 'regionais' not in db:
+        return jsonify({"error": "Recurso indisponível na estrutura antiga"}), 400
+
+    comum_data, regional_id, sub_regional_id, comum_id = _get_comum_context_for_current_user(db)
+    if not comum_data:
+        return jsonify({"error": "Comum não encontrada"}), 404
+
+    # Validar propriedade do slot
+    current_nome = current_user.nome
+    if tipo == 'culto':
+        dia = _dia_escala_by_data(comum_data, data_iso)
+        if not dia:
+            return jsonify({"error": "Data não encontrada na escala"}), 404
+        slot_value = dia.get(slot)
+        if slot_value != current_nome:
+            return jsonify({"error": "Você não está escalado(a) nesse slot para solicitar troca"}), 403
+    else:
+        item = _rjm_item_by_data(comum_data, data_iso)
+        if not item:
+            return jsonify({"error": "Data não encontrada na RJM"}), 404
+        if item.get('organista') != current_nome:
+            return jsonify({"error": "Você não está escalado(a) nesta data na RJM"}), 403
+        slot = 'unica'
+
+    trocas = _ensure_trocas_array(comum_data)
+    # Evitar duplicidade pendente para mesmo dia/slot
+    if any(t for t in trocas if t.get('status') in ['pendente', 'aceita'] and t.get('data') == data_iso and t.get('tipo') == tipo and t.get('slot') == slot and t.get('solicitante_id') == current_user.id):
+        return jsonify({"error": "Já existe uma solicitação pendente para este dia e slot"}), 400
+
+    troca = {
+        'id': str(uuid.uuid4()),
+        'criado_em': datetime.utcnow().isoformat(),
+        'atualizado_em': datetime.utcnow().isoformat(),
+        'status': 'pendente',
+        'modalidade': modalidade,
+        'tipo': tipo,
+        'data': data_iso,
+        'slot': slot,
+        'solicitante_id': current_user.id,
+        'solicitante_nome': current_user.nome,
+        'alvo_id': alvo_id or '',
+        'alvo_nome': _organista_nome_by_id(comum_data, alvo_id) if alvo_id else '',
+        'motivo': motivo,
+        'historico': []
+    }
+    _add_historico(troca, 'criada', current_user.id)
+    trocas.append(troca)
+
+    # Persistir
+    db['regionais'][regional_id]['sub_regionais'][sub_regional_id]['comuns'][comum_id] = comum_data
+    db.setdefault('logs', []).append({
+        'quando': datetime.utcnow().isoformat(),
+        'acao': 'criar_troca',
+        'por': current_user.id,
+        'payload': {k: v for k, v in troca.items() if k not in ['historico']}
+    })
+    save_db(db)
+    return jsonify({"ok": True, "troca": troca})
+
+@app.post("/trocas/<troca_id>/aceitar")
+@login_required
+def aceitar_troca(troca_id):
+    db = load_db()
+    if 'regionais' not in db:
+        return jsonify({"error": "Recurso indisponível na estrutura antiga"}), 400
+    comum_data, regional_id, sub_regional_id, comum_id = _get_comum_context_for_current_user(db)
+    if not comum_data:
+        return jsonify({"error": "Comum não encontrada"}), 404
+    trocas = _ensure_trocas_array(comum_data)
+    troca = _find_troca(trocas, troca_id)
+    if not troca:
+        return jsonify({"error": "Troca não encontrada"}), 404
+    if troca.get('status') not in ['pendente']:
+        return jsonify({"error": "Troca não está pendente"}), 400
+
+    # Se já tem alvo definido, apenas o alvo pode aceitar; se não tem, qualquer organista pode aceitar
+    if troca.get('alvo_id'):
+        if troca['alvo_id'] != current_user.id:
+            return jsonify({"error": "Apenas o destinatário pode aceitar esta solicitação"}), 403
+    else:
+        # Atribuir o alvo como quem aceitou
+        troca['alvo_id'] = current_user.id
+        troca['alvo_nome'] = current_user.nome
+
+    troca['status'] = 'aceita'
+    troca['atualizado_em'] = datetime.utcnow().isoformat()
+    _add_historico(troca, 'aceita', current_user.id)
+
+    db['regionais'][regional_id]['sub_regionais'][sub_regional_id]['comuns'][comum_id] = comum_data
+    save_db(db)
+    return jsonify({"ok": True, "troca": troca})
+
+@app.post("/trocas/<troca_id>/recusar")
+@login_required
+def recusar_troca(troca_id):
+    db = load_db()
+    if 'regionais' not in db:
+        return jsonify({"error": "Recurso indisponível na estrutura antiga"}), 400
+    comum_data, regional_id, sub_regional_id, comum_id = _get_comum_context_for_current_user(db)
+    if not comum_data:
+        return jsonify({"error": "Comum não encontrada"}), 404
+    trocas = _ensure_trocas_array(comum_data)
+    troca = _find_troca(trocas, troca_id)
+    if not troca:
+        return jsonify({"error": "Troca não encontrada"}), 404
+    if troca.get('status') not in ['pendente']:
+        return jsonify({"error": "Troca não está pendente"}), 400
+    # Somente destinatário (definido) ou admin podem recusar
+    if not current_user.is_admin and troca.get('alvo_id') != current_user.id:
+        return jsonify({"error": "Sem permissão para recusar"}), 403
+
+    troca['status'] = 'recusada'
+    troca['atualizado_em'] = datetime.utcnow().isoformat()
+    _add_historico(troca, 'recusada', current_user.id)
+    db['regionais'][regional_id]['sub_regionais'][sub_regional_id]['comuns'][comum_id] = comum_data
+    save_db(db)
+    return jsonify({"ok": True, "troca": troca})
+
+@app.post("/trocas/<troca_id>/cancelar")
+@login_required
+def cancelar_troca(troca_id):
+    db = load_db()
+    if 'regionais' not in db:
+        return jsonify({"error": "Recurso indisponível na estrutura antiga"}), 400
+    comum_data, regional_id, sub_regional_id, comum_id = _get_comum_context_for_current_user(db)
+    if not comum_data:
+        return jsonify({"error": "Comum não encontrada"}), 404
+    trocas = _ensure_trocas_array(comum_data)
+    troca = _find_troca(trocas, troca_id)
+    if not troca:
+        return jsonify({"error": "Troca não encontrada"}), 404
+    if troca.get('status') not in ['pendente', 'aceita']:
+        return jsonify({"error": "Apenas trocas pendentes/aceitas podem ser canceladas"}), 400
+    if troca.get('solicitante_id') != current_user.id and not current_user.is_admin:
+        return jsonify({"error": "Sem permissão para cancelar"}), 403
+
+    troca['status'] = 'cancelada'
+    troca['atualizado_em'] = datetime.utcnow().isoformat()
+    _add_historico(troca, 'cancelada', current_user.id)
+    db['regionais'][regional_id]['sub_regionais'][sub_regional_id]['comuns'][comum_id] = comum_data
+    save_db(db)
+    return jsonify({"ok": True, "troca": troca})
+
+@app.post("/trocas/<troca_id>/aprovar")
+@login_required
+def aprovar_troca(troca_id):
+    """Admin aplica a troca na escala/RJM e marca como aprovada"""
+    if not current_user.is_admin:
+        return jsonify({"error": "Apenas administrador pode aprovar"}), 403
+    db = load_db()
+    if 'regionais' not in db:
+        return jsonify({"error": "Recurso indisponível na estrutura antiga"}), 400
+    comum_data, regional_id, sub_regional_id, comum_id = _get_comum_context_for_current_user(db)
+    if not comum_data:
+        return jsonify({"error": "Comum não encontrada"}), 404
+    trocas = _ensure_trocas_array(comum_data)
+    troca = _find_troca(trocas, troca_id)
+    if not troca:
+        return jsonify({"error": "Troca não encontrada"}), 404
+
+    if troca.get('status') not in ['aceita']:
+        return jsonify({"error": "Troca precisa estar 'aceita' para aprovar"}), 400
+    if not troca.get('alvo_nome'):
+        return jsonify({"error": "Troca aceita sem destinatário definido"}), 400
+
+    # Aplicar na escala apropriada
+    if troca['tipo'] == 'culto':
+        dia = _dia_escala_by_data(comum_data, troca['data'])
+        if not dia:
+            return jsonify({"error": "Data não encontrada na escala"}), 404
+        if troca['slot'] not in ['meia_hora', 'culto']:
+            return jsonify({"error": "Slot inválido"}), 400
+        dia[troca['slot']] = troca['alvo_nome']
+    else:
+        item = _rjm_item_by_data(comum_data, troca['data'])
+        if not item:
+            return jsonify({"error": "Data não encontrada na RJM"}), 404
+        item['organista'] = troca['alvo_nome']
+
+    troca['status'] = 'aprovada'
+    troca['atualizado_em'] = datetime.utcnow().isoformat()
+    _add_historico(troca, 'aprovada', current_user.id)
+
+    # Persistir e logar
+    db['regionais'][regional_id]['sub_regionais'][sub_regional_id]['comuns'][comum_id] = comum_data
+    db.setdefault('logs', []).append({
+        'quando': datetime.utcnow().isoformat(),
+        'acao': 'aprovar_troca',
+        'por': current_user.id,
+        'payload': {'troca_id': troca_id}
+    })
+    save_db(db)
+    return jsonify({"ok": True, "troca": troca})
 
 # ==================== API de Contexto e Hierarquia ====================
 

@@ -1085,7 +1085,36 @@
                 }
               },
               "escala_publicada_em": "2025-10-15T12:24:12.584903",
-              "escala_publicada_por": "alaor"
+              "escala_publicada_por": "alaor",
+              "trocas": [
+                {
+                  "id": "52feb5cb-254d-45fd-9ada-e064f6a260c3",
+                  "criado_em": "2025-10-16T05:25:44.159159",
+                  "atualizado_em": "2025-10-16T05:26:22.351057",
+                  "status": "aceita",
+                  "modalidade": "substituicao",
+                  "tipo": "culto",
+                  "data": "2025-10-07",
+                  "slot": "culto",
+                  "solicitante_id": "ieda",
+                  "solicitante_nome": "Ieda",
+                  "alvo_id": "milena",
+                  "alvo_nome": "Milena",
+                  "motivo": "vou precisar trabalhar neste dia",
+                  "historico": [
+                    {
+                      "quando": "2025-10-16T05:25:44.159182",
+                      "acao": "criada",
+                      "por": "ieda"
+                    },
+                    {
+                      "quando": "2025-10-16T05:26:22.351074",
+                      "acao": "aceita",
+                      "por": "milena"
+                    }
+                  ]
+                }
+              ]
             },
             "pedrabranca": {
               "nome": "Pedra Branca",
@@ -5058,6 +5087,26 @@
         "id": "ieda",
         "autor": "ieda",
         "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T05:25:44.159185",
+      "acao": "criar_troca",
+      "por": "ieda",
+      "payload": {
+        "id": "52feb5cb-254d-45fd-9ada-e064f6a260c3",
+        "criado_em": "2025-10-16T05:25:44.159159",
+        "atualizado_em": "2025-10-16T05:25:44.159167",
+        "status": "pendente",
+        "modalidade": "substituicao",
+        "tipo": "culto",
+        "data": "2025-10-07",
+        "slot": "culto",
+        "solicitante_id": "ieda",
+        "solicitante_nome": "Ieda",
+        "alvo_id": "milena",
+        "alvo_nome": "Milena",
+        "motivo": "vou precisar trabalhar neste dia"
       }
     }
   ],
