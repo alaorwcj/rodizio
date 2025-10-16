@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Rodízio de Organistas</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- BUILD: {{ timestamp }} - Menu Organista Fixed -->
+    <title>Sistema de Rodízio de Organistas v2.1.{{ timestamp }}</title>
     <style>
         * {
             margin: 0;
@@ -1451,8 +1455,11 @@
             <span class="nav-mobile-arrow" id="agenda-arrow">▼</span>
         </div>
         <div class="nav-mobile-submenu" id="agenda-submenu">
+            <div class="nav-mobile-submenu-item" onclick="showTabMobile('indisponibilidades')">
+                📅 Minha Agenda
+            </div>
             <div class="nav-mobile-submenu-item" onclick="showTabMobile('admin-indisp')">
-                Restrições de Dias
+                🔐 Gerenciar Todas
             </div>
         </div>
         {% endif %}
@@ -1473,11 +1480,14 @@
         {% endif %}
         
         {% if not user.is_admin %}
-        <div class="nav-mobile-item" onclick="showTabMobile('indisp')">
-            📅 Minha Agenda
+        <!-- Menu simplificado para organistas: vai direto para restrições -->
+        <div class="nav-mobile-item" onclick="showTabMobile('indisponibilidades')">
+            📅 Restrição de Dias
         </div>
         {% endif %}
     </div>
+    
+    
     
     <!-- Botão Dark Mode -->
     <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar modo escuro">
@@ -1526,7 +1536,7 @@
         
         <div class="nav-tabs">
             <!-- Dashboard -->
-            <button class="nav-tab active" onclick="showTab(\'dashboard\')">Dashboard</button>
+            <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
             
             <!-- Menu: Rodízios -->
             <div class="nav-dropdown">
@@ -1568,8 +1578,11 @@
                     <span class="dropdown-arrow">▼</span>
                 </button>
                 <div id="agenda-menu-admin" class="nav-dropdown-menu">
+                    <div class="nav-dropdown-item" onclick="showTab('indisponibilidades')">
+                        📅 Minha Agenda
+                    </div>
                     <div class="nav-dropdown-item" onclick="showTab('admin-indisp')">
-                        Restrições de Dias
+                        🔐 Gerenciar Todas
                     </div>
                 </div>
             </div>
@@ -2612,6 +2625,11 @@
         }
         
         function showTabMobile(tabName) {
+            // Alias de compatibilidade para tabs antigas (mobile)
+            if (tabName === 'indisp') {
+                console.warn('↪️ Alias de tab (mobile): "indisp" → "indisponibilidades"');
+                tabName = 'indisponibilidades';
+            }
             // Chama a função showTab existente
             showTab(tabName);
             
@@ -2644,8 +2662,15 @@
         console.log('  ID:', '{{ user.id }}');
         console.log('  Nome:', '{{ user.nome }}');
         console.log('  Tipo:', '{{ user.tipo }}');
+        console.log('  Nível:', '{{ user.nivel }}');
         console.log('  Contexto ID:', '{{ user.contexto_id }}');
+        console.log('  Is Admin:', {{ 'true' if user.is_admin else 'false' }});
         console.log('  Is Master:', {{ 'true' if user.is_master else 'false' }});
+        console.log('  Is Encarregado Comum:', {{ 'true' if user.is_encarregado_comum else 'false' }});
+        console.log('  Is Encarregado Sub:', {{ 'true' if user.is_encarregado_sub else 'false' }});
+        console.log('  Is Organista:', {{ 'true' if user.is_organista else 'false' }});
+        
+        
         
         // ==================== Gerenciamento de Contexto ====================
         let contextoAtual = {
@@ -2883,6 +2908,11 @@
         });
         
         function showTab(tabName) {
+            // Alias de compatibilidade para tabs antigas (desktop)
+            if (tabName === 'indisp') {
+                console.warn('↪️ Alias de tab: "indisp" → "indisponibilidades"');
+                tabName = 'indisponibilidades';
+            }
             document.querySelectorAll('.tab-panel').forEach(panel => {
                 panel.classList.remove('active');
             });
@@ -2897,7 +2927,12 @@
             });
             
             // Ativar a tab
-            document.getElementById(tabName).classList.add('active');
+            const targetTab = document.getElementById(tabName);
+            if (!targetTab) {
+                console.error('❌ Aba não encontrada:', tabName);
+                return;
+            }
+            targetTab.classList.add('active');
             
             // Ativar o item do menu que foi clicado
             if (event && event.target) {

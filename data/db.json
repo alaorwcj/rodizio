@@ -178,6 +178,13 @@
                   "id": "ieda",
                   "autor": "ieda",
                   "status": "confirmada"
+                },
+                {
+                  "data": "2025-10-12",
+                  "motivo": "Indisponível",
+                  "id": "ieda",
+                  "autor": "ieda",
+                  "status": "confirmada"
                 }
               ],
               "escala": [
@@ -5018,6 +5025,39 @@
       "por": "alaor",
       "payload": {
         "id": "teste123"
+      }
+    },
+    {
+      "quando": "2025-10-16T04:48:35.053260",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-12",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T04:51:44.410377",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-12"
+      }
+    },
+    {
+      "quando": "2025-10-16T04:51:45.313245",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-12",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
       }
     }
   ],

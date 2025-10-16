@@ -75,6 +75,7 @@ def load_user(user_id):
     usuarios_sistema = db.get('usuarios', {})
     if user_id in usuarios_sistema:
         usuario = usuarios_sistema[user_id]
+        print(f"🔐 [LOAD_USER] Usuário do sistema: {user_id} (tipo: {usuario['tipo']})")
         return User(
             usuario['id'],
             usuario['nome'],
@@ -93,7 +94,8 @@ def load_user(user_id):
     # Buscar organista em todas as comuns
     organista_data = find_organista_in_all_comuns(db, user_id)
     if organista_data:
-        return User(
+        print(f"🎹 [LOAD_USER] Organista encontrada: {user_id} - is_admin será FALSE")
+        user_obj = User(
             organista_data['organista']['id'],
             organista_data['organista']['nome'],
             'organista',
@@ -101,7 +103,10 @@ def load_user(user_id):
             organista_data['comum_id'],
             False
         )
+        print(f"   Verificação: is_admin={user_obj.is_admin}, tipo={user_obj.tipo}")
+        return user_obj
     
+    print(f"❌ [LOAD_USER] Usuário não encontrado: {user_id}")
     return None
 
 def load_db():
@@ -384,7 +389,8 @@ def index():
             'fim': '2025-12-31'
         }
     
-    return render_template("index.html", cfg=config, user=current_user)
+    import time
+    return render_template("index.html", cfg=config, user=current_user, timestamp=int(time.time()))
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -816,24 +822,54 @@ def add_indisp():
 def del_indisp(org_id, data_iso):
     # Organista só pode remover suas próprias, admin pode remover qualquer uma
     if not current_user.is_admin and org_id != current_user.id:
-        return jsonify({"error":"Você só pode remover suas próprias indisponibilidades."}), 403
-    
+        return jsonify({"error": "Você só pode remover suas próprias indisponibilidades."}), 403
+
     db = load_db()
-    before = len(db["indisponibilidades"])
-    db["indisponibilidades"] = [i for i in db["indisponibilidades"] if not (i["id"]==org_id and i["data"]==data_iso)]
-    after = len(db["indisponibilidades"])
-    
-    if before == after:
-        return jsonify({"error":"Não encontrado"}), 404
-    
-    db["logs"].append({
-        "quando":datetime.utcnow().isoformat(), 
-        "acao":"del_indisponibilidade", 
-        "por":current_user.id, 
-        "payload":{"id":org_id,"data":data_iso}
+
+    removed = False
+
+    # NOVA ESTRUTURA: dados aninhados em regionais/sub-regionais/comuns
+    if 'regionais' in db:
+        comum_result = get_comum_for_user(db, current_user)
+        if not comum_result:
+            return jsonify({"error": "Comum não encontrada."}), 404
+
+        regional = db['regionais'][comum_result['regional_id']]
+        sub_regional = regional['sub_regionais'][comum_result['sub_regional_id']]
+        comum = sub_regional['comuns'][comum_result['comum_id']]
+
+        indisps = comum.get('indisponibilidades', [])
+        before = len(indisps)
+        indisps = [i for i in indisps if not (i.get('id') == org_id and i.get('data') == data_iso)]
+        after = len(indisps)
+        removed = (before != after)
+
+        # Persistir alterações no caminho correto
+        comum['indisponibilidades'] = indisps
+        sub_regional['comuns'][comum_result['comum_id']] = comum
+        regional['sub_regionais'][comum_result['sub_regional_id']] = sub_regional
+        db['regionais'][comum_result['regional_id']] = regional
+
+    else:
+        # ESTRUTURA ANTIGA: lista no topo do arquivo
+        indisps = db.get('indisponibilidades', [])
+        before = len(indisps)
+        db['indisponibilidades'] = [i for i in indisps if not (i.get('id') == org_id and i.get('data') == data_iso)]
+        after = len(db['indisponibilidades'])
+        removed = (before != after)
+
+    if not removed:
+        return jsonify({"error": "Não encontrado"}), 404
+
+    # Log e salvar
+    db.setdefault('logs', []).append({
+        "quando": datetime.utcnow().isoformat(),
+        "acao": "del_indisponibilidade",
+        "por": current_user.id,
+        "payload": {"id": org_id, "data": data_iso}
     })
     save_db(db)
-    return jsonify({"ok":True})
+    return jsonify({"ok": True})
 
 @app.get("/admin/indisponibilidades/todas")
 @login_required
