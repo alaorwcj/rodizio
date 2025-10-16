@@ -143,27 +143,6 @@
                   "id": "milena",
                   "autor": "milena",
                   "status": "confirmada"
-                },
-                {
-                  "data": "2025-10-20",
-                  "motivo": "Indisponível",
-                  "id": "ieda",
-                  "autor": "ieda",
-                  "status": "confirmada"
-                },
-                {
-                  "data": "2025-11-24",
-                  "motivo": "Indisponível",
-                  "id": "ieda",
-                  "autor": "ieda",
-                  "status": "confirmada"
-                },
-                {
-                  "data": "2025-10-06",
-                  "motivo": "Indisponível",
-                  "id": "ieda",
-                  "autor": "ieda",
-                  "status": "confirmada"
                 }
               ],
               "escala": [
@@ -375,15 +354,15 @@
                 }
               ],
               "config": {
-                "bimestre": {
-                  "inicio": "2025-10-01",
-                  "fim": "2026-01-30"
-                },
-                "fechamento_publicacao_dias": 7,
                 "periodo": {
                   "inicio": "2025-10-01",
                   "fim": "2025-11-30"
-                }
+                },
+                "fechamento_publicacao_dias": 7,
+                "dias_culto": [
+                  "domingo",
+                  "terca"
+                ]
               },
               "escala_publicada_em": "2025-10-16T12:30:22.630345",
               "escala_publicada_por": "alaor",
@@ -2631,23 +2610,14 @@
               "escala_rjm": [],
               "config": {
                 "periodo": {
-                  "inicio": "2025-10-16",
-                  "fim": "2025-12-31"
+                  "inicio": "2025-10-01",
+                  "fim": "2025-11-30"
                 },
+                "fechamento_publicacao_dias": 7,
                 "dias_culto": [
-                  "Domingo",
-                  "Terça"
-                ],
-                "horarios": {
-                  "Domingo": [
-                    "10:00",
-                    "18:30"
-                  ],
-                  "Terça": [
-                    "19:30"
-                  ]
-                },
-                "fechamento_publicacao_dias": 7
+                  "domingo",
+                  "terca"
+                ]
               },
               "escala_publicada_em": "2025-10-16T12:51:12.884791",
               "escala_publicada_por": "enc_teste",
@@ -5750,6 +5720,153 @@
       "payload": {
         "id": "ieda",
         "data": "2025-10-14"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:37:42.705964",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-30",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:37:43.820728",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-30"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:40:11.962726",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-19",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:40:11.994394",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-19"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:46:43.966488",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-23",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:46:42.499545",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-23"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:46:43.701639",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-25",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:46:44.331073",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-25"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:46:50.583399",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-30",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:46:51.093340",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-30"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:50:22.745737",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-25",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:50:23.248254",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-25"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:55:22.797269",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-18",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T17:55:23.449034",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-18"
       }
     }
   ],

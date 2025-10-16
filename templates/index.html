@@ -4017,6 +4017,18 @@
             }
             
             try {
+                // Garantir contexto e obter config atual da comum
+                try { await carregarContextoAtual(); } catch(e) { console.warn('Falha ao carregar contexto', e); }
+                try {
+                    if (contextoAtual && contextoAtual.comum && contextoAtual.comum.id) {
+                        const cfgResp = await fetch(`/api/comuns/${contextoAtual.comum.id}/config`);
+                        if (cfgResp.ok) {
+                            const cfgJson = await cfgResp.json();
+                            contextoAtual.comum = contextoAtual.comum || {};
+                            contextoAtual.comum.config = cfgJson;
+                        }
+                    }
+                } catch(e) { console.warn('Falha ao buscar config da comum', e); }
                 const response = await fetch('/indisponibilidades');
                 indisponibilidades = await response.json();
                 
@@ -4028,9 +4040,24 @@
         
         // Renderizar calendário simplificado
         function renderCalendar() {
-            // Usar datas configuradas no período
-            const inicio = new Date('{{ cfg.bimestre.inicio }}T00:00:00');
-            const fim = new Date('{{ cfg.bimestre.fim }}T23:59:59');
+            // Determinar período a partir do contexto atual (preferencial) ou do cfg renderizado no servidor
+            const cfgPeriodo = (contextoAtual && contextoAtual.comum && contextoAtual.comum.config && (contextoAtual.comum.config.periodo || contextoAtual.comum.config.bimestre)) || null;
+            const inicioStr = (cfgPeriodo && cfgPeriodo.inicio) ? cfgPeriodo.inicio : '{{ cfg.bimestre.inicio }}';
+            const fimStr = (cfgPeriodo && cfgPeriodo.fim) ? cfgPeriodo.fim : '{{ cfg.bimestre.fim }}';
+
+            console.log('📅 [CALENDAR] Renderizando calendário de indisponibilidades');
+            console.log('  Período configurado:', inicioStr, 'até', fimStr);
+            console.log('  Fonte da config:', cfgPeriodo ? 'contextoAtual.comum.config' : 'cfg server-side');
+
+            // Parse local-safe (evita drift de timezone do Date ISO)
+            const toLocalDate = (iso) => {
+                const [y, m, d] = (iso || '').split('-').map(Number);
+                return new Date(y, (m || 1) - 1, d || 1, 0, 0, 0, 0);
+            };
+            const inicio = toLocalDate(inicioStr);
+            const fim = toLocalDate(fimStr);
+            
+            console.log('  Datas parseadas: inicio =', inicio.toISOString().split('T')[0], ', fim =', fim.toISOString().split('T')[0]);
             
             const calendar = document.getElementById('calendarioIndisp');
             
@@ -4039,11 +4066,19 @@
             
             const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
             
-            // Agrupar datas por mês (apenas domingos e terças)
+            // Agrupar datas por mês (apenas domingos e terças DENTRO DO PERÍODO)
             const datasOrganizadas = {};
             let current = new Date(inicio);
             
+            console.log('  Iniciando iteração de datas...');
+            let iteracoes = 0;
             while (current <= fim) {
+                iteracoes++;
+                if (iteracoes > 365) {
+                    console.error('⚠️ Loop infinito detectado! Abortando.');
+                    break;
+                }
+                
                 const dayOfWeek = current.getDay();
                 
                 // Apenas domingos (0) e terças (2)
@@ -4056,6 +4091,7 @@
                             ano: current.getFullYear(),
                             datas: []
                         };
+                        console.log(`    Criando mês: ${mesesNome[current.getMonth()]}/${current.getFullYear()}`);
                     }
                     
                     datasOrganizadas[mesAno].datas.push({
@@ -4068,6 +4104,10 @@
                 
                 current.setDate(current.getDate() + 1);
             }
+            
+            console.log(`  Total de iterações: ${iteracoes}, meses criados: ${Object.keys(datasOrganizadas).length}`);
+            
+            console.log(`  Total de iterações: ${iteracoes}, meses criados: ${Object.keys(datasOrganizadas).length}`);
             
             // Renderizar por mês em ordem cronológica
             let html = '<div style="margin-bottom: 20px;"><p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">📅 Clique nas datas abaixo para marcar/desmarcar sua indisponibilidade:</p>';
@@ -4130,6 +4170,21 @@
         
         // Toggle data
         async function toggleDate(dateStr) {
+            // Não permitir marcação fora do período configurado (UX)
+            const cfgPeriodo = (contextoAtual && contextoAtual.comum && contextoAtual.comum.config && (contextoAtual.comum.config.periodo || contextoAtual.comum.config.bimestre)) || null;
+            const inicioStr = (cfgPeriodo && cfgPeriodo.inicio) ? cfgPeriodo.inicio : '{{ cfg.bimestre.inicio }}';
+            const fimStr = (cfgPeriodo && cfgPeriodo.fim) ? cfgPeriodo.fim : '{{ cfg.bimestre.fim }}';
+            const toLocalDate = (iso) => { const [y, m, d] = (iso || '').split('-').map(Number); return new Date(y, (m||1)-1, d||1); };
+            const inPeriodo = (ds) => {
+                const dt = toLocalDate(ds);
+                const di = toLocalDate(inicioStr);
+                const df = toLocalDate(fimStr);
+                return dt >= di && dt <= df;
+            };
+            if (!inPeriodo(dateStr)) {
+                alert('Data fora do período configurado.');
+                return;
+            }
             const exists = indisponibilidades.some(i => i.data === dateStr);
             
             if (exists) {
@@ -4172,7 +4227,7 @@
             }
         }
         
-        // Atualizar chips
+        // Atualizar chips (rodapé com datas marcadas)
         function updateChips() {
             const chips = document.getElementById('chipsDatas');
             
@@ -4181,8 +4236,33 @@
                 return;
             }
             
+            // Obter período configurado para filtrar indisponibilidades antigas
+            const cfgPeriodo = (contextoAtual && contextoAtual.comum && contextoAtual.comum.config && (contextoAtual.comum.config.periodo || contextoAtual.comum.config.bimestre)) || null;
+            const inicioStr = (cfgPeriodo && cfgPeriodo.inicio) ? cfgPeriodo.inicio : '{{ cfg.bimestre.inicio }}';
+            const fimStr = (cfgPeriodo && cfgPeriodo.fim) ? cfgPeriodo.fim : '{{ cfg.bimestre.fim }}';
+            
+            const toLocalDate = (iso) => {
+                const [y, m, d] = (iso || '').split('-').map(Number);
+                return new Date(y, (m || 1) - 1, d || 1, 0, 0, 0, 0);
+            };
+            const inicio = toLocalDate(inicioStr);
+            const fim = toLocalDate(fimStr);
+            
+            // Filtrar apenas indisponibilidades dentro do período configurado E que sejam domingo/terça
+            const indispFiltradas = indisponibilidades.filter(i => {
+                const dataIndisp = toLocalDate(i.data);
+                const dayOfWeek = dataIndisp.getDay();
+                // Apenas domingos (0) e terças (2) dentro do período
+                return dataIndisp >= inicio && dataIndisp <= fim && (dayOfWeek === 0 || dayOfWeek === 2);
+            });
+            
+            if (indispFiltradas.length === 0) {
+                chips.innerHTML = '<p style="color: #666;">Nenhuma indisponibilidade marcada no período atual.</p>';
+                return;
+            }
+            
             let html = '<h3>Datas marcadas como indisponíveis:</h3><div style="margin-top: 10px;">';
-            indisponibilidades.forEach(i => {
+            indispFiltradas.forEach(i => {
                 const date = new Date(i.data + 'T00:00:00');
                 html += `<span class="info-badge" style="background: #fee2e2; color: #991b1b;">
                     ${date.toLocaleDateString('pt-BR')}

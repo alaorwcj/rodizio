@@ -225,6 +225,86 @@ def list_all_comuns(db):
                 })
     return comuns
 
+def list_comuns_in_scope(db, user):
+    """Lista comuns dentro do escopo do usuário (regional/sub/comum)."""
+    if user.is_master:
+        return list_all_comuns(db)
+
+    comuns = []
+    for regional_id, regional in db.get('regionais', {}).items():
+        for sub_regional_id, sub_regional in regional.get('sub_regionais', {}).items():
+            for comum_id, comum in sub_regional.get('comuns', {}).items():
+                # Encarregado da Comum: apenas sua própria
+                if user.is_encarregado_comum or user.is_organista:
+                    # comparar com chave e com id interno
+                    if user.contexto_id in [comum_id, comum.get('id')]:
+                        comuns.append({
+                            'regional_id': regional_id,
+                            'regional_nome': regional.get('nome'),
+                            'sub_regional_id': sub_regional_id,
+                            'sub_regional_nome': sub_regional.get('nome'),
+                            'comum_id': comum_id,
+                            'comum_nome': comum.get('nome'),
+                            'comum': comum
+                        })
+                # Encarregado Sub-Regional: quaisquer comuns da sua sub
+                elif user.is_encarregado_sub:
+                    if user.contexto_id == sub_regional_id:
+                        comuns.append({
+                            'regional_id': regional_id,
+                            'regional_nome': regional.get('nome'),
+                            'sub_regional_id': sub_regional_id,
+                            'sub_regional_nome': sub_regional.get('nome'),
+                            'comum_id': comum_id,
+                            'comum_nome': comum.get('nome'),
+                            'comum': comum
+                        })
+                # Admin Regional: quaisquer comuns da sua regional
+                elif user.is_admin_regional:
+                    if user.contexto_id == regional_id:
+                        comuns.append({
+                            'regional_id': regional_id,
+                            'regional_nome': regional.get('nome'),
+                            'sub_regional_id': sub_regional_id,
+                            'sub_regional_nome': sub_regional.get('nome'),
+                            'comum_id': comum_id,
+                            'comum_nome': comum.get('nome'),
+                            'comum': comum
+                        })
+    return comuns
+
+def is_comum_in_scope_for_user(db, comum_id, user):
+    """Verifica se uma comum pertence ao escopo do usuário."""
+    if user.is_master:
+        return True
+    comum_result = find_comum_by_id(db, comum_id)
+    if not comum_result:
+        return False
+    regional_id = comum_result['regional_id']
+    sub_regional_id = comum_result['sub_regional_id']
+    comum_key = comum_result['comum_id']
+    comum_inner_id = comum_result['comum'].get('id', '')
+
+    if user.is_encarregado_comum:
+        return user.contexto_id in [comum_id, comum_key, comum_inner_id]
+    if user.is_encarregado_sub:
+        return user.contexto_id == sub_regional_id
+    if user.is_admin_regional:
+        return user.contexto_id == regional_id
+    return False
+
+def can_manage_comum(db, comum_id, user):
+    """Usuário tem permissão de gestão sobre a comum? (papel + escopo)"""
+    if user.is_master:
+        return True
+    if user.is_encarregado_comum:
+        return is_comum_in_scope_for_user(db, comum_id, user)
+    if user.is_encarregado_sub:
+        return is_comum_in_scope_for_user(db, comum_id, user)
+    if user.is_admin_regional:
+        return is_comum_in_scope_for_user(db, comum_id, user)
+    return False
+
 def get_comum_for_user(db, user, comum_id_param=None):
     """Retorna a comum que o usuário deve acessar"""
     # Se especificou comum_id no parâmetro, usar ele (para Master/Admin)
@@ -254,15 +334,22 @@ def get_comum_for_user(db, user, comum_id_param=None):
     if user.is_organista or user.is_encarregado_comum:
         return find_comum_by_id(db, user.contexto_id)
     
-    # Admin regional/sub-regional: usar primeira comum disponível
-    comuns = list_all_comuns(db)
-    if comuns:
-        return {
-            'comum': comuns[0]['comum'],
-            'comum_id': comuns[0]['comum_id'],
-            'sub_regional_id': comuns[0]['sub_regional_id'],
-            'regional_id': comuns[0]['regional_id']
-        }
+    # Admin regional/sub-regional: usar comum da sessão se válida; senão primeira do seu escopo
+    if user.is_admin_regional or user.is_encarregado_sub:
+        sess_comum_id = session.get('comum_id')
+        if sess_comum_id and is_comum_in_scope_for_user(db, sess_comum_id, user):
+            result = find_comum_by_id(db, sess_comum_id)
+            if result:
+                return result
+        # fallback: primeira comum dentro do escopo
+        comuns = list_comuns_in_scope(db, user)
+        if comuns:
+            return {
+                'comum': comuns[0]['comum'],
+                'comum_id': comuns[0]['comum_id'],
+                'sub_regional_id': comuns[0]['sub_regional_id'],
+                'regional_id': comuns[0]['regional_id']
+            }
     
     return None
 
@@ -376,19 +463,26 @@ def index():
         if comum_data:
             print(f"  ✅ Comum encontrada: {comum_data['comum'].get('nome')} (ID: {comum_data['comum_id']})")
             config = comum_data['comum'].get('config', {})
+            print(f"  📋 Config da comum: {config}")
             # Converter 'periodo' para 'bimestre' para retrocompatibilidade com template
             if 'periodo' in config and 'bimestre' not in config:
                 config['bimestre'] = config['periodo']
+                print(f"  🔄 Convertido 'periodo' para 'bimestre': {config['bimestre']}")
+        else:
+            print(f"  ⚠️ Nenhuma comum encontrada para o usuário")
     else:
         # ESTRUTURA ANTIGA
         config = db.get("config", {})
     
     # Garantir que existe bimestre mesmo vazio
     if 'bimestre' not in config:
+        print(f"  ⚠️ Usando fallback de período: 2025-10-01 a 2025-11-30")
         config['bimestre'] = {
             'inicio': '2025-10-01',
-            'fim': '2025-12-31'
+            'fim': '2025-11-30'
         }
+    
+    print(f"  ✅ Config final enviada ao template: {config}")
     
     import time
     return render_template("index.html", cfg=config, user=current_user, timestamp=int(time.time()))
@@ -521,17 +615,46 @@ def api_list_comuns():
     db = load_db()
     
     if current_user.is_master:
-        # Master vê todas
         comuns = list_all_comuns(db)
-    elif current_user.is_organista or current_user.is_encarregado_comum:
-        # Organista/Encarregado vê apenas sua comum
-        comum_data = find_comum_by_id(db, current_user.contexto_id)
-        comuns = [comum_data] if comum_data else []
     else:
-        # Admin regional / Encarregado sub-regional
-        comuns = list_all_comuns(db)  # Por enquanto, mostrar todas
+        # Lista somente dentro do escopo do usuário
+        comuns = list_comuns_in_scope(db, current_user)
     
     return jsonify(comuns)
+
+@app.post("/api/contexto/selecionar-escopo")
+@login_required
+def selecionar_contexto_escopo():
+    """Permite Admin Regional / Encarregado Sub selecionar a comum sob seu escopo."""
+    if not (current_user.is_master or current_user.is_admin_regional or current_user.is_encarregado_sub or current_user.is_encarregado_comum):
+        return jsonify({"error": "Sem permissão"}), 403
+
+    data = request.get_json() or {}
+    comum_id = data.get('comum_id')
+    if not comum_id:
+        return jsonify({"error": "comum_id é obrigatório"}), 400
+
+    db = load_db()
+    if not is_comum_in_scope_for_user(db, comum_id, current_user) and not current_user.is_master:
+        return jsonify({"error": "Comum fora do seu escopo"}), 403
+
+    # Persistir em sessão para navegação
+    comum_res = find_comum_by_id(db, comum_id)
+    if not comum_res:
+        return jsonify({"error": "Comum não encontrada"}), 404
+    session['regional_id'] = comum_res['regional_id']
+    session['sub_regional_id'] = comum_res['sub_regional_id']
+    session['comum_id'] = comum_res['comum_id']
+    session.modified = True
+
+    return jsonify({
+        "ok": True,
+        "contexto": {
+            "regional_id": session['regional_id'],
+            "sub_regional_id": session['sub_regional_id'],
+            "comum_id": session['comum_id']
+        }
+    })
 
 @app.get("/api/contexto")
 @login_required
@@ -591,8 +714,11 @@ def add_organista():
             if not comum_id:
                 return jsonify({"error": "Selecione o comum onde a organista atuará"}), 400
         else:
-            # Encarregado: usa o contexto dele
-            comum_id = current_user.contexto_id
+            # Perfis administrativos regionais/sub devem indicar comum pela sessão ou payload
+            comum_id = payload.get('comum_id') or session.get('comum_id') or current_user.contexto_id
+        # Verificar escopo
+        if not can_manage_comum(db, comum_id, current_user):
+            return jsonify({"error": "Sem permissão para gerenciar esta comum"}), 403
         
         comum_data = find_comum_by_id(db, comum_id)
         if not comum_data:
@@ -658,6 +784,9 @@ def update_organista(org_id):
         # Atualizar no banco (precisamos reconstruir o caminho)
         comum_data = find_comum_by_id(db, organista_data['comum_id'])
         if comum_data:
+            # Escopo
+            if not can_manage_comum(db, organista_data['comum_id'], current_user):
+                return jsonify({"error": "Sem permissão para esta comum"}), 403
             regional = db['regionais'][comum_data['regional_id']]
             sub_regional = regional['sub_regionais'][comum_data['sub_regional_id']]
             # Organista já foi atualizado por referência, só precisamos salvar
@@ -698,6 +827,8 @@ def delete_organista(org_id):
         # Remover organista
         comum_data = find_comum_by_id(db, organista_data['comum_id'])
         if comum_data:
+            if not can_manage_comum(db, organista_data['comum_id'], current_user):
+                return jsonify({"error": "Sem permissão para esta comum"}), 403
             regional = db['regionais'][comum_data['regional_id']]
             sub_regional = regional['sub_regionais'][comum_data['sub_regional_id']]
             organistas = sub_regional['comuns'][comum_data['comum_id']]['organistas']
@@ -773,6 +904,9 @@ def add_indisp():
         comum_data = get_comum_for_user(db, current_user)
         if not comum_data:
             return jsonify({"error": "Comum não encontrada."}), 404
+        # Escopo (para admins marcando para terceiros)
+        if current_user.is_admin and not can_manage_comum(db, comum_data['comum_id'], current_user):
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
         
         # Validar período
         d = payload["data"]
@@ -834,6 +968,8 @@ def del_indisp(org_id, data_iso):
         comum_result = get_comum_for_user(db, current_user)
         if not comum_result:
             return jsonify({"error": "Comum não encontrada."}), 404
+        if current_user.is_admin and not can_manage_comum(db, comum_result['comum_id'], current_user):
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
 
         regional = db['regionais'][comum_result['regional_id']]
         sub_regional = regional['sub_regionais'][comum_result['sub_regional_id']]
@@ -938,6 +1074,10 @@ def update_config():
     if not comum_result:
         return jsonify({"error": "Contexto não encontrado"}), 404
     
+    # Verificar escopo
+    if 'regionais' in db:
+        if not can_manage_comum(db, comum_result['comum_id'], current_user):
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
     # Extrair o objeto comum do resultado
     comum_data = comum_result['comum']
     
@@ -1195,6 +1335,8 @@ def publicar_escala():
         if not comum_result:
             return jsonify({"error": "Comum não encontrada."}), 404
         
+        if not can_manage_comum(db, comum_result['comum_id'], current_user):
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
         comum_data = comum_result['comum']
         regional_id = comum_result['regional_id']
         sub_regional_id = comum_result['sub_regional_id']
@@ -1285,6 +1427,8 @@ def deletar_escala():
             comum_data = get_comum_for_user(db, current_user)
             if not comum_data:
                 return jsonify({"success": False, "error": "Comum não encontrada"}), 404
+            if not can_manage_comum(db, comum_data['comum_id'], current_user):
+                return jsonify({"success": False, "error": "Sem permissão para esta comum"}), 403
             
             # Verificar se há escala
             escala_atual = comum_data['comum'].get('escala', [])
@@ -1339,6 +1483,8 @@ def editar_dia_escala(data_iso):
         comum_result = get_comum_for_user(db, current_user)
         if not comum_result:
             return jsonify({"error": "Comum não encontrada."}), 404
+        if not can_manage_comum(db, comum_result['comum_id'], current_user):
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
         
         comum_data = comum_result['comum']
         regional_id = comum_result['regional_id']
@@ -1628,6 +1774,8 @@ def criar_escala_rjm_vazia():
         comum_result = get_comum_for_user(db, current_user)
         if not comum_result:
             return jsonify({"error": "Comum não encontrada."}), 404
+        if not can_manage_comum(db, comum_result['comum_id'], current_user):
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
         
         comum_data = comum_result['comum']
         regional_id = comum_result['regional_id']
@@ -1723,6 +1871,8 @@ def deletar_escala_rjm():
             comum_data = get_comum_for_user(db, current_user)
             if not comum_data:
                 return jsonify({"success": False, "error": "Comum não encontrada"}), 404
+            if not can_manage_comum(db, comum_data['comum_id'], current_user):
+                return jsonify({"success": False, "error": "Sem permissão para esta comum"}), 403
             
             # Verificar se há escala RJM
             escala_rjm_atual = comum_data['comum'].get('escala_rjm', [])
@@ -1776,6 +1926,8 @@ def atualizar_escala_rjm_multiplos():
         comum_result = get_comum_for_user(db, current_user)
         if not comum_result:
             return jsonify({"error": "Comum não encontrada."}), 404
+        if not can_manage_comum(db, comum_result['comum_id'], current_user):
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
         
         comum_data = comum_result['comum']
         regional_id = comum_result['regional_id']
@@ -2196,6 +2348,9 @@ def aprovar_troca(troca_id):
     if not troca.get('alvo_nome'):
         return jsonify({"error": "Troca aceita sem destinatário definido"}), 400
 
+    # Verificar escopo de gestão da comum
+    if not can_manage_comum(db, comum_id, current_user):
+        return jsonify({"error": "Sem permissão para esta comum"}), 403
     # Aplicar na escala apropriada
     if troca['tipo'] == 'culto':
         dia = _dia_escala_by_data(comum_data, troca['data'])
@@ -2250,6 +2405,8 @@ def reprovar_troca(troca_id):
 
     if troca.get('status') not in ['aceita']:
         return jsonify({"error": "Somente trocas 'aceita' podem ser reprovadas"}), 400
+    if not can_manage_comum(db, comum_id, current_user):
+        return jsonify({"error": "Sem permissão para esta comum"}), 403
 
     # Não aplica mudanças na escala/RJM, apenas marca como recusada
     troca['status'] = 'recusada'
@@ -3039,23 +3196,15 @@ def get_comum_config(comum_id):
     comum_data = comum_result['comum']
     print(f"  ✅ Comum encontrado: {comum_data.get('nome', comum_id)}")
     
-    # Verificar permissão: admins, master e encarregado da comum
-    if not getattr(current_user, 'is_admin', False) and current_user.tipo not in ['master', 'encarregado_comum']:
+    # Verificar permissão: master, encarregado da comum e admins regionais/sub no escopo
+    if not (current_user.tipo in ['master', 'encarregado_comum'] or getattr(current_user, 'is_admin', False)):
         print(f"  ❌ Tipo de usuário sem permissão: {current_user.tipo}")
         return jsonify({"error": "Sem permissão"}), 403
     
-    # Para encarregados, verificar se têm permissão para acessar esta comum
-    if current_user.tipo == 'encarregado_comum':
-        # Comparar com chave do dicionário E com ID interno (para compatibilidade)
-        comum_id_dict = comum_result['comum_id']
-        comum_id_interno = comum_data.get('id', '')
-        
-        if current_user.contexto_id != comum_id and current_user.contexto_id != comum_id_dict and current_user.contexto_id != comum_id_interno:
-            print(f"  ❌ Encarregado tentando acessar comum diferente do seu contexto")
-            print(f"     Contexto do usuário: {current_user.contexto_id}")
-            print(f"     Comum solicitado: {comum_id}")
-            print(f"     Comum chave dict: {comum_id_dict}")
-            print(f"     Comum ID interno: {comum_id_interno}")
+    # Verificar escopo por papel
+    if 'regionais' in db:
+        if not is_comum_in_scope_for_user(db, comum_result['comum_id'], current_user) and current_user.tipo != 'master':
+            print(f"  ❌ Comum fora do escopo do usuário")
             return jsonify({"error": "Sem permissão para este comum"}), 403
     
     config = comum_data.get("config", {})
@@ -3074,16 +3223,13 @@ def update_comum_config(comum_id):
     
     comum = comum_result['comum']
     
-    # Verificar permissão: admins, master e encarregado da comum
-    if not getattr(current_user, 'is_admin', False) and current_user.tipo not in ['master', 'encarregado_comum']:
+    # Verificar permissão: master, encarregado da comum e admins regionais/sub no escopo
+    if not (current_user.tipo in ['master', 'encarregado_comum'] or getattr(current_user, 'is_admin', False)):
         return jsonify({"error": "Sem permissão"}), 403
     
-    # Para encarregados, verificar se têm permissão (comparar com múltiplos IDs)
-    if current_user.tipo == 'encarregado_comum':
-        comum_id_dict = comum_result['comum_id']
-        comum_id_interno = comum.get('id', '')
-        
-        if current_user.contexto_id != comum_id and current_user.contexto_id != comum_id_dict and current_user.contexto_id != comum_id_interno:
+    # Verificar escopo geral
+    if 'regionais' in db:
+        if not is_comum_in_scope_for_user(db, comum_result['comum_id'], current_user) and current_user.tipo != 'master':
             return jsonify({"error": "Sem permissão para este comum"}), 403
     
     data = request.get_json()
