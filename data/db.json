@@ -164,27 +164,6 @@
                   "id": "ieda",
                   "autor": "ieda",
                   "status": "confirmada"
-                },
-                {
-                  "data": "2025-10-14",
-                  "motivo": "Indisponível",
-                  "id": "ieda",
-                  "autor": "ieda",
-                  "status": "confirmada"
-                },
-                {
-                  "data": "2025-11-23",
-                  "motivo": "Indisponível",
-                  "id": "ieda",
-                  "autor": "ieda",
-                  "status": "confirmada"
-                },
-                {
-                  "data": "2025-10-12",
-                  "motivo": "Indisponível",
-                  "id": "ieda",
-                  "autor": "ieda",
-                  "status": "confirmada"
                 }
               ],
               "escala": [
@@ -5681,6 +5660,96 @@
       "por": "enc_teste",
       "payload": {
         "troca_id": "8020a6ac-51c1-4fff-aa42-f48d3781e91f"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:03.328308",
+      "acao": "add_indisponibilidade",
+      "por": "teste",
+      "payload": {
+        "data": "2025-12-23",
+        "motivo": "Indisponível",
+        "id": "teste",
+        "autor": "teste",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:04.201488",
+      "acao": "del_indisponibilidade",
+      "por": "teste",
+      "payload": {
+        "id": "teste",
+        "data": "2025-12-23"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:20.969051",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-12"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:21.788726",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-12",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:23.798018",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-23"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:24.330540",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-11-23",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:25.146083",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-11-23"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:26.178895",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-12"
+      }
+    },
+    {
+      "quando": "2025-10-16T15:40:26.835636",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-14"
       }
     }
   ],

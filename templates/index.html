@@ -1504,7 +1504,11 @@
     <div class="container">
         <div class="header">
             <h1>🎹 Rodízio de Organistas</h1>
-            <p id="periodo-info">Carregando período...</p>
+            <p id="periodo-info" {% if not (cfg and cfg.bimestre and cfg.bimestre.inicio and cfg.bimestre.fim) %}style="display:none;"{% endif %}>
+                {% if cfg and cfg.bimestre and cfg.bimestre.inicio and cfg.bimestre.fim %}
+                    Período: {{ cfg.bimestre.inicio | date_br }} até {{ cfg.bimestre.fim | date_br }}
+                {% endif %}
+            </p>
             
             <!-- Seletor de Contexto Hierárquico -->
             <div id="contexto-selector" class="user-selector" style="background: rgba(255,255,255,0.15); margin-bottom: 15px;">
@@ -2793,6 +2797,7 @@
                     const dataInicio = new Date(periodo.inicio + 'T00:00:00').toLocaleDateString('pt-BR');
                     const dataFim = new Date(periodo.fim + 'T00:00:00').toLocaleDateString('pt-BR');
                     periodoInfoEl.textContent = `Período: ${dataInicio} até ${dataFim}`;
+                    periodoInfoEl.style.display = '';
                 } else {
                     // Fallback: se config não tem período, tentar derivar da escala publicada
                     try {
@@ -2804,11 +2809,12 @@
                             const inicio = new Date(ord[0].data + 'T00:00:00').toLocaleDateString('pt-BR');
                             const fim = new Date(ord[ord.length-1].data + 'T00:00:00').toLocaleDateString('pt-BR');
                             periodoInfoEl.textContent = `Período: ${inicio} até ${fim}`;
+                            periodoInfoEl.style.display = '';
                         } else {
-                            periodoInfoEl.textContent = 'Período: Não configurado';
+                            periodoInfoEl.style.display = 'none';
                         }
                     } catch {
-                        periodoInfoEl.textContent = 'Período: Não configurado';
+                        periodoInfoEl.style.display = 'none';
                     }
                 }
                 
