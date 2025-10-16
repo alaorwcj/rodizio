@@ -4,8 +4,10 @@
 # Execute este script APENAS na primeira vez
 
 # CONFIGURAÇÕES - MODIFIQUE AQUI
-DOMAIN="SEU_DOMINIO.COM"  # Substitua pelo seu domínio
-EMAIL="seu.email@exemplo.com"  # Substitua pelo seu email
+# Domínios a proteger (apex e www). Ajuste se necessário.
+DOMAIN="gestaoderodizios.com.br"  # Domínio principal
+DOMAIN_WWW="www.gestaoderodizios.com.br"  # Subdomínio www
+EMAIL="admin@gestaoderodizios.com.br"  # Email para registro do certbot
 
 # Cores para output
 RED='\033[0;31m'
@@ -19,7 +21,7 @@ echo -e "${GREEN}========================================${NC}"
 echo ""
 
 # Verificar se as variáveis foram modificadas
-if [ "$DOMAIN" = "SEU_DOMINIO.COM" ] || [ "$EMAIL" = "seu.email@exemplo.com" ]; then
+if [ -z "$DOMAIN" ] || [ -z "$EMAIL" ]; then
     echo -e "${RED}ERRO: Por favor, edite o script e configure seu domínio e email!${NC}"
     exit 1
 fi
@@ -30,13 +32,15 @@ echo ""
 
 # Criar diretórios necessários
 echo -e "${GREEN}1. Criando diretórios...${NC}"
-mkdir -p certbot/conf certbot/www
+mkdir -p certbot/conf certbot/www "certbot/conf/live/$DOMAIN" "certbot/conf/live/$DOMAIN_WWW"
 echo "   ✓ Diretórios criados"
 
 # Atualizar nginx.conf com o domínio
-echo -e "${GREEN}2. Atualizando configuração do Nginx...${NC}"
-sed -i "s/SEU_DOMINIO.COM/$DOMAIN/g" nginx.conf
-echo "   ✓ nginx.conf atualizado"
+echo -e "${GREEN}2. Validando configuração do Nginx...${NC}"
+if ! grep -q "$DOMAIN" nginx.conf; then
+    echo -e "${YELLOW}Atenção:${NC} nginx.conf não contém $DOMAIN. Certifique-se de ter atualizado o arquivo com seu domínio."
+fi
+echo "   ✓ nginx.conf verificado"
 
 # Baixar parâmetros recomendados do SSL
 echo -e "${GREEN}3. Baixando configurações SSL recomendadas...${NC}"
@@ -49,9 +53,8 @@ echo -e "${GREEN}4. Criando certificado temporário...${NC}"
 openssl req -x509 -nodes -newkey rsa:4096 -days 1 \
     -keyout "certbot/conf/live/$DOMAIN/privkey.pem" \
     -out "certbot/conf/live/$DOMAIN/fullchain.pem" \
-    -subj "/CN=localhost" 2>/dev/null
-mkdir -p "certbot/conf/live/$DOMAIN"
-echo "   ✓ Certificado temporário criado"
+    -subj "/CN=$DOMAIN" 2>/dev/null
+echo "   ✓ Certificado temporário criado para $DOMAIN"
 
 # Iniciar Nginx
 echo -e "${GREEN}5. Iniciando Nginx...${NC}"
@@ -60,9 +63,8 @@ sleep 5
 echo "   ✓ Nginx iniciado"
 
 # Deletar certificado dummy
-echo -e "${GREEN}6. Removendo certificado temporário...${NC}"
-docker-compose exec nginx rm -rf /etc/letsencrypt/live/$DOMAIN
-echo "   ✓ Certificado temporário removido"
+echo -e "${GREEN}6. Preparando para emissão do certificado real...${NC}"
+echo "   ✓ Ambiente pronto"
 
 # Obter certificado real do Let's Encrypt
 echo -e "${GREEN}7. Obtendo certificado Let's Encrypt...${NC}"
@@ -72,7 +74,7 @@ docker-compose run --rm certbot certonly --webroot \
     --email $EMAIL \
     --agree-tos \
     --no-eff-email \
-    -d $DOMAIN
+    -d $DOMAIN -d $DOMAIN_WWW
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}   ✓ Certificado obtido com sucesso!${NC}"
