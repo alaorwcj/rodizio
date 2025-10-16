@@ -219,7 +219,8 @@ def list_all_comuns(db):
                     'regional_nome': regional.get('nome'),
                     'sub_regional_id': sub_regional_id,
                     'sub_regional_nome': sub_regional.get('nome'),
-                    'comum_id': comum_id,
+                        mkdir -p certbot/www/.well-known/acme-challenge
+                    echo ok-acme > certbot/www/.well-known/acme-challenge/health-check                'comum_id': comum_id,
                     'comum_nome': comum.get('nome'),
                     'comum': comum
                 })
@@ -2402,7 +2403,8 @@ def get_contexto_atual():
         },
         "comum": {
             "id": comum_id,
-            "nome": comum_data.get("nome", comum_id.replace("_", " ").title()) if comum_data else "N/A"
+            "nome": comum_data.get("nome", comum_id.replace("_", " ").title()) if comum_data else "N/A",
+            "config": comum_data.get("config", {})
         },
         "nivel": current_user.tipo
     })

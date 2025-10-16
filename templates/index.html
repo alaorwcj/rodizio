@@ -2786,14 +2786,30 @@
                 }
                 
                 // Atualizar período
-                const config = data.comum.config || {};
-                const periodo = config.periodo || config.bimestre || {};
+                const config = data.comum && data.comum.config ? data.comum.config : {};
+                const periodo = (config && (config.periodo || config.bimestre)) || {};
+                const periodoInfoEl = document.getElementById('periodo-info');
                 if (periodo.inicio && periodo.fim) {
                     const dataInicio = new Date(periodo.inicio + 'T00:00:00').toLocaleDateString('pt-BR');
                     const dataFim = new Date(periodo.fim + 'T00:00:00').toLocaleDateString('pt-BR');
-                    document.getElementById('periodo-info').textContent = `Período: ${dataInicio} até ${dataFim}`;
+                    periodoInfoEl.textContent = `Período: ${dataInicio} até ${dataFim}`;
                 } else {
-                    document.getElementById('periodo-info').textContent = 'Período: Não configurado';
+                    // Fallback: se config não tem período, tentar derivar da escala publicada
+                    try {
+                        const escResp = await fetch('/escala/atual');
+                        const escData = await escResp.json();
+                        const esc = escData.escala || [];
+                        if (esc.length > 0) {
+                            const ord = [...esc].sort((a,b)=>compareISODateStrings(a.data,b.data));
+                            const inicio = new Date(ord[0].data + 'T00:00:00').toLocaleDateString('pt-BR');
+                            const fim = new Date(ord[ord.length-1].data + 'T00:00:00').toLocaleDateString('pt-BR');
+                            periodoInfoEl.textContent = `Período: ${inicio} até ${fim}`;
+                        } else {
+                            periodoInfoEl.textContent = 'Período: Não configurado';
+                        }
+                    } catch {
+                        periodoInfoEl.textContent = 'Período: Não configurado';
+                    }
                 }
                 
                 // Se for master, mostrar seletor de contexto
@@ -3050,6 +3066,8 @@
                 carregarDiasDoComum();
             } else if (tabName === 'rjm') {
                 loadEscalaRJM();
+            } else if (tabName === 'escala') {
+                await loadEscalaAtual();
             } else if (tabName === 'hierarquia') {
                 carregarHierarquia();
             } else if (tabName === 'usuarios') {
@@ -4289,10 +4307,13 @@
             
             // Carregar dashboard apropriado
             if (isAdmin) {
-                renderEscalaAtual();
+                await renderEscalaAtual();
             } else {
-                renderMeusDias();
+                await renderMeusDias();
             }
+
+            // Sempre carregar a escala completa no card "Culto Oficial"
+            try { await loadEscalaAtual(); } catch (e) { console.warn('Falha ao carregar escala inicial', e); }
             
             // Carregar filtro de organistas para admin
             if (isAdmin) {
