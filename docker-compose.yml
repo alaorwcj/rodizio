@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: rodizio-organistas
+    user: "1000:1000"  # Usar mesmo UID/GID que appuser no Dockerfile
     expose:
       - "8080"
     volumes:
