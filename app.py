@@ -219,8 +219,7 @@ def list_all_comuns(db):
                     'regional_nome': regional.get('nome'),
                     'sub_regional_id': sub_regional_id,
                     'sub_regional_nome': sub_regional.get('nome'),
-                        mkdir -p certbot/www/.well-known/acme-challenge
-                    echo ok-acme > certbot/www/.well-known/acme-challenge/health-check                'comum_id': comum_id,
+                    'comum_id': comum_id,
                     'comum_nome': comum.get('nome'),
                     'comum': comum
                 })
