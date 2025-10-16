@@ -124,19 +124,29 @@ def load_db():
 
 def save_db(db):
     import tempfile
-    import shutil
     os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
-    # Usar arquivo temporário e mover (atomic write)
-    temp_fd, temp_path = tempfile.mkstemp(dir=os.path.dirname(DATA_PATH), suffix='.json', text=True)
+    # Tentar atomic write primeiro, se falhar usar write direto
     try:
-        with os.fdopen(temp_fd, 'w', encoding='utf-8') as f:
+        # Atomic write: escrever em temp e mover
+        temp_fd, temp_path = tempfile.mkstemp(dir=os.path.dirname(DATA_PATH), suffix='.json', text=True)
+        try:
+            with os.fdopen(temp_fd, 'w', encoding='utf-8') as f:
+                json.dump(db, f, ensure_ascii=False, indent=2)
+            # Tentar mover
+            os.replace(temp_path, DATA_PATH)
+        except Exception as move_err:
+            # Cleanup e tentar método alternativo
+            if os.path.exists(temp_path):
+                try:
+                    os.unlink(temp_path)
+                except:
+                    pass
+            raise move_err
+    except Exception as atomic_err:
+        # Fallback: write direto (sobrescrever arquivo)
+        print(f"⚠️ Atomic write falhou, usando write direto: {atomic_err}")
+        with open(DATA_PATH, "w", encoding="utf-8") as f:
             json.dump(db, f, ensure_ascii=False, indent=2)
-        shutil.move(temp_path, DATA_PATH)
-    except Exception as e:
-        # Cleanup em caso de erro
-        if os.path.exists(temp_path):
-            os.unlink(temp_path)
-        raise e
 
 # ========== FUNÇÕES AUXILIARES PARA NAVEGAÇÃO HIERÁRQUICA ==========
 
