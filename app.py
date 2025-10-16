@@ -485,7 +485,8 @@ def index():
     print(f"  ✅ Config final enviada ao template: {config}")
     
     import time
-    return render_template("index.html", cfg=config, user=current_user, timestamp=int(time.time()))
+    cache_bust = int(time.time())
+    return render_template("index.html", cfg=config, user=current_user, timestamp=cache_bust, v=cache_bust)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

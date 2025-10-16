@@ -1938,7 +1938,7 @@
                     <!-- Comuns -->
                     <div style="margin-bottom: 30px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h3 style="margin: 0;">⛪ Comuns</h3>
+                            <h3 style="margin: 0;">�️ Comuns</h3>
                             <button onclick="mostrarModalNovoComum()" class="btn btn-success">➕ Novo Comum</button>
                         </div>
                         <div id="listaComuns" style="display: grid; gap: 15px;">
@@ -6180,7 +6180,7 @@
                     card.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div style="flex: 1;">
-                                <strong style="font-size: 1.1em;">⛪ ${comum.nome}</strong>
+                                <strong style="font-size: 1.1em;">�️ ${comum.nome}</strong>
                                 <div style="font-size: 0.9em; color: #666;">ID: ${comum.id}</div>
                                 ${configInfo}
                             </div>
@@ -6816,7 +6816,7 @@
                 }
                 
                 // Montar mensagem com informações
-                let mensagem = `🏛️ Comum: ${comumInfo.nome}\n`;
+                let mensagem = `🏘️ Comum: ${comumInfo.nome}\n`;
                 mensagem += `📋 ID: ${comumId}\n\n`;
                 mensagem += `📊 Dados Cadastrados:\n`;
                 mensagem += `👥 Organistas: ${organistas.length}\n`;
@@ -6908,7 +6908,7 @@
                         'master': '🔐 Master',
                         'admin_regional': '🏙️ Admin Regional',
                         'encarregado_sub_regional': '📍 Enc. Sub-Regional',
-                        'encarregado_comum': '⛪ Enc. Comum'
+                        'encarregado_comum': '�️ Enc. Comum'
                     }[user.tipo] || user.tipo;
                     
                     const statusBadge = user.ativo 
