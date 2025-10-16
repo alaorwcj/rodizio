@@ -3215,14 +3215,16 @@ def get_comum_config(comum_id):
     comum_data = comum_result['comum']
     print(f"  ✅ Comum encontrado: {comum_data.get('nome', comum_id)}")
     
-    # Verificar permissão: master, encarregado da comum e admins regionais/sub no escopo
-    if not (current_user.tipo in ['master', 'encarregado_comum'] or getattr(current_user, 'is_admin', False)):
-        print(f"  ❌ Tipo de usuário sem permissão: {current_user.tipo}")
-        return jsonify({"error": "Sem permissão"}), 403
-    
-    # Verificar escopo por papel
+    # Verificar permissão: todos podem VER a config da própria comum (read-only)
+    # Apenas verificar se o usuário tem acesso à comum
     if 'regionais' in db:
-        if not is_comum_in_scope_for_user(db, comum_result['comum_id'], current_user) and current_user.tipo != 'master':
+        # Para organistas, verificar se é da própria comum
+        if current_user.tipo == 'organista':
+            if current_user.contexto_id != comum_result['comum_id']:
+                print(f"  ❌ Organista tentando acessar config de outra comum")
+                return jsonify({"error": "Sem permissão para este comum"}), 403
+        # Para admins, verificar escopo
+        elif current_user.tipo != 'master' and not is_comum_in_scope_for_user(db, comum_result['comum_id'], current_user):
             print(f"  ❌ Comum fora do escopo do usuário")
             return jsonify({"error": "Sem permissão para este comum"}), 403
     
