@@ -6204,6 +6204,48 @@
         "id": "ieda",
         "data": "2025-10-05"
       }
+    },
+    {
+      "quando": "2025-10-16T20:33:57.286142",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-05",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T20:33:58.760663",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-05"
+      }
+    },
+    {
+      "quando": "2025-10-16T20:33:59.829261",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-05",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T20:34:00.728030",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-05"
+      }
     }
   ],
   "escala_rjm": [],
