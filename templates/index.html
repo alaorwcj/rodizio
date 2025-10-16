@@ -3271,10 +3271,41 @@
                 const response = await fetch('/escala/atual');
                 const data = await response.json();
                 const escala = data.escala || [];
+                // Carregar RJM atual
+                let escalaRJM = [];
+                try {
+                    const rjmResp = await fetch('/rjm/atual');
+                    const rjmData = await rjmResp.json();
+                    escalaRJM = rjmData.escala_rjm || [];
+                } catch (e) { console.warn('Não foi possível carregar RJM para Meus Dias'); }
+                // Carregar trocas para considerar "aceitas" como pré-visualização nos meus dias
+                let trocas = [];
+                try {
+                    const trocasResp = await fetch('/trocas');
+                    trocas = await trocasResp.json();
+                } catch (e) { console.warn('Não foi possível carregar trocas para Meus Dias'); }
+                const acceptedCultoForMe = (trocas || []).filter(t => t.status === 'aceita' && t.tipo === 'culto' && t.alvo_id === currentUserId);
+                const acceptedRjmForMe = (trocas || []).filter(t => t.status === 'aceita' && t.tipo === 'rjm' && t.alvo_id === currentUserId);
+                const trocasByData = {};
+                acceptedCultoForMe.forEach(t => {
+                    trocasByData[t.data] = trocasByData[t.data] || {};
+                    if (t.slot === 'meia_hora') trocasByData[t.data].meia_hora = true;
+                    if (t.slot === 'culto') trocasByData[t.data].culto = true;
+                });
+                // Mapa RJM por data (minhas e trocas aceitas)
+                const rjmByData = {};
+                escalaRJM.forEach(i => {
+                    rjmByData[i.data] = rjmByData[i.data] || { my: false, troca: false };
+                    if (i.organista === '{{ user.nome }}') rjmByData[i.data].my = true;
+                });
+                acceptedRjmForMe.forEach(t => {
+                    rjmByData[t.data] = rjmByData[t.data] || { my: false, troca: false };
+                    rjmByData[t.data].troca = true;
+                });
                 
                 const container = document.getElementById('meusDias');
                 
-                if (!escala || escala.length === 0) {
+                if ((!escala || escala.length === 0) && (!escalaRJM || escalaRJM.length === 0)) {
                     container.innerHTML = '<div class="no-escala">Nenhuma escala cadastrada ainda</div>';
                     return;
                 }
@@ -3287,16 +3318,51 @@
                 const nomeUsuario = '{{ user.nome }}';
                 
                 // Filtrar apenas os dias onde o usuário está escalado
-                const meusDias = escala
+                let meusDias = escala
                     .filter(item => {
                         const dataEscala = new Date(item.data);
-                        // Mostrar apenas dias futuros ou de hoje
-                        if (dataEscala < hoje) return false;
-                        
-                        // Verificar se o usuário está escalado (meia_hora ou culto)
-                        return item.meia_hora === nomeUsuario || item.culto === nomeUsuario;
+                        if (dataEscala < hoje) return false; // futuros/apenas hoje
+                        const acceptedSlots = trocasByData[item.data] || {};
+                        const assignedMeia = item.meia_hora === nomeUsuario || !!acceptedSlots.meia_hora;
+                        const assignedCulto = item.culto === nomeUsuario || !!acceptedSlots.culto;
+                        const hasRjm = rjmByData[item.data] && (rjmByData[item.data].my || rjmByData[item.data].troca);
+                        return assignedMeia || assignedCulto || hasRjm;
+                    })
+                    .map(item => {
+                        // Enriquecer com flags de troca por slot
+                        const acceptedSlots = trocasByData[item.data] || {};
+                        const rjmFlags = rjmByData[item.data] || { my: false, troca: false };
+                        return {
+                            ...item,
+                            _troca_meia: !!acceptedSlots.meia_hora && item.meia_hora !== nomeUsuario,
+                            _troca_culto: !!acceptedSlots.culto && item.culto !== nomeUsuario,
+                            _rjm_assigned: rjmFlags.my || rjmFlags.troca,
+                            _troca_rjm: rjmFlags.troca && !rjmFlags.my
+                        };
                     })
                     .sort((a, b) => new Date(a.data) - new Date(b.data));
+
+                // Incluir datas RJM não presentes na escala principal
+                const datasJaListadas = new Set(meusDias.map(i => i.data));
+                escalaRJM.forEach(i => {
+                    const dataItem = new Date(i.data);
+                    if (dataItem < hoje) return;
+                    const rjmFlags = rjmByData[i.data] || { my: false, troca: false };
+                    if ((rjmFlags.my || rjmFlags.troca) && !datasJaListadas.has(i.data)) {
+                        meusDias.push({
+                            data: i.data,
+                            dia_semana: 'Sunday',
+                            meia_hora: null,
+                            culto: null,
+                            _troca_meia: false,
+                            _troca_culto: false,
+                            _rjm_assigned: true,
+                            _troca_rjm: rjmFlags.troca && !rjmFlags.my
+                        });
+                        datasJaListadas.add(i.data);
+                    }
+                });
+                meusDias.sort((a, b) => new Date(a.data) - new Date(b.data));
                 
                 if (meusDias.length === 0) {
                     container.innerHTML = '<div class="no-escala">Você não está escalado(a) em nenhuma data próxima</div>';
@@ -3337,13 +3403,15 @@
                     const emoji = diaSemana === 'Domingo' ? '🙏' : '📖';
                     
                     // Verificar em qual serviço o organista está
-                    const isMeiaHora = item.meia_hora === nomeUsuario;
-                    const isCulto = item.culto === nomeUsuario;
+                    const isMeiaHora = item.meia_hora === nomeUsuario || item._troca_meia;
+                    const isCulto = item.culto === nomeUsuario || item._troca_culto;
+                    const isRJM = !!item._rjm_assigned;
                     
                     // Preparar lista de serviços para passar para a função
                     const servicos = [];
                     if (isMeiaHora) servicos.push('meia_hora');
                     if (isCulto) servicos.push('culto');
+                    if (isRJM) servicos.push('rjm');
                     const servicosStr = JSON.stringify(servicos).replace(/"/g, '&quot;');
                     
                     return `
@@ -3362,7 +3430,16 @@
                                     <div class="escala-servico-icon">⏰</div>
                                     <div class="escala-servico-text">
                                         <div class="escala-tipo">Meia-hora</div>
-                                        <div class="escala-organista" style="color: #10b981; font-weight: bold;">✓ Você</div>
+                                        <div class="escala-organista" style="color: #10b981; font-weight: bold;">✓ Você ${item._troca_meia ? '<span class="info-badge" style="background:#fde68a;color:#a16207;margin-left:8px;">Troca</span>' : ''}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${isRJM ? `
+                                <div class="escala-servico" style="background: rgba(59, 130, 246, 0.15); border-left-color: #3b82f6; border-left-width: 4px;">
+                                    <div class="escala-servico-icon">👧</div>
+                                    <div class="escala-servico-text">
+                                        <div class="escala-tipo">RJM</div>
+                                        <div class="escala-organista" style="color: #2563eb; font-weight: bold;">✓ Você ${item._troca_rjm ? '<span class="info-badge" style="background:#fde68a;color:#a16207;margin-left:8px;">Troca</span>' : ''}</div>
                                     </div>
                                 </div>
                                 ` : ''}
@@ -3372,7 +3449,7 @@
                                     <div class="escala-servico-icon">🎹</div>
                                     <div class="escala-servico-text">
                                         <div class="escala-tipo">Culto</div>
-                                        <div class="escala-organista" style="color: #10b981; font-weight: bold;">✓ Você</div>
+                                        <div class="escala-organista" style="color: #10b981; font-weight: bold;">✓ Você ${item._troca_culto ? '<span class="info-badge" style="background:#fde68a;color:#a16207;margin-left:8px;">Troca</span>' : ''}</div>
                                     </div>
                                 </div>
                                 ` : ''}
@@ -4863,6 +4940,11 @@
                             horaFim = '21:00';
                         }
                         titulo = `Culto - ${nomeDia}`;
+                    } else if (servico === 'rjm') {
+                        // RJM ocorre aos domingos 10:00 - 11:30
+                        horaInicio = '10:00';
+                        horaFim = '11:30';
+                        titulo = 'RJM - Domingo';
                     }
                     
                     eventos.push({ titulo, horaInicio, horaFim });
@@ -5692,19 +5774,30 @@
             if (!confirm('Aceitar esta solicitação?')) return;
             const resp = await fetch(`/trocas/${id}/aceitar`, { method: 'POST' });
             const data = await resp.json();
-            if (resp.ok) { await loadTrocas(); } else { alert(data.error || 'Falha ao aceitar'); }
+            if (resp.ok) {
+                await loadTrocas();
+                try { await renderMeusDias(); } catch {}
+                try { await loadTrocasResumoDashboard(); } catch {}
+            } else { alert(data.error || 'Falha ao aceitar'); }
         }
         async function recusarTroca(id) {
             if (!confirm('Recusar esta solicitação?')) return;
             const resp = await fetch(`/trocas/${id}/recusar`, { method: 'POST' });
             const data = await resp.json();
-            if (resp.ok) { await loadTrocas(); } else { alert(data.error || 'Falha ao recusar'); }
+            if (resp.ok) {
+                await loadTrocas();
+                try { await loadTrocasResumoDashboard(); } catch {}
+            } else { alert(data.error || 'Falha ao recusar'); }
         }
         async function cancelarTroca(id) {
             if (!confirm('Cancelar esta solicitação?')) return;
             const resp = await fetch(`/trocas/${id}/cancelar`, { method: 'POST' });
             const data = await resp.json();
-            if (resp.ok) { await loadTrocas(); } else { alert(data.error || 'Falha ao cancelar'); }
+            if (resp.ok) {
+                await loadTrocas();
+                try { await renderMeusDias(); } catch {}
+                try { await loadTrocasResumoDashboard(); } catch {}
+            } else { alert(data.error || 'Falha ao cancelar'); }
         }
         async function aprovarTroca(id) {
             if (!confirm('Aprovar e aplicar a troca na escala?')) return;

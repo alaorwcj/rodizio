@@ -1090,8 +1090,8 @@
                 {
                   "id": "52feb5cb-254d-45fd-9ada-e064f6a260c3",
                   "criado_em": "2025-10-16T05:25:44.159159",
-                  "atualizado_em": "2025-10-16T05:26:22.351057",
-                  "status": "aceita",
+                  "atualizado_em": "2025-10-16T05:50:06.262254",
+                  "status": "cancelada",
                   "modalidade": "substituicao",
                   "tipo": "culto",
                   "data": "2025-10-07",
@@ -1111,6 +1111,11 @@
                       "quando": "2025-10-16T05:26:22.351074",
                       "acao": "aceita",
                       "por": "milena"
+                    },
+                    {
+                      "quando": "2025-10-16T05:50:06.262274",
+                      "acao": "cancelada",
+                      "por": "ieda"
                     }
                   ]
                 }
