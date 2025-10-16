@@ -3089,6 +3089,28 @@
                 }, 300);
             }, 3000);
         }
+
+        // Utilitários de data (evitar parsing UTC de 'YYYY-MM-DD')
+        function parseISODateLocal(isoDate) {
+            // Espera 'YYYY-MM-DD'; retorna Date no horário local sem deslocamento
+            if (!isoDate || typeof isoDate !== 'string') return null;
+            const parts = isoDate.split('-');
+            if (parts.length !== 3) return new Date(isoDate);
+            const y = Number(parts[0]);
+            const m = Number(parts[1]);
+            const d = Number(parts[2]);
+            return new Date(y, m - 1, d, 0, 0, 0, 0);
+        }
+        function toISODateLocal(d) {
+            // Converte Date -> 'YYYY-MM-DD' no calendário local
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const da = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${da}`;
+        }
+        function compareISODateStrings(a, b) {
+            return parseISODateLocal(a) - parseISODateLocal(b);
+        }
         
         // Carregar organistas
         async function loadOrganistas() {
@@ -3171,10 +3193,10 @@
                 // Filtrar e ordenar: pegar próximos 20 eventos a partir de hoje
                 const proximasEscalas = escala
                     .filter(item => {
-                        const dataEscala = new Date(item.data);
+                        const dataEscala = parseISODateLocal(item.data);
                         return dataEscala >= hoje;
                     })
-                    .sort((a, b) => new Date(a.data) - new Date(b.data))
+                    .sort((a, b) => compareISODateStrings(a.data, b.data))
                     .slice(0, 20);
                 
                 if (proximasEscalas.length === 0) {
@@ -3185,8 +3207,8 @@
                 
                 // Renderizar as próximas escalas
                 container.innerHTML = proximasEscalas.map(item => {
-                    const data = new Date(item.data);
-                    const dataEscala = new Date(item.data);
+                    const data = parseISODateLocal(item.data);
+                    const dataEscala = parseISODateLocal(item.data);
                     const passado = dataEscala < hoje;
                     
                     const dia = data.getDate();
@@ -3219,6 +3241,9 @@
                     const tipoDia = tipoDiaMap[item.dia_semana] || '';
                     const emoji = diaSemana === 'Domingo' ? '🙏' : '📖';
                     
+                    const isTrocaMeia = item._proveniencia && item._proveniencia.meia_hora === 'troca';
+                    const isTrocaCulto = item._proveniencia && item._proveniencia.culto === 'troca';
+                    const badgeTroca = '<span class="info-badge" style="background:#fde68a;color:#a16207;margin-left:8px;">Troca</span>';
                     return `
                         <div class="escala-item ${tipoDia} ${passado ? 'passado' : ''}">
                             <div class="escala-date-box">
@@ -3235,7 +3260,7 @@
                                     <div class="escala-servico-text">
                                         <div class="escala-tipo">Meia-hora</div>
                                         <div class="escala-organista ${!item.meia_hora ? 'escala-vazio' : ''}">
-                                            ${item.meia_hora || 'Não definido'}
+                                            ${item.meia_hora || 'Não definido'} ${isTrocaMeia ? badgeTroca : ''}
                                         </div>
                                     </div>
                                 </div>
@@ -3244,7 +3269,7 @@
                                     <div class="escala-servico-text">
                                         <div class="escala-tipo">Culto</div>
                                         <div class="escala-organista ${!item.culto ? 'escala-vazio' : ''}">
-                                            ${item.culto || 'Não definido'}
+                                            ${item.culto || 'Não definido'} ${isTrocaCulto ? badgeTroca : ''}
                                         </div>
                                     </div>
                                 </div>
@@ -3284,8 +3309,8 @@
                     const trocasResp = await fetch('/trocas');
                     trocas = await trocasResp.json();
                 } catch (e) { console.warn('Não foi possível carregar trocas para Meus Dias'); }
-                const acceptedCultoForMe = (trocas || []).filter(t => t.status === 'aceita' && t.tipo === 'culto' && t.alvo_id === currentUserId);
-                const acceptedRjmForMe = (trocas || []).filter(t => t.status === 'aceita' && t.tipo === 'rjm' && t.alvo_id === currentUserId);
+                const acceptedCultoForMe = (trocas || []).filter(t => (t.status === 'aceita' || t.status === 'aprovada') && t.tipo === 'culto' && t.alvo_id === currentUserId);
+                const acceptedRjmForMe = (trocas || []).filter(t => (t.status === 'aceita' || t.status === 'aprovada') && t.tipo === 'rjm' && t.alvo_id === currentUserId);
                 const trocasByData = {};
                 acceptedCultoForMe.forEach(t => {
                     trocasByData[t.data] = trocasByData[t.data] || {};
@@ -3320,7 +3345,7 @@
                 // Filtrar apenas os dias onde o usuário está escalado
                 let meusDias = escala
                     .filter(item => {
-                        const dataEscala = new Date(item.data);
+                        const dataEscala = parseISODateLocal(item.data);
                         if (dataEscala < hoje) return false; // futuros/apenas hoje
                         const acceptedSlots = trocasByData[item.data] || {};
                         const assignedMeia = item.meia_hora === nomeUsuario || !!acceptedSlots.meia_hora;
@@ -3340,12 +3365,12 @@
                             _troca_rjm: rjmFlags.troca && !rjmFlags.my
                         };
                     })
-                    .sort((a, b) => new Date(a.data) - new Date(b.data));
+                    .sort((a, b) => compareISODateStrings(a.data, b.data));
 
                 // Incluir datas RJM não presentes na escala principal
                 const datasJaListadas = new Set(meusDias.map(i => i.data));
                 escalaRJM.forEach(i => {
-                    const dataItem = new Date(i.data);
+                    const dataItem = parseISODateLocal(i.data);
                     if (dataItem < hoje) return;
                     const rjmFlags = rjmByData[i.data] || { my: false, troca: false };
                     if ((rjmFlags.my || rjmFlags.troca) && !datasJaListadas.has(i.data)) {
@@ -3362,7 +3387,7 @@
                         datasJaListadas.add(i.data);
                     }
                 });
-                meusDias.sort((a, b) => new Date(a.data) - new Date(b.data));
+                meusDias.sort((a, b) => compareISODateStrings(a.data, b.data));
                 
                 if (meusDias.length === 0) {
                     container.innerHTML = '<div class="no-escala">Você não está escalado(a) em nenhuma data próxima</div>';
@@ -3371,13 +3396,13 @@
                 
                 // Renderizar os dias do organista
                 container.innerHTML = meusDias.map(item => {
-                    const data = new Date(item.data);
+                    const data = parseISODateLocal(item.data);
                     const dia = data.getDate();
                     const nomeMes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
                                     'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'][data.getMonth()];
                     const ano = data.getFullYear();
                     
-                    // Mapear corretamente todos os dias da semana
+                    // Calcular o dia da semana pela data (evita inconsistência armazenada)
                     const diasSemanaMap = {
                         'Sunday': 'Domingo',
                         'Monday': 'Segunda',
@@ -3387,7 +3412,9 @@
                         'Friday': 'Sexta',
                         'Saturday': 'Sábado'
                     };
-                    const diaSemana = diasSemanaMap[item.dia_semana] || item.dia_semana;
+                    const diasIngles = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    const englishDay = diasIngles[data.getDay()];
+                    const diaSemana = diasSemanaMap[englishDay] || englishDay;
                     
                     // Map day of week to CSS class
                     const tipoDiaMap = {
@@ -3399,7 +3426,7 @@
                         'Friday': 'sexta',
                         'Saturday': 'sabado'
                     };
-                    const tipoDia = tipoDiaMap[item.dia_semana] || '';
+                    const tipoDia = tipoDiaMap[englishDay] || '';
                     const emoji = diaSemana === 'Domingo' ? '🙏' : '📖';
                     
                     // Verificar em qual serviço o organista está
@@ -3454,7 +3481,7 @@
                                 </div>
                                 ` : ''}
                                 
-                                <button onclick="adicionarAgenda('${item.data}', '${item.dia_semana}', ${servicosStr})" 
+                <button onclick="adicionarAgenda('${item.data}', '${englishDay}', ${servicosStr})" 
                                         class="btn-adicionar-agenda"
                                         style="margin-top: 10px; width: 100%; padding: 8px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9em; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                     📅 Adicionar à Agenda
@@ -4297,9 +4324,25 @@
                     throw new Error('Não foi possível carregar a lista de organistas');
                 }
                 
-                // Buscar configuração do período
-                const configResponse = await fetch('/admin/config');
-                const config = await configResponse.json();
+                // Buscar configuração ESPECÍFICA DA COMUM (dias de culto e período)
+                await carregarContextoAtual();
+                let config;
+                try {
+                    if (!contextoAtual?.comum?.id) {
+                        throw new Error('Comum não identificada no contexto atual.');
+                    }
+                    console.log(`📡 Buscando config da comum: /api/comuns/${contextoAtual.comum.id}/config`);
+                    const configResp = await fetch(`/api/comuns/${contextoAtual.comum.id}/config`);
+                    if (!configResp.ok) {
+                        throw new Error(`Falha ao obter config da comum (${configResp.status})`);
+                    }
+                    config = await configResp.json();
+                } catch (e) {
+                    console.warn('⚠️ Falha ao obter config da comum, fazendo fallback para /admin/config:', e?.message || e);
+                    const configResponse = await fetch('/admin/config');
+                    if (!configResponse.ok) throw new Error('Não foi possível obter configurações');
+                    config = await configResponse.json();
+                }
                 
                 console.log('📅 Config recebida:', config);
                 
@@ -4328,7 +4371,11 @@
                 const diasSemanaIngles = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                 
                 // Pegar dias de culto da config (ou usar padrão)
-                const diasCulto = config.dias_culto || ['Domingo', 'Terça'];
+                const diasCulto = Array.isArray(config.dias_culto) ? config.dias_culto : [];
+                if (diasCulto.length === 0) {
+                    console.warn('⚠️ dias_culto não configurado para a comum. Usando fallback [Domingo, Terça].');
+                    diasCulto.push('Domingo', 'Terça');
+                }
                 const diasCultoNumeros = diasCulto.map(dia => diasSemanaMap[dia]).filter(n => n !== undefined);
                 
                 console.log('📅 Dias de culto configurados:', diasCulto);
@@ -4345,7 +4392,7 @@
                     // Verificar se é um dia de culto
                     if (diasCultoNumeros.includes(dayOfWeek)) {
                         escala.push({
-                            data: current.toISOString().split('T')[0],
+                            data: toISODateLocal(current),
                             dia_semana: diasSemanaIngles[dayOfWeek],  // CORRIGIDO: usar nome em inglês
                             meia_hora: null,
                             culto: null
@@ -4447,7 +4494,7 @@
                 ].filter(Boolean)))];
                 
                 // Agrupar por mês
-                const datas = escala.map(item => new Date(item.data));
+                const datas = escala.map(item => parseISODateLocal(item.data));
                 const dataInicio = new Date(Math.min(...datas));
                 const dataFim = new Date(Math.max(...datas));
                 
@@ -4566,7 +4613,7 @@
             console.log('📊 DEBUG: Primeiros 3 itens da escala:', escala.slice(0, 3));
 
             escala.forEach(item => {
-                const date = new Date(item.data + 'T00:00:00');
+                const date = parseISODateLocal(item.data);
                 const mesAno = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
                 
                 if (!escalaPorMes[mesAno]) {
@@ -4902,7 +4949,7 @@
         }
 
         function formatDateBR(dateString) {
-            const date = new Date(dateString + 'T00:00:00');
+            const date = parseISODateLocal(dateString);
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const year = date.getFullYear();
@@ -4913,7 +4960,7 @@
         function adicionarAgenda(data, diaSemana, servicos) {
             try {
                 // Parse da data
-                const dataEvento = new Date(data);
+                const dataEvento = parseISODateLocal(data);
                 
                 // Definir horários baseado no dia da semana e serviço
                 let eventos = [];
@@ -5179,7 +5226,7 @@
                     .filter(Boolean))];
                 
                 // Agrupar por mês
-                const datas = escalaRJM.map(item => new Date(item.data));
+                const datas = escalaRJM.map(item => parseISODateLocal(item.data));
                 const dataInicio = new Date(Math.min(...datas));
                 const dataFim = new Date(Math.max(...datas));
                 
@@ -5286,7 +5333,7 @@
                 html += '</tr></thead><tbody>';
                 
                 escalaRJM.forEach(item => {
-                    const data = new Date(item.data);
+                    const data = parseISODateLocal(item.data);
                     const dataFormatada = data.toLocaleDateString('pt-BR');
                     const diaSemana = 'Domingo';
                     
@@ -5454,7 +5501,7 @@
                     mensagem += `──────────────\n`;
                     
                     meses[mesAno].forEach(item => {
-                        const data = new Date(item.data);
+                        const data = parseISODateLocal(item.data);
                         const dia = data.getDate().toString().padStart(2, '0');
                         const mes = (data.getMonth() + 1).toString().padStart(2, '0');
                         
@@ -5749,7 +5796,10 @@
                     buttons.push(`<button class="btn" style="background:#ef4444;color:#fff" onclick="recusarTroca('${t.id}')">Recusar</button>`);
                 }
             } else if (t.status === 'aceita') {
-                if (isAdmin) buttons.push(`<button class="btn btn-success" onclick="aprovarTroca('${t.id}')">Aprovar</button>`);
+                if (isAdmin) {
+                    buttons.push(`<button class="btn btn-success" onclick="aprovarTroca('${t.id}')">Aprovar</button>`);
+                    buttons.push(`<button class="btn" style="background:#ef4444;color:#fff" onclick="reprovarTroca('${t.id}')">Não aprovar</button>`);
+                }
                 if (isSolic || isAdmin) buttons.push(`<button class="btn btn-danger" onclick="cancelarTroca('${t.id}')">Cancelar</button>`);
             }
             return buttons.join(' ');
@@ -5811,6 +5861,18 @@
                 showNotification('✅ Troca aprovada e aplicada!', 'success');
             } else {
                 alert(data.error || 'Falha ao aprovar');
+            }
+        }
+
+        async function reprovarTroca(id) {
+            if (!confirm('Reprovar esta troca? Ela será marcada como recusada e não será aplicada.')) return;
+            const resp = await fetch(`/trocas/${id}/reprovar`, { method: 'POST' });
+            const data = await resp.json();
+            if (resp.ok) {
+                await loadTrocas();
+                showNotification('ℹ️ Troca reprovada (não aplicada).', 'info');
+            } else {
+                alert(data.error || 'Falha ao reprovar');
             }
         }
         

@@ -1148,22 +1148,7 @@ def gerar_alocacao_terca(data, organistas, indisponibilidades, contador_terca, l
         }
 
 def validar_regras_especiais(organista, data, tipo):
-    """Valida regras especiais da organista para a data"""
-    regras = organista.get("regras_especiais", {})
-    dia = data.day
-    mes = data.month
-    
-    # Ieda: domingos ímpares em outubro, pares em novembro
-    if "domingo_outubro_impares" in regras and regras["domingo_outubro_impares"]:
-        if mes == 10 and dia % 2 == 0:  # Par em outubro
-            return False
-    
-    if "domingo_novembro_pares" in regras and regras["domingo_novembro_pares"]:
-        if mes == 11 and dia % 2 != 0:  # Ímpar em novembro
-            return False
-    
-    # Adicione mais regras conforme necessário
-    
+    """Regra especial desativada: elegibilidade depende apenas de indisponibilidade e tipos/dias permitidos."""
     return True
 
 # ROTA DE GERAÇÃO AUTOMÁTICA REMOVIDA - Sistema agora é 100% manual
@@ -1412,10 +1397,20 @@ def editar_dia_escala(data_iso):
 
 def calcular_estatisticas(escala, organistas):
     """Calcula estatísticas da escala"""
+    # Normalizar nomes de dias para português para contagem
+    def dia_normalizado(d):
+        m = {
+            'Sunday': 'Domingo', 'Monday': 'Segunda', 'Tuesday': 'Terça', 'Wednesday': 'Quarta',
+            'Thursday': 'Quinta', 'Friday': 'Sexta', 'Saturday': 'Sábado',
+            'Domingo': 'Domingo', 'Segunda': 'Segunda', 'Terça': 'Terça', 'Quarta': 'Quarta',
+            'Quinta': 'Quinta', 'Sexta': 'Sexta', 'Sábado': 'Sábado'
+        }
+        return m.get(d, d)
+
     stats = {
         "total_dias": len(escala),
-        "domingos": sum(1 for d in escala if d["dia_semana"] == "Domingo"),
-        "tercas": sum(1 for d in escala if d["dia_semana"] == "Terça"),
+        "domingos": sum(1 for d in escala if dia_normalizado(d.get("dia_semana")) == "Domingo"),
+        "tercas": sum(1 for d in escala if dia_normalizado(d.get("dia_semana")) == "Terça"),
         "por_organista": {}
     }
     
@@ -1431,7 +1426,8 @@ def calcular_estatisticas(escala, organistas):
         }
     
     for dia in escala:
-        if dia["dia_semana"] == "Domingo":
+        dia_semana_pt = dia_normalizado(dia.get("dia_semana"))
+        if dia_semana_pt == "Domingo":
             if dia.get("meia_hora") and dia["meia_hora"] in stats["por_organista"]:
                 stats["por_organista"][dia["meia_hora"]]["meia_hora"] += 1
                 stats["por_organista"][dia["meia_hora"]]["total"] += 1
@@ -1440,7 +1436,7 @@ def calcular_estatisticas(escala, organistas):
                 stats["por_organista"][dia["culto"]]["culto"] += 1
                 stats["por_organista"][dia["culto"]]["total"] += 1
         
-        elif dia["dia_semana"] == "Terça":
+        elif dia_semana_pt == "Terça":
             if dia.get("unica") and dia["unica"] in stats["por_organista"]:
                 stats["por_organista"][dia["unica"]]["terca"] += 1
                 stats["por_organista"][dia["unica"]]["total"] += 1
@@ -2206,11 +2202,17 @@ def aprovar_troca(troca_id):
         if troca['slot'] not in ['meia_hora', 'culto']:
             return jsonify({"error": "Slot inválido"}), 400
         dia[troca['slot']] = troca['alvo_nome']
+        # Sinalizar que esta alocação veio de uma troca (para UI)
+        proveniencia = dia.setdefault('_proveniencia', {})
+        proveniencia[troca['slot']] = 'troca'
     else:
         item = _rjm_item_by_data(comum_data, troca['data'])
         if not item:
             return jsonify({"error": "Data não encontrada na RJM"}), 404
         item['organista'] = troca['alvo_nome']
+        # Sinalizar proveniência na RJM
+        proveniencia = item.setdefault('_proveniencia', {})
+        proveniencia['unica'] = 'troca'
 
     troca['status'] = 'aprovada'
     troca['atualizado_em'] = datetime.utcnow().isoformat()
@@ -2221,6 +2223,42 @@ def aprovar_troca(troca_id):
     db.setdefault('logs', []).append({
         'quando': datetime.utcnow().isoformat(),
         'acao': 'aprovar_troca',
+        'por': current_user.id,
+        'payload': {'troca_id': troca_id}
+    })
+    save_db(db)
+    return jsonify({"ok": True, "troca": troca})
+
+@app.post("/trocas/<troca_id>/reprovar")
+@login_required
+def reprovar_troca(troca_id):
+    """Admin/Encarregado reprova a troca (não aplica na escala) e marca como recusada"""
+    if not current_user.is_admin:
+        return jsonify({"error": "Apenas administrador pode reprovar"}), 403
+    db = load_db()
+    if 'regionais' not in db:
+        return jsonify({"error": "Recurso indisponível na estrutura antiga"}), 400
+    comum_data, regional_id, sub_regional_id, comum_id = _get_comum_context_for_current_user(db)
+    if not comum_data:
+        return jsonify({"error": "Comum não encontrada"}), 404
+    trocas = _ensure_trocas_array(comum_data)
+    troca = _find_troca(trocas, troca_id)
+    if not troca:
+        return jsonify({"error": "Troca não encontrada"}), 404
+
+    if troca.get('status') not in ['aceita']:
+        return jsonify({"error": "Somente trocas 'aceita' podem ser reprovadas"}), 400
+
+    # Não aplica mudanças na escala/RJM, apenas marca como recusada
+    troca['status'] = 'recusada'
+    troca['atualizado_em'] = datetime.utcnow().isoformat()
+    _add_historico(troca, 'reprovada', current_user.id)
+
+    # Persistir e logar
+    db['regionais'][regional_id]['sub_regionais'][sub_regional_id]['comuns'][comum_id] = comum_data
+    db.setdefault('logs', []).append({
+        'quando': datetime.utcnow().isoformat(),
+        'acao': 'reprovar_troca',
         'por': current_user.id,
         'payload': {'troca_id': troca_id}
     })
@@ -2997,8 +3035,8 @@ def get_comum_config(comum_id):
     comum_data = comum_result['comum']
     print(f"  ✅ Comum encontrado: {comum_data.get('nome', comum_id)}")
     
-    # Verificar permissão
-    if current_user.tipo not in ['master', 'encarregado_comum']:
+    # Verificar permissão: admins, master e encarregado da comum
+    if not getattr(current_user, 'is_admin', False) and current_user.tipo not in ['master', 'encarregado_comum']:
         print(f"  ❌ Tipo de usuário sem permissão: {current_user.tipo}")
         return jsonify({"error": "Sem permissão"}), 403
     
@@ -3032,8 +3070,8 @@ def update_comum_config(comum_id):
     
     comum = comum_result['comum']
     
-    # Verificar permissão
-    if current_user.tipo not in ['master', 'encarregado_comum']:
+    # Verificar permissão: admins, master e encarregado da comum
+    if not getattr(current_user, 'is_admin', False) and current_user.tipo not in ['master', 'encarregado_comum']:
         return jsonify({"error": "Sem permissão"}), 403
     
     # Para encarregados, verificar se têm permissão (comparar com múltiplos IDs)
