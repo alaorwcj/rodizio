@@ -888,12 +888,16 @@ def list_indisp():
 @login_required
 def add_indisp():
     """Adiciona indisponibilidade - com suporte para estrutura antiga e nova"""
+    print(f"\n📅 [ADD_INDISP] Adicionando indisponibilidade")
+    print(f"  Usuário: {current_user.id} (is_admin: {current_user.is_admin})")
     db = load_db()
     payload = request.get_json()
+    print(f"  Payload recebido: {payload}")
     
     # Organista só pode marcar para si mesmo, admin pode marcar para qualquer um
     if not current_user.is_admin:
         payload["id"] = current_user.id
+        print(f"  Organista não-admin: forçando ID = {current_user.id}")
     elif "id" not in payload:
         return jsonify({"error": "ID da organista é obrigatório para administrador."}), 400
     
@@ -903,10 +907,13 @@ def add_indisp():
     # NOVA ESTRUTURA
     if 'regionais' in db:
         comum_data = get_comum_for_user(db, current_user)
+        print(f"  Comum encontrada: {comum_data['comum_id'] if comum_data else 'NENHUMA'}")
         if not comum_data:
+            print(f"  ❌ Erro: Comum não encontrada para usuário {current_user.id}")
             return jsonify({"error": "Comum não encontrada."}), 404
         # Escopo (para admins marcando para terceiros)
         if current_user.is_admin and not can_manage_comum(db, comum_data['comum_id'], current_user):
+            print(f"  ❌ Erro: Sem permissão para comum {comum_data['comum_id']}")
             return jsonify({"error": "Sem permissão para esta comum"}), 403
         
         # Validar período
