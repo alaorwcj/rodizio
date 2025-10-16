@@ -5910,6 +5910,27 @@
         "id": "ieda",
         "data": "2025-10-14"
       }
+    },
+    {
+      "quando": "2025-10-16T20:10:18.223934",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-05",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T20:10:19.115838",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-05"
+      }
     }
   ],
   "escala_rjm": [],
