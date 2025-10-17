@@ -6,3 +6,9 @@ openpyxl==3.1.2
 reportlab==4.0.7
 gunicorn==21.2.0
 python-dateutil==2.8.2
+
+# CSRF protection (planned)
+Flask-WTF==1.2.1
+
+# File locking for concurrent access to JSON DB
+portalocker==2.8.2

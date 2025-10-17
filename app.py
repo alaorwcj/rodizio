@@ -3,6 +3,8 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date, datetime, timedelta
 from collections import defaultdict
+from functools import wraps
+import csv
 import json, os
 import calendar
 from io import BytesIO
@@ -13,10 +15,34 @@ from reportlab.lib.units import cm
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.enums import TA_CENTER
 import uuid
+import portalocker
+from audit_repository import AuditRepo
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+app.secret_key = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
+# Em produção, SECRET_KEY é obrigatório
+if os.environ.get('FLASK_ENV') == 'production' and not os.environ.get('SECRET_KEY'):
+    raise RuntimeError('SECRET_KEY not set in production environment')
+
+# CSRF: desabilitado por enquanto (SeaSurf incompatível com Flask 3). Implementaremos com Flask-WTF em etapa futura.
+
 DATA_PATH = "data/db.json"
+LOCK_PATH = DATA_PATH + ".lock"
+
+# Persistência: json (padrão) ou sqlite
+PERSISTENCE = os.environ.get('PERSISTENCE', 'json').lower()
+
+def _audit_repo():
+    return AuditRepo(db_path=os.environ.get('SQLITE_PATH', 'data/rodizio.db'))
+
+def _audit_scope(user):
+    if getattr(user, 'is_master', False):
+        return {}
+    if getattr(user, 'is_admin_regional', False):
+        return {"regional_id": getattr(user, 'contexto_id', None)}
+    if getattr(user, 'is_encarregado_sub', False):
+        return {"sub_regional_id": getattr(user, 'contexto_id', None)}
+    return {"deny": True}
 
 # Configurar Flask-Login
 login_manager = LoginManager()
@@ -53,7 +79,7 @@ class User(UserMixin):
     def __init__(self, id, nome, tipo='organista', nivel='comum', contexto_id=None, is_admin=False):
         self.id = id
         self.nome = nome
-        self.tipo = tipo  # master, admin_regional, encarregado_sub_regional, encarregado_comum, organista
+        self.tipo = tipo  # master, admin_regional, encarregado_sub_regional, encarregado_comum, organista, visualizador
         self.nivel = nivel  # sistema, regional, sub_regional, comum
         self.contexto_id = contexto_id  # ID da regional/sub-regional/comum
         
@@ -63,10 +89,24 @@ class User(UserMixin):
         self.is_encarregado_sub = (tipo == 'encarregado_sub_regional')
         self.is_encarregado_comum = (tipo == 'encarregado_comum')
         self.is_organista = (tipo == 'organista')
+        self.is_visualizador = (tipo == 'visualizador')  # Novo: read-only
         
         # Compatibilidade com código antigo
         self.is_admin = is_admin or self.is_master or self.is_admin_regional or self.is_encarregado_sub or self.is_encarregado_comum
         self.is_coordenador = self.is_admin
+        
+        # Visualizador pode ver tudo mas não alterar
+        self.can_edit = not self.is_visualizador and not self.is_organista
+
+# Decorator para proteger endpoints de escrita
+def require_edit_permission(f):
+    """Decorator que bloqueia visualizadores de endpoints de escrita"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_visualizador:
+            return jsonify({"error": "Visualizadores não têm permissão para editar."}), 403
+        return f(*args, **kwargs)
+    return decorated_function
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -115,38 +155,177 @@ def load_db():
         return {"organistas":[], "indisponibilidades":[], "escala":[], "escala_rjm":[], "logs":[], 
                 "config":{"bimestre":{"inicio":"2025-10-01","fim":"2025-11-30"},
                           "fechamento_publicacao_dias":3}}
-    with open(DATA_PATH, "r", encoding="utf-8") as f:
-        db = json.load(f)
-        # Garantir que escala_rjm existe
-        if "escala_rjm" not in db:
-            db["escala_rjm"] = []
-        return db
+    # Lock compartilhado para leitura
+    os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
+    with open(LOCK_PATH, 'w') as lf:
+        portalocker.lock(lf, portalocker.LOCK_SH)
+        try:
+            with open(DATA_PATH, "r", encoding="utf-8") as f:
+                db = json.load(f)
+        finally:
+            portalocker.unlock(lf)
+    # Garantir que escala_rjm existe
+    if "escala_rjm" not in db:
+        db["escala_rjm"] = []
+    return db
 
 def save_db(db):
     import tempfile
     os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
-    # Tentar atomic write primeiro, se falhar usar write direto
-    try:
-        # Atomic write: escrever em temp e mover
-        temp_fd, temp_path = tempfile.mkstemp(dir=os.path.dirname(DATA_PATH), suffix='.json', text=True)
+    # Lock exclusivo para escrita
+    os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
+    with open(LOCK_PATH, 'w') as lf:
+        portalocker.lock(lf, portalocker.LOCK_EX)
         try:
-            with os.fdopen(temp_fd, 'w', encoding='utf-8') as f:
-                json.dump(db, f, ensure_ascii=False, indent=2)
-            # Tentar mover
-            os.replace(temp_path, DATA_PATH)
-        except Exception as move_err:
-            # Cleanup e tentar método alternativo
-            if os.path.exists(temp_path):
+            # Tentar atomic write primeiro, se falhar usar write direto
+            try:
+                # Atomic write: escrever em temp e mover
+                temp_fd, temp_path = tempfile.mkstemp(dir=os.path.dirname(DATA_PATH), suffix='.json', text=True)
                 try:
-                    os.unlink(temp_path)
-                except:
-                    pass
-            raise move_err
-    except Exception as atomic_err:
-        # Fallback: write direto (sobrescrever arquivo)
-        print(f"⚠️ Atomic write falhou, usando write direto: {atomic_err}")
-        with open(DATA_PATH, "w", encoding="utf-8") as f:
-            json.dump(db, f, ensure_ascii=False, indent=2)
+                    with os.fdopen(temp_fd, 'w', encoding='utf-8') as f:
+                        json.dump(db, f, ensure_ascii=False, indent=2)
+                    # Tentar mover
+                    os.replace(temp_path, DATA_PATH)
+                except Exception as move_err:
+                    # Cleanup e tentar método alternativo
+                    if os.path.exists(temp_path):
+                        try:
+                            os.unlink(temp_path)
+                        except:
+                            pass
+                    raise move_err
+            except Exception as atomic_err:
+                # Fallback: write direto (sobrescrever arquivo)
+                print(f"⚠️ Atomic write falhou, usando write direto: {atomic_err}")
+                with open(DATA_PATH, "w", encoding="utf-8") as f:
+                    json.dump(db, f, ensure_ascii=False, indent=2)
+        finally:
+            portalocker.unlock(lf)
+
+# ========== FUNÇÃO DE AUDITORIA (HELPERS) ==========
+def _has_audit_access(user):
+    return getattr(user, 'is_master', False) or getattr(user, 'is_admin_regional', False) or getattr(user, 'is_encarregado_sub', False)
+
+def _filter_logs_by_scope(logs, user):
+    if getattr(user, 'is_master', False):
+        return logs
+    # Admin Regional: apenas logs da sua regional
+    if getattr(user, 'is_admin_regional', False):
+        rid = user.contexto_id
+        return [l for l in logs if isinstance(l.get('contexto', {}), dict) and l['contexto'].get('regional_id') == rid]
+    # Encarregado Sub-Regional: apenas logs da sua sub
+    if getattr(user, 'is_encarregado_sub', False):
+        sid = user.contexto_id
+        return [l for l in logs if isinstance(l.get('contexto', {}), dict) and l['contexto'].get('sub_regional_id') == sid]
+    return []
+
+def _periodo_threshold(periodo):
+    # Retorna ISO string threshold
+    now = datetime.utcnow()
+    if periodo == '24h':
+        return (now - timedelta(days=1)).isoformat()
+    if periodo == '7d':
+        return (now - timedelta(days=7)).isoformat()
+    if periodo == '30d':
+        return (now - timedelta(days=30)).isoformat()
+    return None  # all
+
+# ========== FUNÇÃO DE AUDITORIA ==========
+
+def registrar_log_auditoria(
+    tipo, 
+    categoria, 
+    acao, 
+    descricao, 
+    contexto=None, 
+    dados_antes=None, 
+    dados_depois=None,
+    status="sucesso",
+    mensagem_erro=None,
+    usuario_id=None,
+    usuario_nome=None,
+    usuario_tipo=None
+):
+    """
+    Registra log de auditoria completo
+    
+    Parâmetros:
+    - tipo: login|logout|create|update|delete
+    - categoria: autenticacao|organista|indisponibilidade|escala|rjm|troca|usuario|config|regional|sub_regional|comum
+    - acao: acao_especifica (ex: login_sucesso, criar_organista)
+    - descricao: Descrição legível da ação
+    - contexto: Dict com regional_id, sub_regional_id, comum_id
+    - dados_antes: Estado anterior (para updates)
+    - dados_depois: Estado novo (para creates/updates)
+    - status: sucesso|falha|erro
+    - mensagem_erro: Mensagem de erro se houver
+    - usuario_id: ID do usuário (opcional, usa current_user se autenticado)
+    - usuario_nome: Nome do usuário (opcional)
+    - usuario_tipo: Tipo do usuário (opcional)
+    """
+    try:
+        db = load_db()
+        
+        # Obter dados do usuário
+        if usuario_id is None:
+            usuario_id = current_user.id if current_user.is_authenticated else "anonimo"
+            usuario_nome = current_user.nome if current_user.is_authenticated else "Anônimo"
+            usuario_tipo = current_user.tipo if current_user.is_authenticated else None
+        
+        # Criar entrada de log
+        log_entry = {
+            "id": str(uuid.uuid4()),
+            "timestamp": datetime.utcnow().isoformat(),
+            "tipo": tipo,
+            "categoria": categoria,
+            "usuario_id": usuario_id,
+            "usuario_nome": usuario_nome,
+            "usuario_tipo": usuario_tipo,
+            "acao": acao,
+            "descricao": descricao,
+            "contexto": contexto or {},
+            "dados_antes": dados_antes,
+            "dados_depois": dados_depois,
+            "ip": request.remote_addr if request else None,
+            "user_agent": request.headers.get('User-Agent', '') if request else '',
+            "status": status,
+            "mensagem_erro": mensagem_erro
+        }
+
+        # Enriquecer com timestamp/ip/ua
+        try:
+            from flask import has_request_context
+            if has_request_context():
+                log_entry.setdefault('ip', request.headers.get('X-Forwarded-For', request.remote_addr))
+                log_entry.setdefault('user_agent', request.headers.get('User-Agent'))
+        except Exception:
+            pass
+        log_entry.setdefault('timestamp', datetime.utcnow().isoformat())
+
+        # Persistir em SQLite se configurado
+        if PERSISTENCE == 'sqlite':
+            try:
+                _audit_repo().insert_log(log_entry)
+            except Exception as e:
+                print(f"[AUDIT][SQLITE] erro ao inserir log: {e}")
+        
+        # Inicializar lista de logs se não existir
+        if "logs_auditoria" not in db:
+            db["logs_auditoria"] = []
+        
+        # Adicionar log
+        db["logs_auditoria"].append(log_entry)
+        
+        # Manter apenas últimos 10.000 registros
+        if len(db["logs_auditoria"]) > 10000:
+            db["logs_auditoria"] = db["logs_auditoria"][-10000:]
+        
+        # Salvar
+        save_db(db)
+        
+    except Exception as e:
+        # Não quebrar a aplicação se log falhar
+        print(f"⚠️ Erro ao registrar log de auditoria: {e}")
 
 # ========== FUNÇÕES AUXILIARES PARA NAVEGAÇÃO HIERÁRQUICA ==========
 
@@ -248,7 +427,7 @@ def list_all_comuns(db):
 
 def list_comuns_in_scope(db, user):
     """Lista comuns dentro do escopo do usuário (regional/sub/comum)."""
-    if user.is_master:
+    if user.is_master or user.is_visualizador:
         return list_all_comuns(db)
 
     comuns = []
@@ -296,7 +475,7 @@ def list_comuns_in_scope(db, user):
 
 def is_comum_in_scope_for_user(db, comum_id, user):
     """Verifica se uma comum pertence ao escopo do usuário."""
-    if user.is_master:
+    if user.is_master or user.is_visualizador:
         return True
     comum_result = find_comum_by_id(db, comum_id)
     if not comum_result:
@@ -316,6 +495,9 @@ def is_comum_in_scope_for_user(db, comum_id, user):
 
 def can_manage_comum(db, comum_id, user):
     """Usuário tem permissão de gestão sobre a comum? (papel + escopo)"""
+    # Visualizador pode ver tudo mas não alterar nada
+    if user.is_visualizador:
+        return False
     if user.is_master:
         return True
     if user.is_encarregado_comum:
@@ -538,6 +720,23 @@ def login():
                     usuario.get('tipo') in ['master', 'admin_regional', 'encarregado_sub_regional', 'encarregado_comum']
                 )
                 login_user(user, remember=True)
+                
+                # Log de sucesso
+                registrar_log_auditoria(
+                    tipo="login",
+                    categoria="autenticacao",
+                    acao="login_sucesso",
+                    descricao=f"Login realizado com sucesso",
+                    usuario_id=user.id,
+                    usuario_nome=user.nome,
+                    usuario_tipo=user.tipo,
+                    contexto={
+                        "regional_id": usuario.get('regional_id'),
+                        "sub_regional_id": usuario.get('sub_regional_id'),
+                        "comum_id": usuario.get('comum_id')
+                    }
+                )
+                
                 return redirect(url_for('index'))
         
         # RETROCOMPAT: Verificar campo "admin" antigo (se ainda existir)
@@ -546,6 +745,18 @@ def login():
             if admin and check_password_hash(admin.get('password_hash', ''), password):
                 user = User('admin_master', admin.get('nome', 'Administrador'), 'master', 'sistema', None, True)
                 login_user(user, remember=True)
+                
+                # Log de sucesso
+                registrar_log_auditoria(
+                    tipo="login",
+                    categoria="autenticacao",
+                    acao="login_sucesso",
+                    descricao=f"Login realizado com sucesso (admin legado)",
+                    usuario_id=user.id,
+                    usuario_nome=user.nome,
+                    usuario_tipo=user.tipo
+                )
+                
                 return redirect(url_for('index'))
         
         # Verificar organista (buscar em todas as comuns)
@@ -562,7 +773,37 @@ def login():
                     False
                 )
                 login_user(user, remember=True)
+                
+                # Log de sucesso
+                registrar_log_auditoria(
+                    tipo="login",
+                    categoria="autenticacao",
+                    acao="login_sucesso",
+                    descricao=f"Login realizado com sucesso (organista)",
+                    usuario_id=user.id,
+                    usuario_nome=user.nome,
+                    usuario_tipo=user.tipo,
+                    contexto={
+                        "regional_id": organista_data.get('regional_id'),
+                        "sub_regional_id": organista_data.get('sub_regional_id'),
+                        "comum_id": organista_data.get('comum_id')
+                    }
+                )
+                
                 return redirect(url_for('index'))
+        
+        # Login falhou - registrar tentativa falhada
+        registrar_log_auditoria(
+            tipo="login",
+            categoria="autenticacao",
+            acao="login_falha",
+            descricao=f"Tentativa de login falhou para usuário: {username}",
+            status="falha",
+            mensagem_erro="Credenciais inválidas",
+            usuario_id=username,
+            usuario_nome=username,
+            usuario_tipo="desconhecido"
+        )
         
         flash('Usuário ou senha incorretos.', 'error')
     
@@ -571,6 +812,14 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
+    # Log de logout
+    registrar_log_auditoria(
+        tipo="logout",
+        categoria="autenticacao",
+        acao="logout",
+        descricao=f"Usuário realizou logout"
+    )
+    
     logout_user()
     flash('Você foi desconectado com sucesso.', 'success')
     return redirect(url_for('login'))
@@ -690,6 +939,373 @@ def api_get_contexto():
         "is_admin": current_user.is_admin
     })
 
+# ========== ENDPOINTS DE AUDITORIA ==========
+
+@app.get("/api/auditoria/logs")
+@login_required
+def api_auditoria_logs():
+    if not _has_audit_access(current_user):
+        return jsonify({"error": "Acesso negado"}), 403
+    db = load_db()
+    logs = db.get('logs_auditoria', [])
+
+    # Filtrar por escopo
+    logs = _filter_logs_by_scope(logs, current_user)
+
+    # Filtros
+    periodo = request.args.get('periodo', '30d')
+    categoria = request.args.get('categoria', '').strip()
+    tipo = request.args.get('tipo', '').strip()
+    usuario = request.args.get('usuario', '').strip().lower()
+    pagina = int(request.args.get('pagina', '1'))
+    por_pagina = int(request.args.get('por_pagina', '50'))
+
+    threshold = _periodo_threshold(periodo)
+    if threshold:
+        logs = [l for l in logs if l.get('timestamp', '') >= threshold]
+    if categoria:
+        logs = [l for l in logs if l.get('categoria') == categoria]
+    if tipo:
+        logs = [l for l in logs if l.get('tipo') == tipo]
+    if usuario:
+        logs = [l for l in logs if usuario in (l.get('usuario_id','') or '').lower() or usuario in (l.get('usuario_nome','') or '').lower()]
+
+    total = len(logs)
+    # Ordenar desc por timestamp
+    logs.sort(key=lambda l: l.get('timestamp', ''), reverse=True)
+    ini = (pagina - 1) * por_pagina
+    fim = ini + por_pagina
+    page_logs = logs[ini:fim]
+
+    # Resumo leve para lista (evitar payloads enormes)
+    def summarize(l):
+        return {
+            'id': l.get('id'),
+            'timestamp': l.get('timestamp'),
+            'tipo': l.get('tipo'),
+            'categoria': l.get('categoria'),
+            'usuario_id': l.get('usuario_id'),
+            'usuario_nome': l.get('usuario_nome'),
+            'usuario_tipo': l.get('usuario_tipo'),
+            'acao': l.get('acao'),
+            'descricao': l.get('descricao'),
+            'contexto': l.get('contexto'),
+            'status': l.get('status')
+        }
+
+    return jsonify({'logs': [summarize(l) for l in page_logs], 'total': total, 'pagina': pagina, 'por_pagina': por_pagina})
+
+
+@app.get("/api/auditoria/logs/<log_id>")
+@login_required
+def api_auditoria_log_detail(log_id):
+    if not _has_audit_access(current_user):
+        return jsonify({"error": "Acesso negado"}), 403
+    db = load_db()
+    logs = _filter_logs_by_scope(db.get('logs_auditoria', []), current_user)
+    log = next((l for l in logs if l.get('id') == log_id), None)
+    if not log:
+        return jsonify({"error": "Não encontrado"}), 404
+    return jsonify(log)
+
+
+@app.get("/api/auditoria/estatisticas")
+@login_required
+def api_auditoria_stats():
+    if not _has_audit_access(current_user):
+        return jsonify({"error": "Acesso negado"}), 403
+    db = load_db()
+    logs = _filter_logs_by_scope(db.get('logs_auditoria', []), current_user)
+
+    now = datetime.utcnow()
+    iso_7d = (now - timedelta(days=7)).isoformat()
+    iso_24h = (now - timedelta(hours=24)).isoformat()
+
+    logins_7d = sum(1 for l in logs if l.get('tipo') == 'login' and l.get('timestamp','') >= iso_7d and l.get('status') == 'sucesso')
+    logins_falhas = sum(1 for l in logs if l.get('tipo') == 'login' and l.get('timestamp','') >= iso_7d and l.get('status') == 'falha')
+    alteracoes_24h = sum(1 for l in logs if l.get('tipo') in ['create','update','delete'] and l.get('timestamp','') >= iso_24h)
+    usuarios_ativos = len({(l.get('usuario_id') or '') for l in logs if l.get('timestamp','') >= iso_7d and l.get('usuario_id')})
+
+    return jsonify({
+        'logins_7d': logins_7d,
+        'logins_falhas': logins_falhas,
+        'alteracoes_24h': alteracoes_24h,
+        'usuarios_ativos': usuarios_ativos,
+    })
+
+
+@app.get("/api/auditoria/export/csv")
+@login_required
+def api_auditoria_export_csv():
+    if not _has_audit_access(current_user):
+        return jsonify({"error": "Acesso negado"}), 403
+    db = load_db()
+    logs = _filter_logs_by_scope(db.get('logs_auditoria', []), current_user)
+
+    periodo = request.args.get('periodo', '30d')
+    categoria = request.args.get('categoria', '').strip()
+    tipo = request.args.get('tipo', '').strip()
+    usuario = request.args.get('usuario', '').strip().lower()
+    threshold = _periodo_threshold(periodo)
+    if threshold:
+        logs = [l for l in logs if l.get('timestamp', '') >= threshold]
+    if categoria:
+        logs = [l for l in logs if l.get('categoria') == categoria]
+    if tipo:
+        logs = [l for l in logs if l.get('tipo') == tipo]
+    if usuario:
+        logs = [l for l in logs if usuario in (l.get('usuario_id','') or '').lower() or usuario in (l.get('usuario_nome','') or '').lower()]
+
+    # CSV response
+    from io import StringIO
+    si = StringIO()
+    writer = csv.writer(si)
+    writer.writerow(["timestamp","tipo","categoria","acao","descricao","usuario_id","usuario_nome","usuario_tipo","regional_id","sub_regional_id","comum_id","status","ip","user_agent"]) 
+    for l in logs:
+        ctx = l.get('contexto') or {}
+        writer.writerow([
+            l.get('timestamp',''), l.get('tipo',''), l.get('categoria',''), l.get('acao',''), l.get('descricao',''),
+            l.get('usuario_id',''), l.get('usuario_nome',''), l.get('usuario_tipo',''),
+            ctx.get('regional_id',''), ctx.get('sub_regional_id',''), ctx.get('comum_id',''),
+            l.get('status',''), l.get('ip',''), l.get('user_agent','')
+        ])
+
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = f"attachment; filename=auditoria_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
+    output.headers["Content-type"] = "text/csv; charset=utf-8"
+    return output
+
+# ========== ENDPOINTS DE AUDITORIA ==========
+
+@app.get("/api/auditoria/logs")
+@login_required
+def api_get_logs_auditoria():
+    """Retorna logs de auditoria filtrados por escopo do usuário"""
+    # Apenas Master, Admin Regional e Encarregado Sub podem acessar
+    if not (current_user.is_master or current_user.is_admin_regional or current_user.is_encarregado_sub):
+        return jsonify({"error": "Sem permissão para acessar logs de auditoria"}), 403
+    
+    db = load_db()
+    logs = db.get('logs_auditoria', [])
+    
+    # Filtros da query string
+    categoria = request.args.get('categoria')
+    tipo = request.args.get('tipo')
+    usuario_id = request.args.get('usuario_id')
+    data_inicio = request.args.get('data_inicio')
+    data_fim = request.args.get('data_fim')
+    busca = request.args.get('busca', '').lower()
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 50))
+    
+    # Filtrar por escopo do usuário
+    logs_filtrados = []
+    for log in logs:
+        # Master vê tudo
+        if current_user.is_master:
+            logs_filtrados.append(log)
+            continue
+        
+        # Admin Regional vê apenas da sua regional
+        if current_user.is_admin_regional:
+            contexto = log.get('contexto', {})
+            if contexto.get('regional_id') == current_user.contexto_id:
+                logs_filtrados.append(log)
+            continue
+        
+        # Encarregado Sub vê apenas da sua sub-regional
+        if current_user.is_encarregado_sub:
+            contexto = log.get('contexto', {})
+            if contexto.get('sub_regional_id') == current_user.contexto_id:
+                logs_filtrados.append(log)
+            continue
+    
+    # Aplicar filtros adicionais
+    if categoria:
+        logs_filtrados = [l for l in logs_filtrados if l.get('categoria') == categoria]
+    
+    if tipo:
+        logs_filtrados = [l for l in logs_filtrados if l.get('tipo') == tipo]
+    
+    if usuario_id:
+        logs_filtrados = [l for l in logs_filtrados if l.get('usuario_id') == usuario_id]
+    
+    if data_inicio:
+        logs_filtrados = [l for l in logs_filtrados if l.get('timestamp', '') >= data_inicio]
+    
+    if data_fim:
+        logs_filtrados = [l for l in logs_filtrados if l.get('timestamp', '') <= data_fim]
+    
+    if busca:
+        logs_filtrados = [
+            l for l in logs_filtrados 
+            if busca in l.get('descricao', '').lower() 
+            or busca in l.get('usuario_nome', '').lower()
+            or busca in l.get('acao', '').lower()
+        ]
+    
+    # Ordenar por timestamp (mais recentes primeiro)
+    logs_filtrados.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+    
+    # Paginação
+    total = len(logs_filtrados)
+    start = (page - 1) * per_page
+    end = start + per_page
+    logs_paginados = logs_filtrados[start:end]
+    
+    return jsonify({
+        "logs": logs_paginados,
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "total_pages": (total + per_page - 1) // per_page
+    })
+
+@app.get("/api/auditoria/logs/<log_id>")
+@login_required
+def api_get_log_detalhe(log_id):
+    """Retorna detalhes completos de um log específico"""
+    if not (current_user.is_master or current_user.is_admin_regional or current_user.is_encarregado_sub):
+        return jsonify({"error": "Sem permissão"}), 403
+    
+    db = load_db()
+    logs = db.get('logs_auditoria', [])
+    
+    log = next((l for l in logs if l.get('id') == log_id), None)
+    if not log:
+        return jsonify({"error": "Log não encontrado"}), 404
+    
+    # Verificar escopo
+    if not current_user.is_master:
+        contexto = log.get('contexto', {})
+        if current_user.is_admin_regional:
+            if contexto.get('regional_id') != current_user.contexto_id:
+                return jsonify({"error": "Sem permissão para este log"}), 403
+        elif current_user.is_encarregado_sub:
+            if contexto.get('sub_regional_id') != current_user.contexto_id:
+                return jsonify({"error": "Sem permissão para este log"}), 403
+    
+    return jsonify(log)
+
+@app.get("/api/auditoria/estatisticas")
+@login_required
+def api_get_estatisticas_auditoria():
+    """Retorna estatísticas de uso do sistema"""
+    if not (current_user.is_master or current_user.is_admin_regional or current_user.is_encarregado_sub):
+        return jsonify({"error": "Sem permissão"}), 403
+    
+    db = load_db()
+    logs = db.get('logs_auditoria', [])
+    
+    # Filtrar por escopo
+    logs_filtrados = []
+    for log in logs:
+        if current_user.is_master:
+            logs_filtrados.append(log)
+        elif current_user.is_admin_regional:
+            contexto = log.get('contexto', {})
+            if contexto.get('regional_id') == current_user.contexto_id:
+                logs_filtrados.append(log)
+        elif current_user.is_encarregado_sub:
+            contexto = log.get('contexto', {})
+            if contexto.get('sub_regional_id') == current_user.contexto_id:
+                logs_filtrados.append(log)
+    
+    # Calcular estatísticas
+    agora = datetime.utcnow()
+    ultimos_7_dias = (agora - timedelta(days=7)).isoformat()
+    ultimas_24h = (agora - timedelta(hours=24)).isoformat()
+    
+    stats = {
+        "total_logs": len(logs_filtrados),
+        "logins_ultimos_7_dias": len([l for l in logs_filtrados if l.get('tipo') == 'login' and l.get('timestamp', '') >= ultimos_7_dias]),
+        "logins_falhos_ultimos_7_dias": len([l for l in logs_filtrados if l.get('acao') == 'login_falha' and l.get('timestamp', '') >= ultimos_7_dias]),
+        "alteracoes_ultimas_24h": len([l for l in logs_filtrados if l.get('tipo') in ['create', 'update', 'delete'] and l.get('timestamp', '') >= ultimas_24h]),
+        "por_categoria": {},
+        "por_tipo": {},
+        "usuarios_ativos": set()
+    }
+    
+    # Contar por categoria e tipo
+    for log in logs_filtrados:
+        cat = log.get('categoria', 'outros')
+        tipo = log.get('tipo', 'outros')
+        stats["por_categoria"][cat] = stats["por_categoria"].get(cat, 0) + 1
+        stats["por_tipo"][tipo] = stats["por_tipo"].get(tipo, 0) + 1
+        
+        if log.get('tipo') == 'login' and log.get('status') == 'sucesso':
+            stats["usuarios_ativos"].add(log.get('usuario_id'))
+    
+    stats["usuarios_ativos"] = len(stats["usuarios_ativos"])
+    
+    return jsonify(stats)
+
+@app.get("/api/auditoria/export/csv")
+@login_required
+def api_export_csv_auditoria():
+    """Exporta logs de auditoria em CSV"""
+    if not (current_user.is_master or current_user.is_admin_regional or current_user.is_encarregado_sub):
+        return jsonify({"error": "Sem permissão"}), 403
+    
+    import csv
+    from io import StringIO
+    
+    db = load_db()
+    logs = db.get('logs_auditoria', [])
+    
+    # Filtrar por escopo (mesma lógica do endpoint principal)
+    logs_filtrados = []
+    for log in logs:
+        if current_user.is_master:
+            logs_filtrados.append(log)
+        elif current_user.is_admin_regional:
+            contexto = log.get('contexto', {})
+            if contexto.get('regional_id') == current_user.contexto_id:
+                logs_filtrados.append(log)
+        elif current_user.is_encarregado_sub:
+            contexto = log.get('contexto', {})
+            if contexto.get('sub_regional_id') == current_user.contexto_id:
+                logs_filtrados.append(log)
+    
+    # Ordenar
+    logs_filtrados.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+    
+    # Criar CSV
+    output = StringIO()
+    writer = csv.writer(output)
+    
+    # Cabeçalho
+    writer.writerow([
+        'Data/Hora', 'Usuário', 'Tipo Usuário', 'Tipo', 'Categoria', 
+        'Ação', 'Descrição', 'Status', 'IP', 'Regional', 'Sub-Regional', 'Comum'
+    ])
+    
+    # Dados
+    for log in logs_filtrados:
+        contexto = log.get('contexto', {})
+        writer.writerow([
+            log.get('timestamp', ''),
+            log.get('usuario_nome', ''),
+            log.get('usuario_tipo', ''),
+            log.get('tipo', ''),
+            log.get('categoria', ''),
+            log.get('acao', ''),
+            log.get('descricao', ''),
+            log.get('status', ''),
+            log.get('ip', ''),
+            contexto.get('regional_id', ''),
+            contexto.get('sub_regional_id', ''),
+            contexto.get('comum_id', '')
+        ])
+    
+    # Preparar resposta
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Type'] = 'text/csv; charset=utf-8'
+    response.headers['Content-Disposition'] = f'attachment; filename=auditoria_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+    
+    return response
+
 @app.get("/organistas")
 @login_required
 def list_organistas():
@@ -713,6 +1329,7 @@ def list_organistas():
 
 @app.post("/organistas")
 @login_required
+@require_edit_permission
 def add_organista():
     """Adiciona organista - com suporte para estrutura antiga e nova"""
     if not current_user.is_admin:
@@ -778,6 +1395,7 @@ def add_organista():
 
 @app.put("/organistas/<org_id>")
 @login_required
+@require_edit_permission
 def update_organista(org_id):
     """Atualiza organista - com suporte para estrutura antiga e nova"""
     if not current_user.is_admin:
@@ -832,6 +1450,7 @@ def update_organista(org_id):
 
 @app.delete("/organistas/<org_id>")
 @login_required
+@require_edit_permission
 def delete_organista(org_id):
     """Remove organista - com suporte para estrutura antiga e nova"""
     if not current_user.is_admin:
@@ -907,6 +1526,7 @@ def list_indisp():
 
 @app.post("/indisponibilidades")
 @login_required
+@require_edit_permission
 def add_indisp():
     """Adiciona indisponibilidade - com suporte para estrutura antiga e nova"""
     print(f"\n📅 [ADD_INDISP] Adicionando indisponibilidade")
@@ -983,6 +1603,7 @@ def add_indisp():
 
 @app.delete("/indisponibilidades/<org_id>/<data_iso>")
 @login_required
+@require_edit_permission
 def del_indisp(org_id, data_iso):
     # Organista só pode remover suas próprias, admin pode remover qualquer uma
     if not current_user.is_admin and org_id != current_user.id:
@@ -1092,6 +1713,7 @@ def get_config():
 
 @app.put("/admin/config")
 @login_required
+@require_edit_permission
 def update_config():
     """Admin atualiza configurações do sistema"""
     if not current_user.is_admin:
@@ -1345,6 +1967,7 @@ def validar_regras_especiais(organista, data, tipo):
 
 @app.post("/escala/publicar")
 @login_required
+@require_edit_permission
 def publicar_escala():
     """Publica a escala (salva definitivamente)"""
     if not current_user.is_admin:
@@ -1442,6 +2065,7 @@ def obter_escala():
     })
 
 @app.delete("/escala/delete")
+@require_edit_permission
 @login_required
 def deletar_escala():
     """Deleta a escala atual - com suporte para estrutura antiga e nova"""
@@ -1497,6 +2121,7 @@ def deletar_escala():
         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.put("/escala/editar/<data_iso>")
+@require_edit_permission
 @login_required
 def editar_dia_escala(data_iso):
     """Permite editar alocação de um dia específico"""
@@ -1791,6 +2416,7 @@ def exportar_escala_pdf():
 
 @app.post("/rjm/criar-vazia")
 @login_required
+@require_edit_permission
 def criar_escala_rjm_vazia():
     """Cria escala RJM vazia com todos os domingos do período"""
     if not current_user.is_admin:
@@ -1886,6 +2512,7 @@ def get_escala_rjm():
         return jsonify({"escala_rjm": db.get("escala_rjm", [])}), 200
 
 @app.delete("/rjm/delete")
+@require_edit_permission
 @login_required
 def deletar_escala_rjm():
     """Deleta a escala RJM atual - com suporte para estrutura antiga e nova"""
@@ -1938,6 +2565,7 @@ def deletar_escala_rjm():
 
 @app.post("/rjm/atualizar-multiplos")
 @login_required
+@require_edit_permission
 def atualizar_escala_rjm_multiplos():
     """Atualiza múltiplas linhas da escala RJM de uma vez"""
     if not current_user.is_admin:
@@ -2192,6 +2820,7 @@ def listar_trocas():
 
 @app.post("/trocas")
 @login_required
+@require_edit_permission
 def criar_troca():
     """Cria nova solicitação de troca/substituição"""
     payload = request.get_json() or {}
@@ -2272,6 +2901,7 @@ def criar_troca():
     return jsonify({"ok": True, "troca": troca})
 
 @app.post("/trocas/<troca_id>/aceitar")
+@require_edit_permission
 @login_required
 def aceitar_troca(troca_id):
     db = load_db()
@@ -2305,6 +2935,7 @@ def aceitar_troca(troca_id):
     return jsonify({"ok": True, "troca": troca})
 
 @app.post("/trocas/<troca_id>/recusar")
+@require_edit_permission
 @login_required
 def recusar_troca(troca_id):
     db = load_db()
@@ -2331,6 +2962,7 @@ def recusar_troca(troca_id):
     return jsonify({"ok": True, "troca": troca})
 
 @app.post("/trocas/<troca_id>/cancelar")
+@require_edit_permission
 @login_required
 def cancelar_troca(troca_id):
     db = load_db()
@@ -2356,6 +2988,7 @@ def cancelar_troca(troca_id):
     return jsonify({"ok": True, "troca": troca})
 
 @app.post("/trocas/<troca_id>/aprovar")
+@require_edit_permission
 @login_required
 def aprovar_troca(troca_id):
     """Admin aplica a troca na escala/RJM e marca como aprovada"""
@@ -2416,6 +3049,7 @@ def aprovar_troca(troca_id):
     return jsonify({"ok": True, "troca": troca})
 
 @app.post("/trocas/<troca_id>/reprovar")
+@require_edit_permission
 @login_required
 def reprovar_troca(troca_id):
     """Admin/Encarregado reprova a troca (não aplica na escala) e marca como recusada"""
@@ -2598,6 +3232,7 @@ def get_contexto_atual():
     })
 
 @app.post("/api/contexto/atualizar")
+@require_edit_permission
 @login_required
 def atualizar_contexto():
     """Atualiza o contexto atual do usuário (apenas para Master)"""
@@ -2651,6 +3286,7 @@ def atualizar_contexto():
     })
 
 @app.post("/api/contexto/selecionar")
+@require_edit_permission
 @login_required
 def selecionar_contexto():
     """Permite Master selecionar contexto de trabalho"""
@@ -2701,6 +3337,7 @@ def selecionar_contexto():
 # ==================== CRUD de Hierarquia (Master Only) ====================
 
 @app.post("/api/regionais")
+@require_edit_permission
 @login_required
 def criar_regional():
     """Criar nova regional"""
@@ -2738,6 +3375,7 @@ def criar_regional():
     })
 
 @app.put("/api/regionais/<regional_id>")
+@require_edit_permission
 @login_required
 def editar_regional(regional_id):
     """Editar regional existente"""
@@ -2767,6 +3405,7 @@ def editar_regional(regional_id):
     })
 
 @app.delete("/api/regionais/<regional_id>")
+@require_edit_permission
 @login_required
 def deletar_regional(regional_id):
     """Deletar regional (apenas se vazia)"""
@@ -2789,6 +3428,7 @@ def deletar_regional(regional_id):
     return jsonify({"success": True, "message": "Regional deletada"})
 
 @app.post("/api/regionais/<regional_id>/sub-regionais")
+@require_edit_permission
 @login_required
 def criar_sub_regional(regional_id):
     """Criar nova sub-regional"""
@@ -2831,6 +3471,7 @@ def criar_sub_regional(regional_id):
     })
 
 @app.put("/api/regionais/<regional_id>/sub-regionais/<sub_id>")
+@require_edit_permission
 @login_required
 def editar_sub_regional(regional_id, sub_id):
     """Editar sub-regional existente"""
@@ -2865,6 +3506,7 @@ def editar_sub_regional(regional_id, sub_id):
     })
 
 @app.delete("/api/regionais/<regional_id>/sub-regionais/<sub_id>")
+@require_edit_permission
 @login_required
 def deletar_sub_regional(regional_id, sub_id):
     """Deletar sub-regional (apenas se vazia)"""
@@ -2892,6 +3534,7 @@ def deletar_sub_regional(regional_id, sub_id):
     return jsonify({"success": True, "message": "Sub-regional deletada"})
 
 @app.post("/api/regionais/<regional_id>/sub-regionais/<sub_id>/comuns")
+@require_edit_permission
 @login_required
 def criar_comum(regional_id, sub_id):
     """Criar novo comum"""
@@ -2985,6 +3628,7 @@ def get_comum_details(regional_id, sub_id, comum_id):
     })
 
 @app.put("/api/regionais/<regional_id>/sub-regionais/<sub_id>/comuns/<comum_id>")
+@require_edit_permission
 @login_required
 def editar_comum(regional_id, sub_id, comum_id):
     """Editar comum existente (nome e config)"""
@@ -3033,6 +3677,7 @@ def editar_comum(regional_id, sub_id, comum_id):
     })
 
 @app.delete("/api/regionais/<regional_id>/sub-regionais/<sub_id>/comuns/<comum_id>")
+@require_edit_permission
 @login_required
 def deletar_comum(regional_id, sub_id, comum_id):
     """Deletar comum (apenas se vazio)"""
@@ -3092,6 +3737,7 @@ def listar_usuarios():
     return jsonify(usuarios)
 
 @app.post("/api/usuarios")
+@require_edit_permission
 @login_required
 def criar_usuario():
     """Cria novo usuário (Master only)"""
@@ -3145,6 +3791,7 @@ def criar_usuario():
     })
 
 @app.put("/api/usuarios/<user_id>")
+@require_edit_permission
 @login_required
 def editar_usuario(user_id):
     """Edita usuário existente (Master only)"""
@@ -3185,6 +3832,7 @@ def editar_usuario(user_id):
     })
 
 @app.delete("/api/usuarios/<user_id>")
+@require_edit_permission
 @login_required
 def deletar_usuario(user_id):
     """Deleta usuário (Master only)"""
@@ -3243,6 +3891,7 @@ def get_comum_config(comum_id):
     return jsonify(config)
 
 @app.put("/api/comuns/<comum_id>/config")
+@require_edit_permission
 @login_required
 def update_comum_config(comum_id):
     """Atualiza configurações específicas de um comum"""
