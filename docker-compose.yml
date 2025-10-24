@@ -6,7 +6,7 @@ services:
     container_name: rodizio-organistas
     user: "1000:1000"  # Usar mesmo UID/GID que appuser no Dockerfile
     expose:
-      - "8080"
+      - "8090"
     volumes:
       # Volume para persistência do banco de dados JSON
       - ./data:/app/data
@@ -20,12 +20,13 @@ services:
     restart: unless-stopped
     networks:
       - rodizio-network
+    # docker-compose.yml (serviço do app)
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health').read()"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 10s
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8090/login >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   nginx:
     image: nginx:alpine
@@ -37,6 +38,7 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
+      - ./data:/app/data
     depends_on:
       - rodizio-app
     restart: unless-stopped

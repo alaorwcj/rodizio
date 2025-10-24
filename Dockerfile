@@ -59,11 +59,11 @@ USER appuser
 ENV PATH=/home/appuser/.local/bin:$PATH
 
 # Expor porta
-EXPOSE 8080
+EXPOSE 8090
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/health').read()" || exit 1
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8090/health').read()" || exit 1
 
 # Entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
