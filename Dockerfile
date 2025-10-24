@@ -39,8 +39,16 @@ COPY --chown=appuser:appuser app.py .
 COPY --chown=appuser:appuser update_db_passwords.py .
 COPY --chown=appuser:appuser templates/ templates/
 COPY --chown=appuser:appuser static/ static/
+COPY --chown=appuser:appuser scripts/ scripts/
 COPY --chown=appuser:appuser entrypoint.sh .
-
+# Copiar código da aplicação
+COPY --chown=appuser:appuser app.py .
+COPY --chown=appuser:appuser audit_repository.py .
+COPY --chown=appuser:appuser update_db_passwords.py .
+COPY --chown=appuser:appuser templates/ templates/
+COPY --chown=appuser:appuser static/ static/
+COPY --chown=appuser:appuser scripts/ scripts/
+COPY --chown=appuser:appuser entrypoint.sh .
 # Tornar entrypoint executável
 RUN chmod +x entrypoint.sh
 

@@ -40,3 +40,4 @@ logs/
 # Docker (opcional)
 .env
 docker-compose.override.yml
+certbot/conf/live/

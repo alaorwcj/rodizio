@@ -269,7 +269,8 @@
                 const response = await fetch('/trocar-senha', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': (document.cookie.match(/(?:^|; )csrf_token=([^;]*)/)||[])[1] || ''
                     },
                     body: JSON.stringify({
                         senha_atual: senhaAtual,
