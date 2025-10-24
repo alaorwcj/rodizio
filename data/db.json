@@ -2782,6 +2782,543 @@
           }
         }
       }
+    },
+    "atibaia": {
+      "nome": "Atibaia",
+      "sub_regionais": {
+        "sub-atibaia": {
+          "nome": "Atibaia",
+          "comuns": {
+            "atibaia-jardim": {
+              "nome": "Atibaia Jardim",
+              "organistas": [
+                {
+                  "id": "adriana.pereira",
+                  "nome": "Adriana da Silva Frias Pereira",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$vIkbHLORN1nqEDTn$8707e1bb7f22bbb2571ec77546af4c4f2b72ed25f8b5082e0399300d80a92a7040a0e7cbfd256b6e4a159eb714295f9b6c020fb77451d1f60d253f4225984bb7"
+                },
+                {
+                  "id": "ana.domingues",
+                  "nome": "Ana Paula Freitas Domingues",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$el0uwIXdX78uM08t$88522b88f2ae53069f74288ce59cd0b983bb7a05d3fde28ef957ed8605d39fedb7267938e6788d129bcee0ce71fe8464b235add64b76c55a97d06b61e5e93471"
+                },
+                {
+                  "id": "ariana.francisco",
+                  "nome": "Ariana Guimaraes Francisco",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$7HzPKwjHhmgFBJIA$cb455a7a5278dac5dec954240267037bcaea5518f2b9ff62c0d3802070e0efa664e46ebb53db8ce8a4fa7739307e3248208cbc006785ce02e142d432327a6acd"
+                },
+                {
+                  "id": "cristiane.souza",
+                  "nome": "Cristiane Oliveira Campezzi de Souza",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$qDlCRdeVwoIvmOQk$73d7fe066bc84b2dcccbb7ee7645faacec2fcf7ff87d195b4487ca3bbbf2ff1f78d48af7ca29e237b70353a2ce00b0fe424008f0f4970ee5c1323cde8482bffa"
+                },
+                {
+                  "id": "eunice.leme",
+                  "nome": "Eunice Costa Leme",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$EW9xQWsp4b5trpfg$b1d9303a8ac0844cb9d11728fc63785c54d5beb8ab532b6732f698b59831ecb4816e36cc5fc2d8745312d0f2fe6ae12dab72910e6441023d2a6ae4a0440fe453"
+                },
+                {
+                  "id": "giovana.polessi",
+                  "nome": "Giovana Passos Polessi",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$VQ9ybFuiBJt4wRvD$ba4569551c77e93e223a6e21571502f3229a5f430decf81e1b6cc41df1af27a106956a546d83f198c469defd2486495b0e293168107d6e628e42b8e60e7b5c01"
+                },
+                {
+                  "id": "irene.amorim",
+                  "nome": "Irene Candido Amorim",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$5CYh3HQYI5SYNuLg$a679d888bef7e21b2fdcfff1b2d38de6cdb3c16a8f923d219f12f4c2d748ad153fbf529439e641e97109c7ffd9b253a58474b6ca28453b13188dd268928524b1"
+                },
+                {
+                  "id": "luci.alvez",
+                  "nome": "Luci Maziero Alvez",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$DbQCDAcc4dH38fel$43e6e43a4a1bcf0ac17ee89dfd9f541897de7a1179c44bfded866c13b11a273f0c40f0cfa67a18d67da948857b87596091cdd6b78a1996f6f61eb2e5c82d2583"
+                },
+                {
+                  "id": "luciene.lima",
+                  "nome": "Luciene Costa Lima",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$es71ExKbMEogFWr5$46edb0d249e8b5f4bb47b8f10bdf55ed1a244cf06a535a02939df5fa13c8c06324fe3cc9291622c5b0639e85ed2512e6ecfade848c2b3a55af60da339cbbaf60"
+                },
+                {
+                  "id": "michelle.domingues",
+                  "nome": "Michelle Freitas Domingues",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto",
+                    "RJM"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$9Y1lpEikAI4tsQUn$4245d391f9b70a7f02f55c0dff5c9f786c5d2152f2dd0bcd9c4152b00e7c04a77a57866e820184597212b44e96682405235d45430a745d982d0df278c05622e4"
+                },
+                {
+                  "id": "priscila.leite",
+                  "nome": "Priscila Martinez Silveira Leite",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$zA0Ix9EblM7I5eDc$a2dde057fa3814648c898983ba3474f2319630d114356e5a4fe0145bd2b62e0e9ab96137b68f463979f0721bf31a356f35ba00a3a7c27f9c1deebc3909cd7314"
+                },
+                {
+                  "id": "thaina.fortunato",
+                  "nome": "Thaina Fortunato Pinto",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$EClle0N1it82waoh$f9d3d06866c8906d414dfd63480f4cbb8d06e5e99bd4046315d2608e6bab001350a6f24e0b526df044eefc412d7519011a2866594184edd005d754d59d6d1d0c"
+                },
+                {
+                  "id": "claudia.atibaiajardim",
+                  "nome": "Claudia",
+                  "email": "",
+                  "telefone": "",
+                  "tipos": [
+                    "Meia-hora",
+                    "Culto"
+                  ],
+                  "dias_permitidos": [
+                    "Domingo",
+                    "Terça",
+                    "Quinta",
+                    "Sábado"
+                  ],
+                  "regras_especiais": {},
+                  "comum_id": "atibaia-jardim",
+                  "password_hash": "scrypt:32768:8:1$nF3oIwqAx8eyBvXW$9574c6da1346db3e1f9577de438a6c59c08924463142b62c3e63ffb08714a110e90321164244dde843093fb8e811ab6b273a2dac14fe50a242b0d9b2541f106e"
+                }
+              ],
+              "indisponibilidades": [],
+              "escala": [
+                {
+                  "data": "2025-10-23",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Michelle Freitas Domingues",
+                  "culto": "Michelle Freitas Domingues"
+                },
+                {
+                  "data": "2025-10-25",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Priscila Martinez Silveira Leite",
+                  "culto": "Priscila Martinez Silveira Leite"
+                },
+                {
+                  "data": "2025-10-26",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Eunice Costa Leme",
+                  "culto": "Eunice Costa Leme"
+                },
+                {
+                  "data": "2025-10-28",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Thaina Fortunato Pinto",
+                  "culto": "Thaina Fortunato Pinto"
+                },
+                {
+                  "data": "2025-10-30",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Luciene Costa Lima",
+                  "culto": "Luciene Costa Lima"
+                },
+                {
+                  "data": "2025-11-01",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Cristiane Oliveira Campezzi de Souza",
+                  "culto": "Cristiane Oliveira Campezzi de Souza"
+                },
+                {
+                  "data": "2025-11-02",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Luci Maziero Alvez",
+                  "culto": "Luci Maziero Alvez"
+                },
+                {
+                  "data": "2025-11-04",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Claudia",
+                  "culto": "Claudia"
+                },
+                {
+                  "data": "2025-11-06",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Claudia",
+                  "culto": "Claudia"
+                },
+                {
+                  "data": "2025-11-08",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Irene Candido Amorim",
+                  "culto": "Irene Candido Amorim"
+                },
+                {
+                  "data": "2025-11-09",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Ariana Guimaraes Francisco",
+                  "culto": "Ariana Guimaraes Francisco"
+                },
+                {
+                  "data": "2025-11-11",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Cristiane Oliveira Campezzi de Souza",
+                  "culto": "Cristiane Oliveira Campezzi de Souza"
+                },
+                {
+                  "data": "2025-11-13",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Ana Paula Freitas Domingues",
+                  "culto": "Ana Paula Freitas Domingues"
+                },
+                {
+                  "data": "2025-11-15",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Giovana Passos Polessi",
+                  "culto": "Giovana Passos Polessi"
+                },
+                {
+                  "data": "2025-11-16",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Michelle Freitas Domingues",
+                  "culto": "Michelle Freitas Domingues"
+                },
+                {
+                  "data": "2025-11-18",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Ariana Guimaraes Francisco",
+                  "culto": "Ariana Guimaraes Francisco"
+                },
+                {
+                  "data": "2025-11-20",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Adriana da Silva Frias Pereira",
+                  "culto": "Adriana da Silva Frias Pereira"
+                },
+                {
+                  "data": "2025-11-22",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Eunice Costa Leme",
+                  "culto": "Eunice Costa Leme"
+                },
+                {
+                  "data": "2025-11-23",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Luciene Costa Lima",
+                  "culto": "Luciene Costa Lima"
+                },
+                {
+                  "data": "2025-11-25",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Thaina Fortunato Pinto",
+                  "culto": "Thaina Fortunato Pinto"
+                },
+                {
+                  "data": "2025-11-27",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Priscila Martinez Silveira Leite",
+                  "culto": "Priscila Martinez Silveira Leite"
+                },
+                {
+                  "data": "2025-11-29",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Luci Maziero Alvez",
+                  "culto": "Luci Maziero Alvez"
+                },
+                {
+                  "data": "2025-11-30",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Claudia",
+                  "culto": "Claudia"
+                },
+                {
+                  "data": "2025-12-02",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Irene Candido Amorim",
+                  "culto": "Irene Candido Amorim"
+                },
+                {
+                  "data": "2025-12-04",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Cristiane Oliveira Campezzi de Souza",
+                  "culto": "Cristiane Oliveira Campezzi de Souza"
+                },
+                {
+                  "data": "2025-12-06",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Ariana Guimaraes Francisco",
+                  "culto": "Ariana Guimaraes Francisco"
+                },
+                {
+                  "data": "2025-12-07",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Ana Paula Freitas Domingues",
+                  "culto": "Ana Paula Freitas Domingues"
+                },
+                {
+                  "data": "2025-12-09",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Cristiane Oliveira Campezzi de Souza",
+                  "culto": "Cristiane Oliveira Campezzi de Souza"
+                },
+                {
+                  "data": "2025-12-11",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Irene Candido Amorim",
+                  "culto": "Irene Candido Amorim"
+                },
+                {
+                  "data": "2025-12-13",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Michelle Freitas Domingues",
+                  "culto": "Michelle Freitas Domingues"
+                },
+                {
+                  "data": "2025-12-14",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Adriana da Silva Frias Pereira",
+                  "culto": "Adriana da Silva Frias Pereira"
+                },
+                {
+                  "data": "2025-12-16",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Claudia",
+                  "culto": "Claudia"
+                },
+                {
+                  "data": "2025-12-18",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Giovana Passos Polessi",
+                  "culto": "Giovana Passos Polessi"
+                },
+                {
+                  "data": "2025-12-20",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Luciene Costa Lima",
+                  "culto": "Luciene Costa Lima"
+                },
+                {
+                  "data": "2025-12-21",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Priscila Martinez Silveira Leite",
+                  "culto": "Priscila Martinez Silveira Leite"
+                },
+                {
+                  "data": "2025-12-23",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Thaina Fortunato Pinto",
+                  "culto": "Thaina Fortunato Pinto"
+                },
+                {
+                  "data": "2025-12-25",
+                  "dia_semana": "Thursday",
+                  "meia_hora": "Eunice Costa Leme",
+                  "culto": "Eunice Costa Leme"
+                },
+                {
+                  "data": "2025-12-27",
+                  "dia_semana": "Saturday",
+                  "meia_hora": "Claudia",
+                  "culto": "Claudia"
+                },
+                {
+                  "data": "2025-12-28",
+                  "dia_semana": "Sunday",
+                  "meia_hora": "Luci Maziero Alvez",
+                  "culto": "Luci Maziero Alvez"
+                },
+                {
+                  "data": "2025-12-30",
+                  "dia_semana": "Tuesday",
+                  "meia_hora": "Ariana Guimaraes Francisco",
+                  "culto": "Ariana Guimaraes Francisco"
+                }
+              ],
+              "escala_rjm": [],
+              "config": {
+                "periodo": {
+                  "inicio": "2025-10-23",
+                  "fim": "2025-12-31"
+                },
+                "dias_culto": [
+                  "Domingo",
+                  "Terça",
+                  "Quinta",
+                  "Sábado"
+                ],
+                "horarios": {
+                  "Domingo": [
+                    "10:00",
+                    "18:30"
+                  ],
+                  "Terça": [
+                    "14:00"
+                  ],
+                  "Quinta": [
+                    "19:30"
+                  ],
+                  "Sábado": [
+                    "19:30"
+                  ]
+                },
+                "fechamento_publicacao_dias": 1
+              },
+              "escala_publicada_em": "2025-10-23T19:31:19.279148",
+              "escala_publicada_por": "enc_atibaiajardim"
+            }
+          }
+        }
+      }
     }
   },
   "usuarios": {
@@ -2875,6 +3412,17 @@
       "contexto_id": "teste",
       "ativo": true,
       "data_criacao": "2025-10-16T09:49:19.188803"
+    },
+    "enc_atibaiajardim": {
+      "id": "enc_atibaiajardim",
+      "nome": "Alan Campezzi",
+      "password_hash": "scrypt:32768:8:1$4UjkTQzKkzjXCu6h$9c0908e384235c830560b7cc64a034cf228dc906cd03889252c0e8b5844d68b0269439823bfea4c253b1dfd6b44200be9cb2e2c8b72eec8ca1abb1a923a6590d",
+      "tipo": "encarregado_comum",
+      "email": "",
+      "telefone": "",
+      "contexto_id": "atibaia-jardim",
+      "ativo": true,
+      "data_criacao": "2025-10-23T16:17:03.683421"
     }
   },
   "logs": [
@@ -6246,6 +6794,982 @@
         "id": "ieda",
         "data": "2025-10-05"
       }
+    },
+    {
+      "quando": "2025-10-16T20:47:19.671739",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-05",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T20:47:20.405803",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-05"
+      }
+    },
+    {
+      "quando": "2025-10-16T23:42:30.386744",
+      "acao": "add_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "data": "2025-10-05",
+        "motivo": "Indisponível",
+        "id": "ieda",
+        "autor": "ieda",
+        "status": "confirmada"
+      }
+    },
+    {
+      "quando": "2025-10-16T23:42:31.090118",
+      "acao": "del_indisponibilidade",
+      "por": "ieda",
+      "payload": {
+        "id": "ieda",
+        "data": "2025-10-05"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:20:44.591206",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "adriana.pereira",
+        "nome": "Adriana da Silva Frias Pereira",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:21:59.598397",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "ana.domingues",
+        "nome": "Ana Paula Freitas Domingues",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:22:47.761888",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "ariana.francisco",
+        "nome": "Ariana Guimaraes Francisco",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:23:45.024210",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "cristiane.souza",
+        "nome": "Cristiane Oliveira Campezzi de Souza",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:24:29.655466",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "eunice.leme",
+        "nome": "Eunice Costa Leme",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:25:15.854052",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "giovana.polessi",
+        "nome": "Giovana Passos Polessi",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:26:00.497622",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "irene.amorim",
+        "nome": "Irene Candido Amorim",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:26:44.602884",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "luci.alvez",
+        "nome": "Luci Maziero Alvez",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:27:27.267760",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "luciene.lima",
+        "nome": "Luciene Costa Lima",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:28:07.050901",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "michelle.domingues",
+        "nome": "Michelle Freitas Domingues",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto",
+          "RJM"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:29:00.217166",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "priscila.leite",
+        "nome": "Priscila Martinez Silveira Leite",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:29:53.388242",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "thaina.fortunato",
+        "nome": "Thaina Fortunato Pinto",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:30:51.669208",
+      "acao": "update_config",
+      "por": "enc_atibaiajardim",
+      "payload": {
+        "fechamento_publicacao_dias": 1,
+        "periodo": {
+          "inicio": "2025-10-23",
+          "fim": "2025-12-31"
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:31:19.279164",
+      "acao": "publicar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "total_dias": 40
+      }
+    },
+    {
+      "quando": "2025-10-23T19:36:06.684827",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-10-23",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Michelle Freitas Domingues",
+            "culto": "Michelle Freitas Domingues"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:36:06.946042",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-10-25",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Priscila Martinez Silveira Leite",
+            "culto": "Priscila Martinez Silveira Leite"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:36:07.205454",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-10-26",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Eunice Costa Leme",
+            "culto": "Eunice Costa Leme"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:36:07.470464",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-10-28",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Thaina Fortunato Pinto",
+            "culto": "Thaina Fortunato Pinto"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:36:07.731206",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-10-30",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Luciene Costa Lima",
+            "culto": "Luciene Costa Lima"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:36:07.992090",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-01",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Cristiane Oliveira Campezzi de Souza",
+            "culto": "Cristiane Oliveira Campezzi de Souza"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:36:08.254814",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-02",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Luci Maziero Alvez",
+            "culto": "Luci Maziero Alvez"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:37:53.724720",
+      "acao": "add_organista",
+      "por": "alaor",
+      "comum_id": "",
+      "payload": {
+        "id": "claudia.atibaiajardim",
+        "nome": "Claudia",
+        "email": "",
+        "telefone": "",
+        "tipos": [
+          "Meia-hora",
+          "Culto"
+        ],
+        "dias_permitidos": [
+          "Domingo",
+          "Terça",
+          "Quinta",
+          "Sábado"
+        ],
+        "regras_especiais": {},
+        "comum_id": "atibaia-jardim"
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:42.663071",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-04",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Claudia",
+            "culto": "Claudia"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:42.923152",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-06",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Claudia",
+            "culto": "Claudia"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:43.183229",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-08",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Irene Candido Amorim",
+            "culto": "Irene Candido Amorim"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:43.441522",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-09",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ariana Guimaraes Francisco",
+            "culto": "Ariana Guimaraes Francisco"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:43.698124",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-11",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Cristiane Oliveira Campezzi de Souza",
+            "culto": "Cristiane Oliveira Campezzi de Souza"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:43.957375",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-13",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ana Paula Freitas Domingues",
+            "culto": "Ana Paula Freitas Domingues"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:44.215384",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-15",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Giovana Passos Polessi",
+            "culto": "Giovana Passos Polessi"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:44.473697",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-16",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Michelle Freitas Domingues",
+            "culto": "Michelle Freitas Domingues"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:44.739425",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-18",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ariana Guimaraes Francisco",
+            "culto": "Ariana Guimaraes Francisco"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:44.997953",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-20",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Adriana da Silva Frias Pereira",
+            "culto": "Adriana da Silva Frias Pereira"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:45.255296",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-22",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Eunice Costa Leme",
+            "culto": "Eunice Costa Leme"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:45.515836",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-23",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Luciene Costa Lima",
+            "culto": "Luciene Costa Lima"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:45.774088",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-25",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Thaina Fortunato Pinto",
+            "culto": "Thaina Fortunato Pinto"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:46.037478",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-27",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Priscila Martinez Silveira Leite",
+            "culto": "Priscila Martinez Silveira Leite"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:46.298366",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-29",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Luci Maziero Alvez",
+            "culto": "Luci Maziero Alvez"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:42:46.563762",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-11-30",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Claudia",
+            "culto": "Claudia"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:26.461003",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-02",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Irene Candido Amorim",
+            "culto": "Irene Candido Amorim"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:26.723485",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-04",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Cristiane Oliveira Campezzi de Souza",
+            "culto": "Cristiane Oliveira Campezzi de Souza"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:26.977890",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-06",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ariana Guimaraes Francisco",
+            "culto": "Ariana Guimaraes Francisco"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:27.234140",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-07",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ana Paula Freitas Domingues",
+            "culto": "Ana Paula Freitas Domingues"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:27.496241",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-09",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Cristiane Oliveira Campezzi de Souza",
+            "culto": "Cristiane Oliveira Campezzi de Souza"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:27.759799",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-11",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Irene Candido Amorim",
+            "culto": "Irene Candido Amorim"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:28.015736",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-13",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Michelle Freitas Domingues",
+            "culto": "Michelle Freitas Domingues"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:28.271124",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-14",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Adriana da Silva Frias Pereira",
+            "culto": "Adriana da Silva Frias Pereira"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:28.531702",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-16",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Claudia",
+            "culto": "Claudia"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:28.792109",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-18",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Giovana Passos Polessi",
+            "culto": "Giovana Passos Polessi"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:29.095496",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-20",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Luciene Costa Lima",
+            "culto": "Luciene Costa Lima"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:29.353319",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-21",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Priscila Martinez Silveira Leite",
+            "culto": "Priscila Martinez Silveira Leite"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:29.611893",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-23",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Thaina Fortunato Pinto",
+            "culto": "Thaina Fortunato Pinto"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:29.870525",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-25",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Eunice Costa Leme",
+            "culto": "Eunice Costa Leme"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:30.129114",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-27",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Claudia",
+            "culto": "Claudia"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:30.395718",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-28",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Luci Maziero Alvez",
+            "culto": "Luci Maziero Alvez"
+          }
+        }
+      }
+    },
+    {
+      "quando": "2025-10-23T19:46:30.655186",
+      "acao": "editar_escala",
+      "por": "enc_atibaiajardim",
+      "comum_id": "atibaia-jardim",
+      "payload": {
+        "data": "2025-12-30",
+        "alteracoes": {
+          "alocacao": {
+            "meia_hora": "Ariana Guimaraes Francisco",
+            "culto": "Ariana Guimaraes Francisco"
+          }
+        }
+      }
     }
   ],
   "escala_rjm": [],
@@ -6456,5 +7980,171 @@
     }
   ],
   "escala_publicada_em": "2025-10-15T02:01:53.282899",
-  "escala_publicada_por": "enc_central"
+  "escala_publicada_por": "enc_central",
+  "logs_auditoria": [
+    {
+      "id": "8c65c8df-8079-4c44-8873-22b95315ae1b",
+      "timestamp": "2025-10-23T19:30:17.673260",
+      "tipo": "login",
+      "categoria": "autenticacao",
+      "usuario_id": "enc_atibaiajardim",
+      "usuario_nome": "Alan Campezzi",
+      "usuario_tipo": "encarregado_comum",
+      "acao": "login_sucesso",
+      "descricao": "Login realizado com sucesso",
+      "contexto": {
+        "regional_id": null,
+        "sub_regional_id": null,
+        "comum_id": null
+      },
+      "dados_antes": null,
+      "dados_depois": null,
+      "ip": "172.22.0.3",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "status": "sucesso",
+      "mensagem_erro": null
+    },
+    {
+      "id": "024e7ab3-d8f5-422a-9a37-9e92eab2c46f",
+      "timestamp": "2025-10-23T19:50:01.442696",
+      "tipo": "logout",
+      "categoria": "autenticacao",
+      "usuario_id": "enc_atibaiajardim",
+      "usuario_nome": "Alan Campezzi",
+      "usuario_tipo": "encarregado_comum",
+      "acao": "logout",
+      "descricao": "Usuário realizou logout",
+      "contexto": {},
+      "dados_antes": null,
+      "dados_depois": null,
+      "ip": "172.22.0.3",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "status": "sucesso",
+      "mensagem_erro": null
+    },
+    {
+      "id": "abdec5b2-ab7a-48d8-b3a5-4d9e1d0ef1bf",
+      "timestamp": "2025-10-23T19:50:12.356648",
+      "tipo": "login",
+      "categoria": "autenticacao",
+      "usuario_id": "thaina.fortunato",
+      "usuario_nome": "Thaina Fortunato Pinto",
+      "usuario_tipo": "organista",
+      "acao": "login_sucesso",
+      "descricao": "Login realizado com sucesso (organista)",
+      "contexto": {
+        "regional_id": "atibaia",
+        "sub_regional_id": "sub-atibaia",
+        "comum_id": "atibaia-jardim"
+      },
+      "dados_antes": null,
+      "dados_depois": null,
+      "ip": "172.22.0.3",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "status": "sucesso",
+      "mensagem_erro": null
+    },
+    {
+      "id": "1ab17446-d946-4a1c-9e01-8822dfdf85ab",
+      "timestamp": "2025-10-23T19:51:11.156175",
+      "tipo": "logout",
+      "categoria": "autenticacao",
+      "usuario_id": "thaina.fortunato",
+      "usuario_nome": "Thaina Fortunato Pinto",
+      "usuario_tipo": "organista",
+      "acao": "logout",
+      "descricao": "Usuário realizou logout",
+      "contexto": {},
+      "dados_antes": null,
+      "dados_depois": null,
+      "ip": "172.22.0.3",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "status": "sucesso",
+      "mensagem_erro": null
+    },
+    {
+      "id": "a5f6e09d-fdec-468b-aff1-d1f8a5e8288d",
+      "timestamp": "2025-10-23T19:51:26.818836",
+      "tipo": "login",
+      "categoria": "autenticacao",
+      "usuario_id": "enc_atibaiajardim",
+      "usuario_nome": "Alan Campezzi",
+      "usuario_tipo": "encarregado_comum",
+      "acao": "login_sucesso",
+      "descricao": "Login realizado com sucesso",
+      "contexto": {
+        "regional_id": null,
+        "sub_regional_id": null,
+        "comum_id": null
+      },
+      "dados_antes": null,
+      "dados_depois": null,
+      "ip": "172.22.0.3",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "status": "sucesso",
+      "mensagem_erro": null
+    },
+    {
+      "id": "32a790a1-296f-44ab-9092-f19f2dce38c6",
+      "timestamp": "2025-10-23T20:07:12.786967",
+      "tipo": "login",
+      "categoria": "autenticacao",
+      "usuario_id": "enc_atibaiajardim",
+      "usuario_nome": "Alan Campezzi",
+      "usuario_tipo": "encarregado_comum",
+      "acao": "login_sucesso",
+      "descricao": "Login realizado com sucesso",
+      "contexto": {
+        "regional_id": null,
+        "sub_regional_id": null,
+        "comum_id": null
+      },
+      "dados_antes": null,
+      "dados_depois": null,
+      "ip": "172.22.0.3",
+      "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "status": "sucesso",
+      "mensagem_erro": null
+    },
+    {
+      "id": "d713cbf1-e2b3-4835-bbb5-7a71be9b319d",
+      "timestamp": "2025-10-23T20:15:54.106051",
+      "tipo": "login",
+      "categoria": "autenticacao",
+      "usuario_id": "enc_atiabaiajardim",
+      "usuario_nome": "enc_atiabaiajardim",
+      "usuario_tipo": "desconhecido",
+      "acao": "login_falha",
+      "descricao": "Tentativa de login falhou para usuário: enc_atiabaiajardim",
+      "contexto": {},
+      "dados_antes": null,
+      "dados_depois": null,
+      "ip": "172.22.0.3",
+      "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/28.0 Chrome/130.0.0.0 Mobile Safari/537.36",
+      "status": "falha",
+      "mensagem_erro": "Credenciais inválidas"
+    },
+    {
+      "id": "8e5ed5e6-965c-408d-81fa-905edf206777",
+      "timestamp": "2025-10-23T20:16:14.627210",
+      "tipo": "login",
+      "categoria": "autenticacao",
+      "usuario_id": "enc_atibaiajardim",
+      "usuario_nome": "Alan Campezzi",
+      "usuario_tipo": "encarregado_comum",
+      "acao": "login_sucesso",
+      "descricao": "Login realizado com sucesso",
+      "contexto": {
+        "regional_id": null,
+        "sub_regional_id": null,
+        "comum_id": null
+      },
+      "dados_antes": null,
+      "dados_depois": null,
+      "ip": "172.22.0.3",
+      "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/28.0 Chrome/130.0.0.0 Mobile Safari/537.36",
+      "status": "sucesso",
+      "mensagem_erro": null
+    }
+  ]
 }
