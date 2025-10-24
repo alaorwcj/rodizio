@@ -29,7 +29,7 @@ echo -e "${GREEN}Sistema pronto! Iniciando servidor...${NC}"
 
 # Iniciar aplicação com Gunicorn
 exec gunicorn \
-    --bind 0.0.0.0:8080 \
+    --bind 0.0.0.0:8090 \
     --workers 2 \
     --threads 4 \
     --worker-class gthread \
