@@ -26,50 +26,11 @@ if os.environ.get('FLASK_ENV') == 'production' and not os.environ.get('SECRET_KE
 
 # CSRF: desabilitado por enquanto (SeaSurf incompatível com Flask 3). Implementaremos com Flask-WTF em etapa futura.
 
-# Persistência: APENAS PostgreSQL (sem fallback JSON)
-PERSISTENCE = 'postgres'
-USE_POSTGRES = True  # Forçado - sistema não usa mais JSON
+DATA_PATH = "data/db.json"
+LOCK_PATH = DATA_PATH + ".lock"
 
-# ========== HELPERS PARA MODO POSTGRESQL-ONLY ==========
-
-def use_postgres():
-    """Retorna True - sistema sempre usa PostgreSQL"""
-    return True
-
-def get_repository(repo_name):
-    """
-    Factory para obter repositories
-    Uso: repo = get_repository('organista')
-    """
-    if not use_postgres():
-        return None
-    
-    from repositories import (
-        OrganistaRepository,
-        EscalaRepository,
-        IndisponibilidadeRepository,
-        ComumRepository,
-        UsuarioRepository,
-        TrocaRepository,
-        AuditRepository
-    )
-    
-    repos = {
-        'organista': OrganistaRepository,
-        'escala': EscalaRepository,
-        'indisponibilidade': IndisponibilidadeRepository,
-        'comum': ComumRepository,
-        'usuario': UsuarioRepository,
-        'troca': TrocaRepository,
-        'audit': AuditRepository
-    }
-    
-    repo_class = repos.get(repo_name.lower())
-    if repo_class:
-        return repo_class()
-    return None
-
-# ========== AUDIT (mantém compatibilidade com SQLite) ==========
+# Persistência: json (padrão) ou sqlite
+PERSISTENCE = os.environ.get('PERSISTENCE', 'json').lower()
 
 def _audit_repo():
     return AuditRepo(db_path=os.environ.get('SQLITE_PATH', 'data/rodizio.db'))
@@ -149,40 +110,97 @@ def require_edit_permission(f):
 
 @login_manager.user_loader
 def load_user(user_id):
-    # POSTGRESQL: Usar repository
-    usuario_repo = get_repository('usuario')
-    organista_repo = get_repository('organista')
+    db = load_db()
     
-    # Tentar buscar como usuário do sistema
-    usuario = usuario_repo.get_by_id(user_id) if usuario_repo else None
-    if usuario:
-        print(f"🔐 [LOAD_USER] Usuário do sistema (PostgreSQL): {user_id} (tipo: {usuario['tipo']})")
+    # Verificar se é usuário do sistema (master, admins regionais, etc)
+    usuarios_sistema = db.get('usuarios', {})
+    if user_id in usuarios_sistema:
+        usuario = usuarios_sistema[user_id]
+        print(f"🔐 [LOAD_USER] Usuário do sistema: {user_id} (tipo: {usuario['tipo']})")
         return User(
             usuario['id'],
             usuario['nome'],
             usuario['tipo'],
             usuario.get('nivel', 'sistema'),
-            usuario.get('contexto_id'),
+            usuario.get('contexto_id'),  # Corrigido: usar contexto_id direto
             usuario.get('tipo') in ['master', 'admin_regional', 'encarregado_sub_regional', 'encarregado_comum']
         )
     
-    # Tentar buscar como organista
-    organista = organista_repo.get_by_id(user_id) if organista_repo else None
-    if organista:
-        print(f"🎹 [LOAD_USER] Organista (PostgreSQL): {user_id} - is_admin será FALSE")
+    # RETROCOMPATIBILIDADE: Suportar admin antigo
+    if user_id == 'admin':
+        admin = db.get('admin', {})
+        if admin:
+            return User('admin', admin.get('nome', 'Administrador'), 'master', 'sistema', None, True)
+    
+    # Buscar organista em todas as comuns
+    organista_data = find_organista_in_all_comuns(db, user_id)
+    if organista_data:
+        print(f"🎹 [LOAD_USER] Organista encontrada: {user_id} - is_admin será FALSE")
         user_obj = User(
-            organista['id'],
-            organista['nome'],
+            organista_data['organista']['id'],
+            organista_data['organista']['nome'],
             'organista',
             'comum',
-            organista.get('comum_id'),
+            organista_data['comum_id'],
             False
         )
         print(f"   Verificação: is_admin={user_obj.is_admin}, tipo={user_obj.tipo}")
         return user_obj
     
-    print(f"❌ [LOAD_USER] Usuário não encontrado no PostgreSQL: {user_id}")
+    print(f"❌ [LOAD_USER] Usuário não encontrado: {user_id}")
     return None
+
+def load_db():
+    if not os.path.exists(DATA_PATH):
+        return {"organistas":[], "indisponibilidades":[], "escala":[], "escala_rjm":[], "logs":[], 
+                "config":{"bimestre":{"inicio":"2025-10-01","fim":"2025-11-30"},
+                          "fechamento_publicacao_dias":3}}
+    # Lock compartilhado para leitura
+    os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
+    with open(LOCK_PATH, 'w') as lf:
+        portalocker.lock(lf, portalocker.LOCK_SH)
+        try:
+            with open(DATA_PATH, "r", encoding="utf-8") as f:
+                db = json.load(f)
+        finally:
+            portalocker.unlock(lf)
+    # Garantir que escala_rjm existe
+    if "escala_rjm" not in db:
+        db["escala_rjm"] = []
+    return db
+
+def save_db(db):
+    import tempfile
+    os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
+    # Lock exclusivo para escrita
+    os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
+    with open(LOCK_PATH, 'w') as lf:
+        portalocker.lock(lf, portalocker.LOCK_EX)
+        try:
+            # Tentar atomic write primeiro, se falhar usar write direto
+            try:
+                # Atomic write: escrever em temp e mover
+                temp_fd, temp_path = tempfile.mkstemp(dir=os.path.dirname(DATA_PATH), suffix='.json', text=True)
+                try:
+                    with os.fdopen(temp_fd, 'w', encoding='utf-8') as f:
+                        json.dump(db, f, ensure_ascii=False, indent=2)
+                    # Tentar mover
+                    os.replace(temp_path, DATA_PATH)
+                except Exception as move_err:
+                    # Cleanup e tentar método alternativo
+                    if os.path.exists(temp_path):
+                        try:
+                            os.unlink(temp_path)
+                        except:
+                            pass
+                    raise move_err
+            except Exception as atomic_err:
+                # Fallback: write direto (sobrescrever arquivo)
+                print(f"⚠️ Atomic write falhou, usando write direto: {atomic_err}")
+                with open(DATA_PATH, "w", encoding="utf-8") as f:
+                    json.dump(db, f, ensure_ascii=False, indent=2)
+        finally:
+            portalocker.unlock(lf)
 
 # ========== FUNÇÃO DE AUDITORIA (HELPERS) ==========
 def _has_audit_access(user):
@@ -682,59 +700,114 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         
+        db = load_db()
+        
         # RETROCOMPAT: Redirecionar "admin" para "admin_master"
         if username == 'admin':
             username = 'admin_master'
         
-        # POSTGRESQL: Usar repository
-        usuario_repo = get_repository('usuario')
-        organista_repo = get_repository('organista')
-        
-        # Buscar usuário do sistema
-        usuario = usuario_repo.get_by_username(username) if usuario_repo else None
-        if usuario and check_password_hash(usuario.get('password_hash', ''), password):
-            user = User(
-                usuario['id'],
-                usuario['nome'],
-                usuario['tipo'],
-                usuario.get('nivel', 'sistema'),
-                usuario.get('contexto_id'),
-                usuario.get('tipo') in ['master', 'admin_regional', 'encarregado_sub_regional', 'encarregado_comum']
-            )
-            login_user(user, remember=True)
-            
-            # Log de sucesso
-            audit_repo = get_repository('audit')
-            if audit_repo:
-                audit_repo.log_action(
-                    acao='login_sucesso',
+        # Verificar usuários do sistema (nova estrutura)
+        usuarios_sistema = db.get('usuarios', {})
+        if username in usuarios_sistema:
+            usuario = usuarios_sistema[username]
+            if check_password_hash(usuario.get('password_hash', ''), password):
+                user = User(
+                    usuario['id'],
+                    usuario['nome'],
+                    usuario['tipo'],
+                    usuario.get('nivel', 'sistema'),
+                    usuario.get('regional_id') or usuario.get('sub_regional_id') or usuario.get('comum_id'),
+                    usuario.get('tipo') in ['master', 'admin_regional', 'encarregado_sub_regional', 'encarregado_comum']
+                )
+                login_user(user, remember=True)
+                
+                # Log de sucesso
+                registrar_log_auditoria(
+                    tipo="login",
+                    categoria="autenticacao",
+                    acao="login_sucesso",
+                    descricao=f"Login realizado com sucesso",
                     usuario_id=user.id,
-                    comum_id=usuario.get('comum_id'),
-                    detalhes={
-                        'usuario_tipo': user.tipo,
-                        'nivel': usuario.get('nivel'),
-                        'contexto_id': usuario.get('contexto_id')
+                    usuario_nome=user.nome,
+                    usuario_tipo=user.tipo,
+                    contexto={
+                        "regional_id": usuario.get('regional_id'),
+                        "sub_regional_id": usuario.get('sub_regional_id'),
+                        "comum_id": usuario.get('comum_id')
                     }
                 )
-            
-            return redirect(url_for('index'))
+                
+                return redirect(url_for('index'))
         
-        # Buscar organista (organistas têm login mas sem password no PostgreSQL atualmente)
-        # Por enquanto, organistas não fazem login pelo PostgreSQL
-        # TODO: Implementar se necessário
+        # RETROCOMPAT: Verificar campo "admin" antigo (se ainda existir)
+        if username == 'admin_master':
+            admin = db.get('admin', {})
+            if admin and check_password_hash(admin.get('password_hash', ''), password):
+                user = User('admin_master', admin.get('nome', 'Administrador'), 'master', 'sistema', None, True)
+                login_user(user, remember=True)
+                
+                # Log de sucesso
+                registrar_log_auditoria(
+                    tipo="login",
+                    categoria="autenticacao",
+                    acao="login_sucesso",
+                    descricao=f"Login realizado com sucesso (admin legado)",
+                    usuario_id=user.id,
+                    usuario_nome=user.nome,
+                    usuario_tipo=user.tipo
+                )
+                
+                return redirect(url_for('index'))
         
-        # Login falhou
-        audit_repo = get_repository('audit')
-        if audit_repo:
-            audit_repo.log_action(
-                acao='login_falha',
-                usuario_id=username,
-                detalhes={'mensagem': 'Credenciais inválidas'}
-            )
+        # Verificar organista (buscar em todas as comuns)
+        organista_data = find_organista_in_all_comuns(db, username)
+        if organista_data:
+            organista = organista_data['organista']
+            if 'password_hash' in organista and check_password_hash(organista['password_hash'], password):
+                user = User(
+                    organista['id'],
+                    organista['nome'],
+                    'organista',
+                    'comum',
+                    organista_data['comum_id'],
+                    False
+                )
+                login_user(user, remember=True)
+                
+                # Log de sucesso
+                registrar_log_auditoria(
+                    tipo="login",
+                    categoria="autenticacao",
+                    acao="login_sucesso",
+                    descricao=f"Login realizado com sucesso (organista)",
+                    usuario_id=user.id,
+                    usuario_nome=user.nome,
+                    usuario_tipo=user.tipo,
+                    contexto={
+                        "regional_id": organista_data.get('regional_id'),
+                        "sub_regional_id": organista_data.get('sub_regional_id'),
+                        "comum_id": organista_data.get('comum_id')
+                    }
+                )
+                
+                return redirect(url_for('index'))
+        
+        # Login falhou - registrar tentativa falhada
+        registrar_log_auditoria(
+            tipo="login",
+            categoria="autenticacao",
+            acao="login_falha",
+            descricao=f"Tentativa de login falhou para usuário: {username}",
+            status="falha",
+            mensagem_erro="Credenciais inválidas",
+            usuario_id=username,
+            usuario_nome=username,
+            usuario_tipo="desconhecido"
+        )
         
         flash('Usuário ou senha incorretos.', 'error')
     
-    return render_template('login.html')
+    return render_template("login.html")
 
 @app.route("/logout")
 @login_required
@@ -810,57 +883,13 @@ def trocar_senha():
 @login_required
 def api_list_comuns():
     """Lista todas as comuns que o usuário tem acesso"""
-    
-    # POSTGRESQL: Usar repository
-    repo = get_repository('comum')
+    db = load_db()
     
     if current_user.is_master:
-        # Master vê todas as comuns de todas as regionais
-        regionais = repo.get_all_regionais()
-        comuns = []
-        
-        for regional in regionais:
-            regional_id = regional['id']
-            regional_nome = regional['nome']
-            
-            # Buscar sub-regionais
-            sub_regionais = repo.get_sub_regionais_by_regional(regional_id)
-            for sub in sub_regionais:
-                sub_id = sub['id']
-                sub_nome = sub['nome']
-                
-                # Buscar comuns
-                comuns_sub = repo.get_comuns_by_sub_regional(sub_id)
-                for comum in comuns_sub:
-                    comuns.append({
-                        'regional_id': regional_id,
-                        'regional_nome': regional_nome,
-                        'sub_regional_id': sub_id,
-                        'sub_regional_nome': sub_nome,
-                        'comum_id': comum['id'],
-                        'comum_nome': comum['nome'],
-                        'comum': comum
-                    })
+        comuns = list_all_comuns(db)
     else:
-        # Outros usuários: filtrar por contexto
-        # Por enquanto, retornar apenas a comum do contexto
-        comum_id = current_user.contexto_id
-        if comum_id:
-            comum = repo.get_comum_by_id(comum_id)
-            if comum:
-                comuns = [{
-                    'regional_id': comum.get('regional_id'),
-                    'regional_nome': comum.get('regional_nome'),
-                    'sub_regional_id': comum.get('sub_regional_id'),
-                    'sub_regional_nome': comum.get('sub_regional_nome'),
-                    'comum_id': comum['id'],
-                    'comum_nome': comum['nome'],
-                    'comum': comum
-                }]
-            else:
-                comuns = []
-        else:
-            comuns = []
+        # Lista somente dentro do escopo do usuário
+        comuns = list_comuns_in_scope(db, current_user)
     
     return jsonify(comuns)
 
@@ -1280,229 +1309,229 @@ def api_export_csv_auditoria():
 @app.get("/organistas")
 @login_required
 def list_organistas():
-    """Lista organistas usando PostgreSQL"""
-    # POSTGRESQL: Usar repository
-    repo = get_repository('organista')
-    comum_id = current_user.contexto_id
+    """Lista organistas - com suporte para estrutura antiga e nova"""
+    db = load_db()
     
-    if current_user.is_master:
-        # Master vê todos os organistas de todas as regionais
-        organistas = []
-        # TODO: implementar get_all() ou buscar por regional
-        # Por enquanto, retornar vazio ou buscar pela comum do contexto
-        if comum_id:
-            organistas = repo.get_by_comum(comum_id)
+    # NOVA ESTRUTURA: Buscar na comum do usuário
+    if 'regionais' in db:
+        comum_result = get_comum_for_user(db, current_user)
+        if comum_result:
+            organistas = comum_result['comum'].get('organistas', [])
+        else:
+            organistas = []
     else:
-        # Outros perfis vêem apenas da sua comum
-        organistas = repo.get_by_comum(comum_id) if comum_id else []
+        # ESTRUTURA ANTIGA: Retrocompatibilidade
+        organistas = db.get("organistas", [])
     
-    # Organistas já vem como Dict, apenas remover campos sensíveis
-    result = []
-    for org in organistas:
-        org_dict = {k: v for k, v in org.items() if k not in ['password_hash', 'created_at', 'updated_at']}
-        result.append(org_dict)
-    return jsonify(result)
+    # Remover password_hash antes de enviar
+    organistas = [{k: v for k, v in o.items() if k != 'password_hash'} for o in organistas]
+    return jsonify(organistas)
 
 @app.post("/organistas")
 @login_required
 @require_edit_permission
 def add_organista():
-    """Adiciona organista usando PostgreSQL"""
+    """Adiciona organista - com suporte para estrutura antiga e nova"""
     if not current_user.is_admin:
         return jsonify({"error": "Apenas o administrador pode adicionar organistas."}), 403
     
+    db = load_db()
     payload = request.get_json()
     
-    # POSTGRESQL: Usar repository
-    repo = get_repository('organista')
-    
-    # Determinar comum_id
-    if current_user.is_master:
-        # Master: DEVE especificar o comum no payload
-        comum_id = payload.get('comum_id')
-        if not comum_id:
-            return jsonify({"error": "Selecione o comum onde a organista atuará"}), 400
+    # Hash da senha
+    if 'password' in payload:
+        payload['password_hash'] = generate_password_hash(payload['password'])
+        del payload['password']
     else:
-        # Perfis administrativos regionais/sub devem indicar comum pela sessão ou payload
-        comum_id = payload.get('comum_id') or session.get('comum_id') or current_user.contexto_id
+        payload['password_hash'] = generate_password_hash('123456')
     
-    # Verificar se já existe
-    existing = repo.get_by_id(payload['id'])
-    if existing:
-        return jsonify({"error": "Organista com esse ID já existe."}), 400
+    # NOVA ESTRUTURA: Adicionar na comum do usuário
+    if 'regionais' in db:
+        if current_user.is_master:
+            # Master: DEVE especificar o comum no payload
+            comum_id = payload.get('comum_id')
+            if not comum_id:
+                return jsonify({"error": "Selecione o comum onde a organista atuará"}), 400
+        else:
+            # Perfis administrativos regionais/sub devem indicar comum pela sessão ou payload
+            comum_id = payload.get('comum_id') or session.get('comum_id') or current_user.contexto_id
+        # Verificar escopo
+        if not can_manage_comum(db, comum_id, current_user):
+            return jsonify({"error": "Sem permissão para gerenciar esta comum"}), 403
+        
+        comum_data = find_comum_by_id(db, comum_id)
+        if not comum_data:
+            return jsonify({"error": f"Comum '{comum_id}' não encontrada"}), 404
+        
+        # Verificar duplicata na comum
+        organistas = comum_data['comum'].get('organistas', [])
+        if any(o["id"] == payload["id"] for o in organistas):
+            return jsonify({"error": "Organista com esse ID já existe."}), 400
+        
+        # Adicionar organista
+        organistas.append(payload)
+        
+        # Atualizar no banco
+        regional = db['regionais'][comum_data['regional_id']]
+        sub_regional = regional['sub_regionais'][comum_data['sub_regional_id']]
+        sub_regional['comuns'][comum_id]['organistas'] = organistas
+    else:
+        # ESTRUTURA ANTIGA: Retrocompatibilidade
+        if any(o["id"] == payload["id"] for o in db.get("organistas", [])):
+            return jsonify({"error": "Organista com esse ID já existe."}), 400
+        db["organistas"].append(payload)
     
-    # Mapear tipo (string -> tipo_id)
-    tipo_map = {'ORGANISTA': 1, 'TITULAR': 1, 'SUPLENTE': 2, 'SUBSTITUTO': 3}
-    tipo_str = payload.get('tipo', 'TITULAR').upper()
-    tipo_id = tipo_map.get(tipo_str, 1)
+    db["logs"].append({
+        "quando": datetime.utcnow().isoformat(),
+        "acao": "add_organista",
+        "por": current_user.id,
+        "comum_id": current_user.contexto_id if 'regionais' in db else None,
+        "payload": {k: v for k, v in payload.items() if k != 'password_hash'}
+    })
+    save_db(db)
     
-    # Criar organista
-    try:
-        data = {
-            'id': payload['id'],
-            'nome': payload['nome'],
-            'telefone': payload.get('telefone'),
-            'email': payload.get('email'),
-            'comum_id': comum_id,
-            'tipo_id': tipo_id
-        }
-        
-        organista = repo.create(data)
-        
-        # Log
-        audit_repo = get_repository('audit')
-        if audit_repo:
-            audit_repo.log_action(
-                acao='add_organista',
-                usuario_id=current_user.id,
-                comum_id=comum_id,
-                detalhes={'organista_id': payload['id'], 'nome': payload['nome']}
-            )
-        
-        return jsonify({"ok": True, "organista": organista})
-        
-    except Exception as e:
-        return jsonify({"error": f"Erro ao criar organista: {str(e)}"}), 500
+    response_payload = {k: v for k, v in payload.items() if k != 'password_hash'}
+    return jsonify({"ok": True, "organista": response_payload})
 
 @app.put("/organistas/<org_id>")
 @login_required
 @require_edit_permission
 def update_organista(org_id):
-    """Atualiza organista usando PostgreSQL"""
+    """Atualiza organista - com suporte para estrutura antiga e nova"""
     if not current_user.is_admin:
         return jsonify({"error": "Apenas o administrador pode editar organistas."}), 403
     
+    db = load_db()
     payload = request.get_json()
     
-    # POSTGRESQL: Usar repository
-    repo = get_repository('organista')
+    # Se tiver nova senha, fazer hash
+    if 'password' in payload:
+        payload['password_hash'] = generate_password_hash(payload['password'])
+        del payload['password']
     
-    # Buscar organista
-    organista = repo.get_by_id(org_id)
-    if not organista:
-        return jsonify({"error": "Organista não encontrado."}), 404
+    organista = None
     
-    # Preparar dados para atualização
-    data = {}
-    if 'nome' in payload:
-        data['nome'] = payload['nome']
-    if 'tipo' in payload:
-        # Mapear tipo (string -> tipo_id)
-        tipo_map = {'ORGANISTA': 1, 'TITULAR': 1, 'SUPLENTE': 2, 'SUBSTITUTO': 3}
-        tipo_str = payload['tipo'].upper()
-        data['tipo_id'] = tipo_map.get(tipo_str, 1)
-    if 'telefone' in payload:
-        data['telefone'] = payload['telefone']
-    if 'email' in payload:
-        data['email'] = payload['email']
-    if 'comum_id' in payload:
-        data['comum_id'] = payload['comum_id']
+    # NOVA ESTRUTURA: Buscar na comum
+    if 'regionais' in db:
+        organista_data = find_organista_in_all_comuns(db, org_id)
+        if not organista_data:
+            return jsonify({"error": "Organista não encontrado."}), 404
+        
+        # Atualizar organista
+        organista = organista_data['organista']
+        organista.update(payload)
+        
+        # Atualizar no banco (precisamos reconstruir o caminho)
+        comum_data = find_comum_by_id(db, organista_data['comum_id'])
+        if comum_data:
+            # Escopo
+            if not can_manage_comum(db, organista_data['comum_id'], current_user):
+                return jsonify({"error": "Sem permissão para esta comum"}), 403
+            regional = db['regionais'][comum_data['regional_id']]
+            sub_regional = regional['sub_regionais'][comum_data['sub_regional_id']]
+            # Organista já foi atualizado por referência, só precisamos salvar
+    else:
+        # ESTRUTURA ANTIGA: Retrocompatibilidade
+        organista = next((o for o in db.get("organistas", []) if o["id"] == org_id), None)
+        if not organista:
+            return jsonify({"error": "Organista não encontrado."}), 404
+        organista.update(payload)
     
-    # Atualizar
-    try:
-        updated = repo.update(org_id, data)
-        if not updated:
-            return jsonify({"error": "Erro ao atualizar organista"}), 500
-        
-        # Log
-        audit_repo = get_repository('audit')
-        if audit_repo:
-            audit_repo.log_action(
-                acao='update_organista',
-                usuario_id=current_user.id,
-                comum_id=organista.get('comum_id'),
-                detalhes={'organista_id': org_id, 'changes': data}
-            )
-        
-        return jsonify({"ok": True, "organista": updated})
-        
-    except Exception as e:
-        return jsonify({"error": f"Erro ao atualizar organista: {str(e)}"}), 500
+    db["logs"].append({
+        "quando": datetime.utcnow().isoformat(),
+        "acao": "update_organista",
+        "por": current_user.id,
+        "payload": {"id": org_id, "changes": {k: v for k, v in payload.items() if k != 'password_hash'}}
+    })
+    save_db(db)
+    
+    response = {k: v for k, v in organista.items() if k != 'password_hash'}
+    return jsonify({"ok": True, "organista": response})
 
 @app.delete("/organistas/<org_id>")
 @login_required
 @require_edit_permission
 def delete_organista(org_id):
-    """Remove organista usando PostgreSQL"""
+    """Remove organista - com suporte para estrutura antiga e nova"""
     if not current_user.is_admin:
         return jsonify({"error": "Apenas o administrador pode remover organistas."}), 403
     
-    # POSTGRESQL: Usar repository
-    repo = get_repository('organista')
+    db = load_db()
+    removed = False
     
-    # Buscar organista antes de deletar (para log)
-    organista = repo.get_by_id(org_id)
-    if not organista:
+    # NOVA ESTRUTURA: Buscar e remover da comum
+    if 'regionais' in db:
+        organista_data = find_organista_in_all_comuns(db, org_id)
+        if not organista_data:
+            return jsonify({"error": "Organista não encontrado."}), 404
+        
+        # Remover organista
+        comum_data = find_comum_by_id(db, organista_data['comum_id'])
+        if comum_data:
+            if not can_manage_comum(db, organista_data['comum_id'], current_user):
+                return jsonify({"error": "Sem permissão para esta comum"}), 403
+            regional = db['regionais'][comum_data['regional_id']]
+            sub_regional = regional['sub_regionais'][comum_data['sub_regional_id']]
+            organistas = sub_regional['comuns'][comum_data['comum_id']]['organistas']
+            sub_regional['comuns'][comum_data['comum_id']]['organistas'] = [
+                o for o in organistas if o['id'] != org_id
+            ]
+            removed = True
+    else:
+        # ESTRUTURA ANTIGA: Retrocompatibilidade
+        before = len(db.get("organistas", []))
+        db["organistas"] = [o for o in db.get("organistas", []) if o["id"] != org_id]
+        after = len(db["organistas"])
+        removed = (before != after)
+    
+    if not removed:
         return jsonify({"error": "Organista não encontrado."}), 404
     
-    # Deletar
-    try:
-        success = repo.delete(org_id)
-        if not success:
-            return jsonify({"error": "Erro ao deletar organista"}), 500
-        
-        # Log
-        audit_repo = get_repository('audit')
-        if audit_repo:
-            audit_repo.log_action(
-                acao='delete_organista',
-                usuario_id=current_user.id,
-                comum_id=organista.get('comum_id'),
-                detalhes={'organista_id': org_id, 'nome': organista.get('nome')}
-            )
-        
-        return jsonify({"ok": True})
-        
-    except Exception as e:
-        return jsonify({"error": f"Erro ao deletar organista: {str(e)}"}), 500
+    db["logs"].append({
+        "quando": datetime.utcnow().isoformat(),
+        "acao": "delete_organista",
+        "por": current_user.id,
+        "payload": {"id": org_id}
+    })
+    save_db(db)
+    return jsonify({"ok": True})
 
 @app.get("/indisponibilidades")
 @login_required
 def list_indisp():
-    """Lista indisponibilidades usando PostgreSQL"""
+    """Lista indisponibilidades - com suporte para estrutura antiga e nova"""
+    db = load_db()
     
-    # POSTGRESQL: Usar repository
-    repo = get_repository('indisponibilidade')
-    comum_id = current_user.contexto_id
+    # NOVA ESTRUTURA
+    if 'regionais' in db:
+        comum_data = get_comum_for_user(db, current_user)
+        if not comum_data:
+            return jsonify([])
+        
+        items = comum_data['comum'].get('indisponibilidades', [])
+    else:
+        # ESTRUTURA ANTIGA
+        items = db.get("indisponibilidades", [])
     
     # Se for organista, só vê suas próprias
     if not current_user.is_admin:
-        items = repo.get_by_organista(current_user.id)
+        items = [i for i in items if i["id"] == current_user.id]
     else:
-        # Admin pode filtrar por organista ou ver todas da comum
+        # Admin pode filtrar por organista ou ver todas
         organista = request.args.get("id")
         if organista:
-            items = repo.get_by_organista(organista)
-        elif comum_id:
-            # Buscar todas da comum (precisamos obter todos meses)
-            # Por enquanto, buscar por organista se especificado
-            items = []
-        else:
-            items = []
+            items = [i for i in items if i["id"] == organista]
     
-    # Converter formato: mes → data (para compatibilidade com frontend)
-    # Frontend espera: [{id, data, autor, status, ...}]
-    # Repository retorna: [{id, organista_id, mes, motivo, ...}]
-    result = []
-    for item in items:
-        result.append({
-            'id': item.get('organista_id'),  # ID da organista
-            'data': item.get('mes') + '-01',  # mes YYYY-MM → data YYYY-MM-01
-            'autor': current_user.id,
-            'status': 'confirmada',
-            'motivo': item.get('motivo')
-        })
-    
-    return jsonify(result)
+    return jsonify(items)
 
 @app.post("/indisponibilidades")
 @login_required
 @require_edit_permission
 def add_indisp():
-    """Adiciona indisponibilidade usando PostgreSQL"""
+    """Adiciona indisponibilidade - com suporte para estrutura antiga e nova"""
     print(f"\n📅 [ADD_INDISP] Adicionando indisponibilidade")
     print(f"  Usuário: {current_user.id} (is_admin: {current_user.is_admin})")
-    
+    db = load_db()
     payload = request.get_json()
     print(f"  Payload recebido: {payload}")
     
@@ -1513,49 +1542,64 @@ def add_indisp():
     elif "id" not in payload:
         return jsonify({"error": "ID da organista é obrigatório para administrador."}), 400
     
-    # POSTGRESQL: Usar repository
-    repo = get_repository('indisponibilidade')
+    payload["autor"] = current_user.id
+    payload["status"] = "confirmada"
     
-    # Converter data YYYY-MM-DD → mes YYYY-MM
-    data_completa = payload.get("data", "")
-    mes = data_completa[:7] if len(data_completa) >= 7 else data_completa
-    
-    organista_id = payload["id"]
-    
-    # Verificar se já existe (upsert)
-    existing = repo.get_by_organista_mes(organista_id, mes)
-    
-    try:
-        if existing:
-            # Atualizar
-            data = {
-                'motivo': payload.get('motivo', 'Indisponível')
-            }
-            result = repo.update(existing['id'], data)
+    # NOVA ESTRUTURA
+    if 'regionais' in db:
+        comum_data = get_comum_for_user(db, current_user)
+        print(f"  Comum encontrada: {comum_data['comum_id'] if comum_data else 'NENHUMA'}")
+        if not comum_data:
+            print(f"  ❌ Erro: Comum não encontrada para usuário {current_user.id}")
+            return jsonify({"error": "Comum não encontrada."}), 404
+        # Escopo (para admins marcando para terceiros)
+        if current_user.is_admin and not can_manage_comum(db, comum_data['comum_id'], current_user):
+            print(f"  ❌ Erro: Sem permissão para comum {comum_data['comum_id']}")
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
+        
+        # Validar período
+        d = payload["data"]
+        config = comum_data['comum'].get('config', {})
+        periodo = config.get('periodo', config.get('bimestre', {}))
+        ini = periodo.get("inicio", "2025-01-01")
+        fim = periodo.get("fim", "2025-12-31")
+        if not (ini <= d <= fim):
+            return jsonify({"error":"Data fora do período configurado."}), 400
+        
+        # upsert (impede duplicata)
+        indisps = comum_data['comum'].get('indisponibilidades', [])
+        dup = next((x for x in indisps if x["id"]==payload["id"] and x["data"]==d), None)
+        if dup:
+            dup.update(payload)
         else:
-            # Criar nova
-            data = {
-                'organista_id': organista_id,
-                'mes': mes,
-                'motivo': payload.get('motivo', 'Indisponível')
-            }
-            result = repo.create(data)
+            indisps.append(payload)
         
-        # Log
-        audit_repo = get_repository('audit')
-        if audit_repo:
-            audit_repo.log_action(
-                acao='add_indisponibilidade',
-                usuario_id=current_user.id,
-                comum_id=current_user.contexto_id,
-                detalhes={'organista_id': organista_id, 'mes': mes}
-            )
+        # Atualizar no banco
+        regional = db['regionais'][comum_data['regional_id']]
+        sub_regional = regional['sub_regionais'][comum_data['sub_regional_id']]
+        sub_regional['comuns'][comum_data['comum_id']]['indisponibilidades'] = indisps
+    else:
+        # ESTRUTURA ANTIGA
+        d = payload["data"]
+        ini = db["config"]["bimestre"]["inicio"]
+        fim = db["config"]["bimestre"]["fim"]
+        if not (ini <= d <= fim):
+            return jsonify({"error":"Data fora do período configurado."}), 400
         
-        return jsonify({"ok": True})
-        
-    except Exception as e:
-        print(f"  ❌ Erro ao criar indisponibilidade: {str(e)}")
-        return jsonify({"error": f"Erro ao criar indisponibilidade: {str(e)}"}), 500
+        dup = next((x for x in db.get("indisponibilidades", []) if x["id"]==payload["id"] and x["data"]==d), None)
+        if dup:
+            dup.update(payload)
+        else:
+            db["indisponibilidades"].append(payload)
+    
+    db["logs"].append({
+        "quando":datetime.utcnow().isoformat(), 
+        "acao":"add_indisponibilidade", 
+        "por":current_user.id, 
+        "payload":payload
+    })
+    save_db(db)
+    return jsonify({"ok":True})
 
 @app.delete("/indisponibilidades/<org_id>/<data_iso>")
 @login_required
@@ -1565,33 +1609,54 @@ def del_indisp(org_id, data_iso):
     if not current_user.is_admin and org_id != current_user.id:
         return jsonify({"error": "Você só pode remover suas próprias indisponibilidades."}), 403
 
-    # POSTGRESQL: Usar repository
-    repo = get_repository('indisponibilidade')
-    
-    # Converter data YYYY-MM-DD → mes YYYY-MM
-    mes = data_iso[:7] if len(data_iso) >= 7 else data_iso
-    
-    try:
-        # Deletar por organista + mes
-        success = repo.delete_by_organista_mes(org_id, mes)
-        
-        if not success:
-            return jsonify({"error": "Não encontrado"}), 404
-        
-        # Log
-        audit_repo = get_repository('audit')
-        if audit_repo:
-            audit_repo.log_action(
-                acao='del_indisponibilidade',
-                usuario_id=current_user.id,
-                comum_id=current_user.contexto_id,
-                detalhes={'organista_id': org_id, 'mes': mes}
-            )
-        
-        return jsonify({"ok": True})
-        
-    except Exception as e:
-        return jsonify({"error": f"Erro ao deletar: {str(e)}"}), 500
+    db = load_db()
+
+    removed = False
+
+    # NOVA ESTRUTURA: dados aninhados em regionais/sub-regionais/comuns
+    if 'regionais' in db:
+        comum_result = get_comum_for_user(db, current_user)
+        if not comum_result:
+            return jsonify({"error": "Comum não encontrada."}), 404
+        if current_user.is_admin and not can_manage_comum(db, comum_result['comum_id'], current_user):
+            return jsonify({"error": "Sem permissão para esta comum"}), 403
+
+        regional = db['regionais'][comum_result['regional_id']]
+        sub_regional = regional['sub_regionais'][comum_result['sub_regional_id']]
+        comum = sub_regional['comuns'][comum_result['comum_id']]
+
+        indisps = comum.get('indisponibilidades', [])
+        before = len(indisps)
+        indisps = [i for i in indisps if not (i.get('id') == org_id and i.get('data') == data_iso)]
+        after = len(indisps)
+        removed = (before != after)
+
+        # Persistir alterações no caminho correto
+        comum['indisponibilidades'] = indisps
+        sub_regional['comuns'][comum_result['comum_id']] = comum
+        regional['sub_regionais'][comum_result['sub_regional_id']] = sub_regional
+        db['regionais'][comum_result['regional_id']] = regional
+
+    else:
+        # ESTRUTURA ANTIGA: lista no topo do arquivo
+        indisps = db.get('indisponibilidades', [])
+        before = len(indisps)
+        db['indisponibilidades'] = [i for i in indisps if not (i.get('id') == org_id and i.get('data') == data_iso)]
+        after = len(db['indisponibilidades'])
+        removed = (before != after)
+
+    if not removed:
+        return jsonify({"error": "Não encontrado"}), 404
+
+    # Log e salvar
+    db.setdefault('logs', []).append({
+        "quando": datetime.utcnow().isoformat(),
+        "acao": "del_indisponibilidade",
+        "por": current_user.id,
+        "payload": {"id": org_id, "data": data_iso}
+    })
+    save_db(db)
+    return jsonify({"ok": True})
 
 @app.get("/admin/indisponibilidades/todas")
 @login_required
@@ -1600,39 +1665,26 @@ def admin_all_indisp():
     if not current_user.is_admin:
         return jsonify({"error": "Acesso negado"}), 403
     
-    # POSTGRESQL: Usar repository
-    comum_id = current_user.contexto_id
-    if not comum_id:
+    db = load_db()
+    comum_result = get_comum_for_user(db, current_user)
+    
+    if not comum_result:
         return jsonify({"error": "Contexto não encontrado"}), 404
     
-    # Buscar todas indisponibilidades da comum (precisamos iterar pelos meses)
-    # Por enquanto, vamos buscar todos os organistas e suas indisponibilidades
-    organista_repo = get_repository('organista')
-    indisp_repo = get_repository('indisponibilidade')
+    # Extrair o objeto comum
+    comum_data = comum_result['comum']
     
-    organistas = organista_repo.get_by_comum(comum_id)
-    
+    # Agrupar por organista
     result = {}
-    for org in organistas:
-        org_id = org['id']
-        indisps = indisp_repo.get_by_organista(org_id)
-        
-        # Converter mes → data para compatibilidade
-        indisps_convertidas = []
-        for indisp in indisps:
-            indisps_convertidas.append({
-                'id': org_id,
-                'data': indisp.get('mes') + '-01',
-                'autor': current_user.id,
-                'status': 'confirmada',
-                'motivo': indisp.get('motivo')
-            })
-        
-        if indisps_convertidas:  # Só adicionar se tiver indisponibilidades
+    for indisp in comum_data.get("indisponibilidades", []):
+        org_id = indisp["id"]
+        if org_id not in result:
+            organista = next((o for o in comum_data.get("organistas", []) if o["id"] == org_id), None)
             result[org_id] = {
-                "nome": org.get('nome'),
-                "indisponibilidades": indisps_convertidas
+                "nome": organista["nome"] if organista else org_id,
+                "indisponibilidades": []
             }
+        result[org_id]["indisponibilidades"].append(indisp)
     
     return jsonify(result)
 
@@ -3041,16 +3093,13 @@ def reprovar_troca(troca_id):
 @login_required
 def get_regionais():
     """Retorna lista de regionais disponíveis"""
-    
-    # POSTGRESQL: Usar repository
-    repo = get_repository('comum')
-    regionais_data = repo.get_all_regionais()
-    
+    db = load_db()
     regionais = []
-    for regional in regionais_data:
+    
+    for regional_id, regional_data in db.get("regionais", {}).items():
         regionais.append({
-            "id": regional['id'],
-            "nome": regional['nome']
+            "id": regional_id,
+            "nome": regional_data.get("nome", regional_id.upper())
         })
     
     return jsonify(regionais)
@@ -3059,16 +3108,14 @@ def get_regionais():
 @login_required
 def get_sub_regionais(regional_id):
     """Retorna lista de sub-regionais de uma regional"""
-    
-    # POSTGRESQL: Usar repository
-    repo = get_repository('comum')
-    sub_regionais_data = repo.get_sub_regionais_by_regional(regional_id)
+    db = load_db()
+    regional = db.get("regionais", {}).get(regional_id, {})
     
     sub_regionais = []
-    for sub in sub_regionais_data:
+    for sub_id, sub_data in regional.get("sub_regionais", {}).items():
         sub_regionais.append({
-            "id": sub['id'],
-            "nome": sub['nome']
+            "id": sub_id,
+            "nome": sub_data.get("nome", sub_id.replace("_", " ").title())
         })
     
     return jsonify(sub_regionais)
@@ -3077,16 +3124,15 @@ def get_sub_regionais(regional_id):
 @login_required
 def get_comuns_by_sub(regional_id, sub_regional_id):
     """Retorna lista de comuns de uma sub-regional"""
-    
-    # POSTGRESQL: Usar repository
-    repo = get_repository('comum')
-    comuns_data = repo.get_comuns_by_sub_regional(sub_regional_id)
+    db = load_db()
+    regional = db.get("regionais", {}).get(regional_id, {})
+    sub_regional = regional.get("sub_regionais", {}).get(sub_regional_id, {})
     
     comuns = []
-    for comum in comuns_data:
+    for comum_id, comum_data in sub_regional.get("comuns", {}).items():
         comuns.append({
-            "id": comum['id'],
-            "nome": comum['nome']
+            "id": comum_id,
+            "nome": comum_data.get("nome", comum_id.replace("_", " ").title())
         })
     
     return jsonify(comuns)
@@ -3812,33 +3858,35 @@ def deletar_usuario(user_id):
 @login_required
 def get_comum_config(comum_id):
     """Retorna configurações específicas de um comum"""
+    db = load_db()
+    comum_result = find_comum_by_id(db, comum_id)
     
     print(f"🔍 [API] GET /api/comuns/{comum_id}/config")
     print(f"  👤 Usuário: {current_user.id} (tipo: {current_user.tipo})")
     print(f"  🔑 Contexto: {current_user.contexto_id}")
     
-    # POSTGRESQL: Usar repository
-    repo = get_repository('comum')
-    
-    # Buscar comum
-    comum = repo.get_comum_by_id(comum_id)
-    if not comum:
+    if not comum_result:
         print(f"  ❌ Comum '{comum_id}' não encontrado")
         return jsonify({"error": "Comum não encontrado"}), 404
     
-    print(f"  ✅ Comum encontrado: {comum.get('nome', comum_id)}")
+    # Extrair o objeto comum do resultado
+    comum_data = comum_result['comum']
+    print(f"  ✅ Comum encontrado: {comum_data.get('nome', comum_id)}")
     
-    # Verificar permissão (básica - apenas contexto)
-    if current_user.tipo == 'organista':
-        if current_user.contexto_id != comum_id:
-            print(f"  ❌ Organista tentando acessar config de outra comum")
+    # Verificar permissão: todos podem VER a config da própria comum (read-only)
+    # Apenas verificar se o usuário tem acesso à comum
+    if 'regionais' in db:
+        # Para organistas, verificar se é da própria comum
+        if current_user.tipo == 'organista':
+            if current_user.contexto_id != comum_result['comum_id']:
+                print(f"  ❌ Organista tentando acessar config de outra comum")
+                return jsonify({"error": "Sem permissão para este comum"}), 403
+        # Para admins, verificar escopo
+        elif current_user.tipo != 'master' and not is_comum_in_scope_for_user(db, comum_result['comum_id'], current_user):
+            print(f"  ❌ Comum fora do escopo do usuário")
             return jsonify({"error": "Sem permissão para este comum"}), 403
     
-    # Buscar config
-    config = repo.get_config(comum_id)
-    if not config:
-        config = {}
-    
+    config = comum_data.get("config", {})
     print(f"  ✅ Config retornada: dias_culto={config.get('dias_culto', [])}")
     return jsonify(config)
 

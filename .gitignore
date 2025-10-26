@@ -37,7 +37,20 @@ logs/
 *.bak
 *.old
 
-# Docker (opcional)
+# Docker e Configurações Sensíveis
 .env
+.env.*
+!.env.example
 docker-compose.override.yml
 certbot/conf/live/
+
+# PostgreSQL
+*.db
+*.sqlite
+*.sqlite3
+data/rodizio.db*
+
+# Backups
+data/db_backup_*.json
+data/backups/*
+!data/backups/.gitkeep

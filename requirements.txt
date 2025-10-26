@@ -12,3 +12,9 @@ Flask-WTF==1.2.1
 
 # File locking for concurrent access to JSON DB
 portalocker==2.8.2
+
+# PostgreSQL Support
+psycopg2-binary==2.9.9
+SQLAlchemy==2.0.23
+alembic==1.13.0
+python-dotenv==1.0.0
