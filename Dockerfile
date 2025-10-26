@@ -41,7 +41,7 @@ COPY --chown=appuser:appuser templates/ templates/
 COPY --chown=appuser:appuser static/ static/
 COPY --chown=appuser:appuser scripts/ scripts/
 COPY --chown=appuser:appuser entrypoint.sh .
-
+COPY --chown=appuser:appuser audit_repository.py .
 # Tornar entrypoint executável
 RUN chmod +x entrypoint.sh
 
